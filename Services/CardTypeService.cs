@@ -16,7 +16,7 @@ public class CardTypeService : ICardTypeService
 
     public async Task<CardType?> AddCardType(CardType cardType)
     {
-        var cardTypeDb = await _db.CardTypes.FirstOrDefaultAsync(x => x.OracleId.Equals(cardType.OracleId) && x.FaceId.Equals(cardType.FaceId) && x.TypeId.Equals(cardType.TypeId));
+        var cardTypeDb = await _db.CardTypes.FirstOrDefaultAsync(x => x.CardId.Equals(cardType.CardId) && x.FaceId.Equals(cardType.FaceId) && x.TypeId.Equals(cardType.TypeId));
 
         if (cardTypeDb != null)
             return cardTypeDb;
@@ -27,8 +27,8 @@ public class CardTypeService : ICardTypeService
         return result >= 0 ? cardType : null;
     }
 
-    public async Task<CardType?> GetCardTypeByOracleId(Guid oracleId)
+    public async Task<CardType?> GetCardTypeByCardId(Guid cardId)
     {
-        return await _db.CardTypes.FirstOrDefaultAsync(x => x.OracleId.Equals(oracleId));
+        return await _db.CardTypes.FirstOrDefaultAsync(x => x.CardId.Equals(cardId));
     }
 }

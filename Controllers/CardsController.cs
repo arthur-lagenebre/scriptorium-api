@@ -8,19 +8,20 @@ namespace MTG.Api.Controllers;
 public class CardsController : ControllerBase
 {
     private readonly ICardService _cardService;
+
     public CardsController(ICardService cardService)
     {
         _cardService = cardService;
     }
 
-    [HttpGet("{oracleId}")]
-    public async Task<IActionResult> Get(Guid oracleId)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(Guid id)
     {
-        var card = await _cardService.GetCardByOracleId(oracleId);
+        var card = await _cardService.GetCardById(id);
 
         if (card == null)
             return NotFound();
-        
+
         return Ok(card);
     }
 
@@ -34,7 +35,7 @@ public class CardsController : ControllerBase
 
         return Ok(new
         {
-            id = card!.OracleId
+            id = card!.Id
         });
     }
 }

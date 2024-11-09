@@ -8,6 +8,7 @@ namespace MTG.Api.Controllers;
 public class ArtistsController : ControllerBase
 {
     private readonly IArtistService _artistService;
+
     public ArtistsController(IArtistService artistService)
     {
         _artistService = artistService;

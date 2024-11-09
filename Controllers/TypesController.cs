@@ -7,6 +7,7 @@ namespace MTG.Api.Controllers;
 public class TypesController : ControllerBase
 {
     private readonly ITypeService _typeService;
+
     public TypesController(ITypeService typeService)
     {
         _typeService = typeService;

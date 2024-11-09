@@ -5,5 +5,6 @@ namespace MTG.Api.Interfaces;
 public interface ICardFaceService
 {
     Task<CardFace?> AddCardFace(CardFace cardFace);
-    Task<IList<CardFace>> GetCardFacesByOracleId(Guid oracleId);
+
+    Task<IList<CardFace>> GetCardFacesByCardId(Guid cardId);
 }

@@ -22,6 +22,21 @@ namespace MTG.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CardSetCardSetFace", b =>
+                {
+                    b.Property<Guid>("CardSetFacesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CardSetsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CardSetFacesId", "CardSetsId");
+
+                    b.HasIndex("CardSetsId");
+
+                    b.ToTable("CardSetCardSetFace");
+                });
+
             modelBuilder.Entity("MTG.Database.Models.Artist", b =>
                 {
                     b.Property<Guid>("Id")
@@ -208,6 +223,10 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CardId");
+
+                    b.HasIndex("SetId");
+
                     b.ToTable("CardSets");
                 });
 
@@ -237,6 +256,8 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CardSetId", "FaceId");
+
                     b.ToTable("CardSetFaces");
                 });
 
@@ -256,6 +277,8 @@ namespace MTG.Api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SubtypeId");
 
                     b.HasIndex("CardId", "FaceId");
 
@@ -278,6 +301,8 @@ namespace MTG.Api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SupertypeId");
 
                     b.HasIndex("CardId", "FaceId");
 
@@ -329,6 +354,8 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TypeId");
+
                     b.HasIndex("CardId", "FaceId");
 
                     b.ToTable("CardTypes");
@@ -347,12 +374,14 @@ namespace MTG.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RattachedCardId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RattachedCardId", "CardId");
+                    b.HasIndex("CardId");
 
                     b.ToTable("RelatedCards");
                 });
@@ -463,9 +492,11 @@ namespace MTG.Api.Migrations
             modelBuilder.Entity("MTG.Database.Models.Subtype", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Language")
+                        .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
@@ -479,7 +510,7 @@ namespace MTG.Api.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id", "Language");
+                    b.HasKey("Id");
 
                     b.ToTable("Subtypes");
                 });
@@ -487,9 +518,11 @@ namespace MTG.Api.Migrations
             modelBuilder.Entity("MTG.Database.Models.Supertype", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Language")
+                        .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
@@ -498,7 +531,7 @@ namespace MTG.Api.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.HasKey("Id", "Language");
+                    b.HasKey("Id");
 
                     b.ToTable("Supertypes");
                 });
@@ -506,9 +539,11 @@ namespace MTG.Api.Migrations
             modelBuilder.Entity("MTG.Database.Models.Type", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Language")
+                        .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
@@ -517,9 +552,147 @@ namespace MTG.Api.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.HasKey("Id", "Language");
+                    b.HasKey("Id");
 
                     b.ToTable("Types");
+                });
+
+            modelBuilder.Entity("CardSetCardSetFace", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Card.CardSetFace", null)
+                        .WithMany()
+                        .HasForeignKey("CardSetFacesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MTG.Database.Models.Card.CardSet", null)
+                        .WithMany()
+                        .HasForeignKey("CardSetsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Card.CardFace", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Card.Card", null)
+                        .WithMany("CardFaces")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Card.CardName", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Card.Card", null)
+                        .WithMany("CardNames")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Card.CardSet", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Card.Card", null)
+                        .WithMany("CardSets")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MTG.Database.Models.Set", "Set")
+                        .WithMany()
+                        .HasForeignKey("SetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Set");
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Card.CardSubtype", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Card.Card", null)
+                        .WithMany("CardSubtypes")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MTG.Database.Models.Subtype", "Subtype")
+                        .WithMany()
+                        .HasForeignKey("SubtypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subtype");
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Card.CardSupertype", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Card.Card", null)
+                        .WithMany("CardSupertypes")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MTG.Database.Models.Supertype", "Supertype")
+                        .WithMany()
+                        .HasForeignKey("SupertypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Supertype");
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Card.CardText", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Card.Card", null)
+                        .WithMany("CardTexts")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Card.CardType", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Card.Card", null)
+                        .WithMany("CardTypes")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MTG.Database.Models.Type", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Card.RelatedCard", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Card.Card", null)
+                        .WithMany("RelatedCards")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Card.Card", b =>
+                {
+                    b.Navigation("CardFaces");
+
+                    b.Navigation("CardNames");
+
+                    b.Navigation("CardSets");
+
+                    b.Navigation("CardSubtypes");
+
+                    b.Navigation("CardSupertypes");
+
+                    b.Navigation("CardTexts");
+
+                    b.Navigation("CardTypes");
+
+                    b.Navigation("RelatedCards");
                 });
 #pragma warning restore 612, 618
         }

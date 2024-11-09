@@ -16,7 +16,7 @@ public class CardTextService : ICardTextService
 
     public async Task<CardText?> AddCardText(CardText cardText)
     {
-        var cardTextDb = await _db.CardTexts.FirstOrDefaultAsync(x => x.OracleId.Equals(cardText.OracleId) && x.FaceId.Equals(cardText.FaceId) && x.Language.Equals(cardText.Language));
+        var cardTextDb = await _db.CardTexts.FirstOrDefaultAsync(x => x.CardId.Equals(cardText.CardId) && x.FaceId.Equals(cardText.FaceId) && x.Language.Equals(cardText.Language));
 
         if (cardTextDb != null)
             return cardTextDb;
@@ -28,8 +28,8 @@ public class CardTextService : ICardTextService
         return result >= 0 ? cardText : null;
     }
 
-    public async Task<IList<CardText>> GetCardTextsByOracleId(Guid oracleId)
+    public async Task<IList<CardText>> GetCardTextsByCardId(Guid cardId)
     {
-        return await _db.CardTexts.Where(x => x.OracleId.Equals(oracleId)).ToListAsync();
+        return await _db.CardTexts.Where(x => x.CardId.Equals(cardId)).ToListAsync();
     }
 }

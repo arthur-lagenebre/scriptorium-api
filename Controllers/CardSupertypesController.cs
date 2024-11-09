@@ -8,15 +8,16 @@ namespace MTG.Api.Controllers;
 public class CardSupertypesController : ControllerBase
 {
     private readonly ICardSupertypeService _cardSupertypeService;
+
     public CardSupertypesController(ICardSupertypeService cardSupertypeService)
     {
         _cardSupertypeService = cardSupertypeService;
     }
 
-    [HttpGet("{oracleId}")]
-    public async Task<IActionResult> Get(Guid oracleId)
+    [HttpGet("{cardId}")]
+    public async Task<IActionResult> Get(Guid cardId)
     {
-        var cardSupertypes = await _cardSupertypeService.GetCardSupertypeByOracleId(oracleId);
+        var cardSupertypes = await _cardSupertypeService.GetCardSupertypeByCardId(cardId);
 
         if (cardSupertypes == null)
             return NotFound();

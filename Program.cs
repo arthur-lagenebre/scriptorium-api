@@ -15,6 +15,7 @@ builder.Services.AddTransient<ICardSetService, CardSetService>();
 builder.Services.AddTransient<ICardSubtypeService, CardSubtypeService>();
 builder.Services.AddTransient<ICardSupertypeService, CardSupertypeService>();
 builder.Services.AddTransient<ICardTextService, CardTextService>();
+builder.Services.AddTransient<ICardTutorsService, CardTutorsService>();
 builder.Services.AddTransient<ICardTypeService, CardTypeService>();
 builder.Services.AddTransient<IColorService, ColorService>();
 builder.Services.AddTransient<IRelatedCardService, RelatedCardService>();

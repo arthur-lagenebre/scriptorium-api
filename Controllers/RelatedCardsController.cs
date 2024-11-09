@@ -8,15 +8,16 @@ namespace MTG.Api.Controllers;
 public class RelatedCardsController : ControllerBase
 {
     private readonly IRelatedCardService _relatedCardService;
+
     public RelatedCardsController(IRelatedCardService relatedCardService)
     {
         _relatedCardService = relatedCardService;
     }
 
-    [HttpGet("{oracleId}")]
-    public async Task<IActionResult> Get(Guid oracleId)
+    [HttpGet("{cardId}")]
+    public async Task<IActionResult> Get(Guid cardId)
     {
-        var relatedCards = await _relatedCardService.GetRelatedCardsByOracleId(oracleId);
+        var relatedCards = await _relatedCardService.GetRelatedCardsByCardId(cardId);
 
         if (relatedCards == null)
             return NotFound();

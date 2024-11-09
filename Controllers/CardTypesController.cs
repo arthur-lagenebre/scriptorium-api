@@ -8,15 +8,16 @@ namespace MTG.Api.Controllers;
 public class CardTypesController : ControllerBase
 {
     private readonly ICardTypeService _cardTypeService;
+
     public CardTypesController(ICardTypeService cardTypeService)
     {
         _cardTypeService = cardTypeService;
     }
 
-    [HttpGet("{oracleId}")]
-    public async Task<IActionResult> Get(Guid oracleId)
+    [HttpGet("{cardId}")]
+    public async Task<IActionResult> Get(Guid cardId)
     {
-        var cardType = await _cardTypeService.GetCardTypeByOracleId(oracleId);
+        var cardType = await _cardTypeService.GetCardTypeByCardId(cardId);
 
         if (cardType == null)
             return NotFound();

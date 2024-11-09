@@ -14,14 +14,14 @@ public class CardFaceService : ICardFaceService
         _db = db;
     }
 
-    public async Task<IList<CardFace>> GetCardFacesByOracleId(Guid oracleId)
+    public async Task<IList<CardFace>> GetCardFacesByCardId(Guid cardId)
     {
-        return await _db.CardFaces.Where(x => x.OracleId.Equals(oracleId)).ToListAsync();
+        return await _db.CardFaces.Where(x => x.CardId.Equals(cardId)).ToListAsync();
     }
 
     public async Task<CardFace?> AddCardFace(CardFace cardFace)
     {
-        var cardFaceDb = await _db.CardFaces.FirstOrDefaultAsync(x => x.OracleId.Equals(cardFace.OracleId) && x.FaceId.Equals(cardFace.FaceId));
+        var cardFaceDb = await _db.CardFaces.FirstOrDefaultAsync(x => x.CardId.Equals(cardFace.CardId) && x.FaceId.Equals(cardFace.FaceId));
 
         if (cardFaceDb != null)
             return cardFaceDb;

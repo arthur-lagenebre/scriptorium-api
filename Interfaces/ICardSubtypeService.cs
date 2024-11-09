@@ -5,5 +5,6 @@ namespace MTG.Api.Interfaces;
 public interface ICardSubtypeService
 {
     Task<CardSubtype?> AddCardSubtype(CardSubtype cardSubtype);
-    Task<IList<CardSubtype>> GetCardSubtypesByOracleId(Guid oracleId);
+
+    Task<IList<CardSubtype>> GetCardSubtypesByCardId(Guid cardId);
 }

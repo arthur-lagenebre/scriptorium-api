@@ -8,15 +8,16 @@ namespace MTG.Api.Controllers;
 public class CardSubtypesController : ControllerBase
 {
     private readonly ICardSubtypeService _cardSubtypeFaceService;
+
     public CardSubtypesController(ICardSubtypeService cardSubtypeFaceService)
     {
         _cardSubtypeFaceService = cardSubtypeFaceService;
     }
 
-    [HttpGet("{oracleId}")]
-    public async Task<IActionResult> Get(Guid oracleId)
+    [HttpGet("{cardId}")]
+    public async Task<IActionResult> Get(Guid cardId)
     {
-        var cardSubtypes = await _cardSubtypeFaceService.GetCardSubtypesByOracleId(oracleId);
+        var cardSubtypes = await _cardSubtypeFaceService.GetCardSubtypesByCardId(cardId);
 
         if (cardSubtypes == null)
             return NotFound();

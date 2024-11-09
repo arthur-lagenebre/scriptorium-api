@@ -7,6 +7,7 @@ namespace MTG.Api.Controllers;
 public class ColorsController : ControllerBase
 {
     private readonly IColorService _colorService;
+
     public ColorsController(IColorService colorService)
     {
         _colorService = colorService;

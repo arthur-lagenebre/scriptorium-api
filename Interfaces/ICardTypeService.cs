@@ -5,5 +5,6 @@ namespace MTG.Api.Interfaces;
 public interface ICardTypeService
 {
     Task<CardType?> AddCardType(CardType cardType);
-    Task<CardType?> GetCardTypeByOracleId(Guid oracleId);
+
+    Task<CardType?> GetCardTypeByCardId(Guid cardId);
 }

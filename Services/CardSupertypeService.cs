@@ -16,7 +16,7 @@ public class CardSupertypeService : ICardSupertypeService
 
     public async Task<CardSupertype?> AddCardSupertype(CardSupertype cardSupertype)
     {
-        var cardNameDb = await _db.CardSupertypes.FirstOrDefaultAsync(x => x.OracleId.Equals(cardSupertype.OracleId) && x.FaceId.Equals(cardSupertype.FaceId) && x.SupertypeId.Equals(cardSupertype.SupertypeId));
+        var cardNameDb = await _db.CardSupertypes.FirstOrDefaultAsync(x => x.CardId.Equals(cardSupertype.CardId) && x.FaceId.Equals(cardSupertype.FaceId) && x.SupertypeId.Equals(cardSupertype.SupertypeId));
 
         if (cardNameDb != null)
             return cardNameDb;
@@ -27,8 +27,8 @@ public class CardSupertypeService : ICardSupertypeService
         return result >= 0 ? cardSupertype : null;
     }
 
-    public async Task<CardSupertype?> GetCardSupertypeByOracleId(Guid oracleId)
+    public async Task<CardSupertype?> GetCardSupertypeByCardId(Guid cardId)
     {
-        return await _db.CardSupertypes.FirstOrDefaultAsync(x => x.Id.Equals(oracleId));
+        return await _db.CardSupertypes.FirstOrDefaultAsync(x => x.Id.Equals(cardId));
     }
 }

@@ -16,7 +16,7 @@ public class RelatedCardService : IRelatedCardService
 
     public async Task<RelatedCard?> AddRelatedCard(RelatedCard relatedCard)
     {
-        var relatedCardDb = await _db.RelatedCards.FirstOrDefaultAsync(x => x.OracleId.Equals(relatedCard.OracleId));
+        var relatedCardDb = await _db.RelatedCards.FirstOrDefaultAsync(x => x.CardId.Equals(relatedCard.CardId));
 
         if (relatedCardDb != null)
             return relatedCardDb;
@@ -27,8 +27,8 @@ public class RelatedCardService : IRelatedCardService
         return result >= 0 ? relatedCard : null;
     }
 
-    public async Task<IList<RelatedCard>> GetRelatedCardsByOracleId(Guid oracleId)
+    public async Task<IList<RelatedCard>> GetRelatedCardsByCardId(Guid cardId)
     {
-        return await _db.RelatedCards.Where(x => x.OracleId.Equals(oracleId)).ToListAsync();
+        return await _db.RelatedCards.Where(x => x.CardId.Equals(cardId)).ToListAsync();
     }
 }

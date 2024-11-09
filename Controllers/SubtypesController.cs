@@ -8,6 +8,7 @@ namespace MTG.Api.Controllers;
 public class SubtypesController : ControllerBase
 {
     private readonly ISubtypeService _subtypeService;
+
     public SubtypesController(ISubtypeService subtypeService)
     {
         _subtypeService = subtypeService;

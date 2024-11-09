@@ -16,7 +16,7 @@ public class CardSetService : ICardSetService
 
     public async Task<CardSet?> AddCardSet(CardSet cardSet)
     {
-        var cardSetDb = await _db.CardSets.FirstOrDefaultAsync(x => x.OracleId.Equals(cardSet.OracleId) && x.SetId.Equals(cardSet.SetId) && x.CollectorNumber.Equals(cardSet.CollectorNumber));
+        var cardSetDb = await _db.CardSets.FirstOrDefaultAsync(x => x.CardId.Equals(cardSet.CardId) && x.SetId.Equals(cardSet.SetId) && x.CollectorNumber.Equals(cardSet.CollectorNumber));
 
         if (cardSetDb != null)
             return cardSetDb;
@@ -27,8 +27,8 @@ public class CardSetService : ICardSetService
         return result >= 0 ? cardSet : null;
     }
 
-    public async Task<IList<CardSet>> GetCardSetsByOracleId(Guid oracleId)
+    public async Task<IList<CardSet>> GetCardSetsByCardId(Guid cardId)
     {
-        return await _db.CardSets.Where(x => x.OracleId.Equals(oracleId)).ToListAsync();
+        return await _db.CardSets.Where(x => x.CardId.Equals(cardId)).ToListAsync();
     }
 }

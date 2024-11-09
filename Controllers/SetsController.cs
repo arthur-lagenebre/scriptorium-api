@@ -8,6 +8,7 @@ namespace MTG.Api.Controllers;
 public class SetsController : ControllerBase
 {
     private readonly ISetService _setService;
+
     public SetsController(ISetService setService)
     {
         _setService = setService;

@@ -16,7 +16,7 @@ public class CardService : ICardService
 
     public async Task<Card?> AddCard(Card card)
     {
-        var cardDb = await _db.Cards.FirstOrDefaultAsync(x => x.OracleId.Equals(card.OracleId));
+        var cardDb = await _db.Cards.FirstOrDefaultAsync(x => x.Id.Equals(card.Id));
 
         if (cardDb != null)
             return cardDb;
@@ -27,8 +27,16 @@ public class CardService : ICardService
         return result >= 0 ? card : null;
     }
 
-    public async Task<Card?> GetCardByOracleId(Guid oracleId)
+    public async Task<Card?> GetCardById(Guid id)
     {
-        return await _db.Cards.FirstOrDefaultAsync(x => x.OracleId == oracleId);
+        return await _db.Cards.Include(x => x.CardNames)
+                              .Include(x => x.CardTexts)
+                              .Include(x => x.CardFaces)
+                              .Include(x => x.CardSets)
+                              .Include(x => x.CardSubtypes)
+                              .Include(x => x.CardSupertypes)
+                              .Include(x => x.CardTypes)
+                              .Include(x => x.RelatedCards)
+                              .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

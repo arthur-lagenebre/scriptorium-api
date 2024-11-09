@@ -5,5 +5,6 @@ namespace MTG.Api.Interfaces;
 public interface ICardSetService
 {
     Task<CardSet?> AddCardSet(CardSet cardSet);
-    Task<IList<CardSet>> GetCardSetsByOracleId(Guid oracleId);
+
+    Task<IList<CardSet>> GetCardSetsByCardId(Guid cardId);
 }

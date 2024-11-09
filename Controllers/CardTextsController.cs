@@ -8,15 +8,16 @@ namespace MTG.Api.Controllers;
 public class CardTextsController : ControllerBase
 {
     private readonly ICardTextService _cardTextService;
+
     public CardTextsController(ICardTextService cardTextService)
     {
         _cardTextService = cardTextService;
     }
 
-    [HttpGet("{oracleId}")]
-    public async Task<IActionResult> Get(Guid oracleId)
+    [HttpGet("{cardId}")]
+    public async Task<IActionResult> Get(Guid cardId)
     {
-        var cardTexts = await _cardTextService.GetCardTextsByOracleId(oracleId);
+        var cardTexts = await _cardTextService.GetCardTextsByCardId(cardId);
 
         return Ok(cardTexts);
     }

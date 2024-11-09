@@ -16,7 +16,7 @@ public class CardSubtypeService : ICardSubtypeService
 
     public async Task<CardSubtype?> AddCardSubtype(CardSubtype cardSubtype)
     {
-        var cardSubtypeDb = await _db.CardSubtypes.FirstOrDefaultAsync(x => x.OracleId.Equals(cardSubtype.OracleId) && x.FaceId.Equals(cardSubtype.FaceId) && x.SubtypeId.Equals(cardSubtype.SubtypeId));
+        var cardSubtypeDb = await _db.CardSubtypes.FirstOrDefaultAsync(x => x.CardId.Equals(cardSubtype.CardId) && x.FaceId.Equals(cardSubtype.FaceId) && x.SubtypeId.Equals(cardSubtype.SubtypeId));
 
         if (cardSubtypeDb != null)
             return cardSubtypeDb;
@@ -27,8 +27,8 @@ public class CardSubtypeService : ICardSubtypeService
         return result >= 0 ? cardSubtype : null;
     }
 
-    public async Task<IList<CardSubtype>> GetCardSubtypesByOracleId(Guid oracleId)
+    public async Task<IList<CardSubtype>> GetCardSubtypesByCardId(Guid cardId)
     {
-        return await _db.CardSubtypes.Where(x => x.OracleId.Equals(oracleId)).ToListAsync();
+        return await _db.CardSubtypes.Where(x => x.CardId.Equals(cardId)).ToListAsync();
     }
 }

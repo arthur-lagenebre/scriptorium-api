@@ -8,6 +8,7 @@ namespace MTG.Api.Controllers;
 public class SupertypesController : ControllerBase
 {
     private readonly ISupertypeService _supertypeService;
+
     public SupertypesController(ISupertypeService supertypeService)
     {
         _supertypeService = supertypeService;
