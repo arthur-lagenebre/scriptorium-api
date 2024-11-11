@@ -44,9 +44,6 @@ public class SetsController : ControllerBase
         if (set == null)
             return BadRequest();
 
-        return Ok(new
-        {
-            id = set!.Id
-        });
+        return Ok(new { id = set!.Id });
     }
 }

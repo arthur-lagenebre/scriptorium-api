@@ -28,14 +28,11 @@ public class CardSetFacesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] CardSetFace cardSetFaceObject)
     {
-        var cardSetFace = await _cardSetFaceService.AddCardSetFace(cardSetFaceObject);
+        var cardSetFaceDb = await _cardSetFaceService.AddCardSetFace(cardSetFaceObject);
 
-        if (cardSetFace == null)
+        if (cardSetFaceDb == null)
             return BadRequest();
 
-        return Ok(new
-        {
-            id = cardSetFace!.CardSetId
-        });
+        return Ok(new { id = cardSetFaceDb!.CardSetId });
     }
 }

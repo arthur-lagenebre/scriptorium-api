@@ -23,9 +23,7 @@ public class CardTutorsService : ICardTutorsService
                               .Include(x => x.CardTexts)
                               .Include(x => x.CardFaces)
                               .Include(x => x.CardSets).ThenInclude(x => x.Set)
-                              .Include(x => x.CardSubtypes)
-                              .Include(x => x.CardSupertypes)
-                              .Include(x => x.CardTypes)
+                              .Include(x => x.CardTypelines)
                               .Include(x => x.RelatedCards)
                               .Where(c => c.CardNames.Any(cn => cn.Language.Equals("en") && cn.Value.Contains(name)));
 
@@ -40,11 +38,11 @@ public class CardTutorsService : ICardTutorsService
     private static CardTutor ConvertCard(Card card)
     {
         var names = card.CardFaces.Count > 0 ? [] : GetNames(card.CardNames);
-        var typelines = card.CardFaces.Count > 0 ? [] : GetTypelines(card.CardSupertypes, card.CardTypes, card.CardSubtypes);
+        var typelines = card.CardFaces.Count > 0 ? [] : GetTypelines(card.CardTypelines);
         var texts = card.CardFaces.Count > 0 ? [] : GetTexts(card.CardTexts);
         var sets = GetSets(card.CardSets);
         var languages = card.CardNames.Select(x => x.Language).ToList();
-        var cardFaces = GetCardFaceTutors(card.CardFaces, card.CardNames, card.CardTexts, card.CardSupertypes, card.CardTypes, card.CardSubtypes);
+        var cardFaces = GetCardFaceTutors(card.CardFaces, card.CardNames, card.CardTexts, card.CardTypelines);
         var relatedCards = GetRelatedCards(card.RelatedCards);
 
         return new CardTutor(card.Id.ToString(), names, typelines, texts, card.ManaCost, sets, languages, cardFaces, relatedCards, card.Power, card.Toughness, card.Loyalty, card.HandModifier, card.LifeModifier);
@@ -60,11 +58,14 @@ public class CardTutorsService : ICardTutorsService
         return names;
     }
 
-    private static List<LanguageTutor> GetTypelines(ICollection<CardSupertype> cardSupertypes, ICollection<CardType> cardTypes, ICollection<CardSubtype> cardSubtypes)
+    private static List<LanguageTutor> GetTypelines(ICollection<CardTypeline> cardTypelines)
     {
-        var names = new List<LanguageTutor>();
+        var typelines = new List<LanguageTutor>();
 
-        return names;
+        foreach (var cardTypeline in cardTypelines)
+            typelines.Add(new LanguageTutor(cardTypeline.Language, cardTypeline.Value));
+
+        return typelines;
     }
 
     private static List<LanguageTutor> GetTexts(ICollection<CardText> cardTexts)
@@ -82,14 +83,12 @@ public class CardTutorsService : ICardTutorsService
         var sets = new List<SetTutor>();
 
         foreach (var (index, cardSet) in cardSets.OrderBy(x => x.Set.ReleasedAt).Select((item, index) => (index, item)))
-        {
             sets.Add(new SetTutor(cardSet.Set.Name, cardSet.Set.Code, index, cardSet.CollectorNumber, cardSet.Rarity, [], []));
-        }
 
         return sets;
     }
 
-    private static List<CardFaceTutor> GetCardFaceTutors(ICollection<CardFace> cardFaces, ICollection<CardName> cardNames, ICollection<CardText> cardTexts, ICollection<CardSupertype> cardSupertypes, ICollection<CardType> cardTypes, ICollection<CardSubtype> cardSubtypes)
+    private static List<CardFaceTutor> GetCardFaceTutors(ICollection<CardFace> cardFaces, ICollection<CardName> cardNames, ICollection<CardText> cardTexts, ICollection<CardTypeline> cardTypelines)
     {
         var cardFaceTutors = new List<CardFaceTutor>();
 
@@ -97,7 +96,7 @@ public class CardTutorsService : ICardTutorsService
         {
             var names = GetNames(cardNames.Where(x => x.FaceId == face.FaceId).ToList());
             var texts = GetTexts(cardTexts.Where(x => x.FaceId == face.FaceId).ToList());
-            var typelines = GetTypelines(cardSupertypes.Where(x => x.FaceId == face.FaceId).ToList(), cardTypes.Where(x => x.FaceId == face.FaceId).ToList(), cardSubtypes.Where(x => x.FaceId == face.FaceId).ToList());
+            var typelines = GetTypelines(cardTypelines.Where(x => x.FaceId == face.FaceId).ToList());
 
             cardFaceTutors.Add(new CardFaceTutor(face.FaceId, face.ManaCost, names, texts, typelines, face.Power, face.Toughness, face.Loyalty, face.Defense));
         }

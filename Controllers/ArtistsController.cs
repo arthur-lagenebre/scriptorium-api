@@ -17,36 +17,33 @@ public class ArtistsController : ControllerBase
     [HttpGet("{name}")]
     public async Task<IActionResult> Get(string name)
     {
-        var card = await _artistService.GetArtistByName(name);
+        var artist = await _artistService.GetArtistByName(name);
 
-        if (card == null)
+        if (artist == null)
             return NotFound();
 
-        return Ok(card);
+        return Ok(artist);
     }
 
     [HttpGet()]
     public async Task<IActionResult> Get()
     {
-        var card = await _artistService.GetArtists();
+        var artist = await _artistService.GetArtists();
 
-        if (card == null)
+        if (artist == null)
             return NotFound();
 
-        return Ok(card);
+        return Ok(artist);
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Artist artistObject)
     {
-        var artist = await _artistService.AddArtist(artistObject);
+        var artistDb = await _artistService.AddArtist(artistObject);
 
-        if (artist == null)
+        if (artistDb == null)
             return BadRequest();
 
-        return Ok(new
-        {
-            id = artist!.Id
-        });
+        return Ok(new { id = artistDb!.Id });
     }
 }

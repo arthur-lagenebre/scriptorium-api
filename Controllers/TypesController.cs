@@ -13,28 +13,25 @@ public class TypesController : ControllerBase
         _typeService = typeService;
     }
 
-    [HttpGet("{language}")]
-    public async Task<IActionResult> Get(string language)
+    [HttpGet]
+    public async Task<IActionResult> Get()
     {
-        var sets = await _typeService.GetTypesByLanguage(language);
+        var types = await _typeService.GetTypes();
 
-        if (sets == null)
+        if (types == null)
             return NotFound();
 
-        return Ok(sets);
+        return Ok(types);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] Database.Models.Type typeObject)
+    public async Task<IActionResult> Post([FromBody] Database.Models.Typeline.Type typeObject)
     {
-        var type = await _typeService.AddType(typeObject);
+        var typeDb = await _typeService.AddType(typeObject);
 
-        if (type == null)
+        if (typeDb == null)
             return BadRequest();
 
-        return Ok(new
-        {
-            id = type!.Id
-        });
+        return Ok(new { id = typeDb!.Id });
     }
 }

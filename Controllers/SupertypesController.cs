@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MTG.Api.Interfaces;
-using MTG.Database.Models;
+using MTG.Database.Models.Typeline;
 
 namespace MTG.Api.Controllers;
 
@@ -14,28 +14,25 @@ public class SupertypesController : ControllerBase
         _supertypeService = supertypeService;
     }
 
-    [HttpGet("{language}")]
-    public async Task<IActionResult> Get(string language)
+    [HttpGet]
+    public async Task<IActionResult> Get()
     {
-        var sets = await _supertypeService.GetSupertypesByLanguage(language);
+        var supertypes = await _supertypeService.GetSupertypes();
 
-        if (sets == null)
+        if (supertypes == null)
             return NotFound();
 
-        return Ok(sets);
+        return Ok(supertypes);
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Supertype supertypeObject)
     {
-        var supertype = await _supertypeService.AddSupertype(supertypeObject);
+        var supertypeDb = await _supertypeService.AddSupertype(supertypeObject);
 
-        if (supertype == null)
+        if (supertypeDb == null)
             return BadRequest();
 
-        return Ok(new
-        {
-            id = supertype!.Id
-        });
+        return Ok(new { id = supertypeDb!.Id });
     }
 }

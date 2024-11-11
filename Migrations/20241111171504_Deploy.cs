@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MTG.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class Deploy : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,22 +50,6 @@ namespace MTG.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CardSetFaces",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CardSetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FaceId = table.Column<int>(type: "int", nullable: false),
-                    ArtistsId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FlavorText = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FlavorName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CardSetFaces", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Colors",
                 columns: table => new
                 {
@@ -103,8 +87,7 @@ namespace MTG.Api.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TypeCard = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Language = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
+                    DefaultName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -116,8 +99,7 @@ namespace MTG.Api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Language = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
+                    DefaultName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,8 +111,7 @@ namespace MTG.Api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Language = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
+                    DefaultName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,6 +188,27 @@ namespace MTG.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CardTypelines",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FaceId = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CardTypelines", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CardTypelines_Cards_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RelatedCards",
                 columns: table => new
                 {
@@ -254,25 +256,19 @@ namespace MTG.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CardSubtypes",
+                name: "SubtypeLanguages",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FaceId = table.Column<int>(type: "int", nullable: false),
-                    SubtypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SubtypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CardSubtypes", x => x.Id);
+                    table.PrimaryKey("PK_SubtypeLanguages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CardSubtypes_Cards_CardId",
-                        column: x => x.CardId,
-                        principalTable: "Cards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CardSubtypes_Subtypes_SubtypeId",
+                        name: "FK_SubtypeLanguages_Subtypes_SubtypeId",
                         column: x => x.SubtypeId,
                         principalTable: "Subtypes",
                         principalColumn: "Id",
@@ -280,25 +276,19 @@ namespace MTG.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CardSupertypes",
+                name: "SupertypeLanguages",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FaceId = table.Column<int>(type: "int", nullable: false),
-                    SupertypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SupertypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CardSupertypes", x => x.Id);
+                    table.PrimaryKey("PK_SupertypeLanguages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CardSupertypes_Cards_CardId",
-                        column: x => x.CardId,
-                        principalTable: "Cards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CardSupertypes_Supertypes_SupertypeId",
+                        name: "FK_SupertypeLanguages_Supertypes_SupertypeId",
                         column: x => x.SupertypeId,
                         principalTable: "Supertypes",
                         principalColumn: "Id",
@@ -306,25 +296,19 @@ namespace MTG.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CardTypes",
+                name: "TypeLanguages",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FaceId = table.Column<int>(type: "int", nullable: false),
-                    TypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    TypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CardTypes", x => x.Id);
+                    table.PrimaryKey("PK_TypeLanguages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CardTypes_Cards_CardId",
-                        column: x => x.CardId,
-                        principalTable: "Cards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CardTypes_Types_TypeId",
+                        name: "FK_TypeLanguages_Types_TypeId",
                         column: x => x.TypeId,
                         principalTable: "Types",
                         principalColumn: "Id",
@@ -332,24 +316,22 @@ namespace MTG.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CardSetCardSetFace",
+                name: "CardSetFaces",
                 columns: table => new
                 {
-                    CardSetFacesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CardSetsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CardSetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FaceId = table.Column<int>(type: "int", nullable: false),
+                    ArtistsId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FlavorText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FlavorName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CardSetCardSetFace", x => new { x.CardSetFacesId, x.CardSetsId });
+                    table.PrimaryKey("PK_CardSetFaces", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CardSetCardSetFace_CardSetFaces_CardSetFacesId",
-                        column: x => x.CardSetFacesId,
-                        principalTable: "CardSetFaces",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CardSetCardSetFace_CardSets_CardSetsId",
-                        column: x => x.CardSetsId,
+                        name: "FK_CardSetFaces_CardSets_CardSetId",
+                        column: x => x.CardSetId,
                         principalTable: "CardSets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -368,6 +350,29 @@ namespace MTG.Api.Migrations
                     { 32, "Green", "G" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Types",
+                columns: new[] { "Id", "DefaultName" },
+                values: new object[] { new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937"), "Card" });
+
+            migrationBuilder.InsertData(
+                table: "TypeLanguages",
+                columns: new[] { "Id", "Language", "Name", "TypeId" },
+                values: new object[,]
+                {
+                    { new Guid("06a47464-b6b9-4a14-86e8-363ddfed3b40"), "zht", "牌", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") },
+                    { new Guid("3d89d1ea-9aaf-4a53-a95b-632a808e5f53"), "ru", "карту", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") },
+                    { new Guid("4bb44a1f-0ccb-4745-976c-695129b17c11"), "de", "Karte", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") },
+                    { new Guid("5798dd97-dde5-404b-85e5-65a8e83bc712"), "pt", "Card", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") },
+                    { new Guid("7c7d9ab5-51d5-424e-a4ab-8ff948d864f4"), "es", "Carta", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") },
+                    { new Guid("857cd2ed-6356-4341-9b1b-5fe51cfdb3b9"), "ko", "카드", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") },
+                    { new Guid("947e6e87-5992-40a0-af6a-f4eb24483e91"), "fr", "Carte", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") },
+                    { new Guid("b08972a3-28fa-44c2-872b-e95a125861d2"), "it", "Carta", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") },
+                    { new Guid("d29b77d1-7fcd-4b55-8a3e-18b94c70e607"), "zhs", "牌", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") },
+                    { new Guid("d4ec3d26-ed9d-4b22-a3d2-bdcc84408171"), "ja", "カード", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") },
+                    { new Guid("e5b9d8c3-c2b8-4e94-835e-28642fb3c6ed"), "en", "Card", new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937") }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CardFaces_CardId_FaceId",
                 table: "CardFaces",
@@ -377,11 +382,6 @@ namespace MTG.Api.Migrations
                 name: "IX_CardNames_CardId_Language_FaceId",
                 table: "CardNames",
                 columns: new[] { "CardId", "Language", "FaceId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CardSetCardSetFace_CardSetsId",
-                table: "CardSetCardSetFace",
-                column: "CardSetsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CardSetFaces_CardSetId_FaceId",
@@ -399,44 +399,34 @@ namespace MTG.Api.Migrations
                 column: "SetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CardSubtypes_CardId_FaceId",
-                table: "CardSubtypes",
-                columns: new[] { "CardId", "FaceId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CardSubtypes_SubtypeId",
-                table: "CardSubtypes",
-                column: "SubtypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CardSupertypes_CardId_FaceId",
-                table: "CardSupertypes",
-                columns: new[] { "CardId", "FaceId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CardSupertypes_SupertypeId",
-                table: "CardSupertypes",
-                column: "SupertypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CardTexts_CardId_Language_FaceId",
                 table: "CardTexts",
                 columns: new[] { "CardId", "Language", "FaceId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CardTypes_CardId_FaceId",
-                table: "CardTypes",
-                columns: new[] { "CardId", "FaceId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CardTypes_TypeId",
-                table: "CardTypes",
-                column: "TypeId");
+                name: "IX_CardTypelines_CardId_Language_FaceId",
+                table: "CardTypelines",
+                columns: new[] { "CardId", "Language", "FaceId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_RelatedCards_CardId",
                 table: "RelatedCards",
                 column: "CardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubtypeLanguages_SubtypeId",
+                table: "SubtypeLanguages",
+                column: "SubtypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupertypeLanguages_SupertypeId",
+                table: "SupertypeLanguages",
+                column: "SupertypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TypeLanguages_TypeId",
+                table: "TypeLanguages",
+                column: "TypeId");
         }
 
         /// <inheritdoc />
@@ -452,19 +442,13 @@ namespace MTG.Api.Migrations
                 name: "CardNames");
 
             migrationBuilder.DropTable(
-                name: "CardSetCardSetFace");
-
-            migrationBuilder.DropTable(
-                name: "CardSubtypes");
-
-            migrationBuilder.DropTable(
-                name: "CardSupertypes");
+                name: "CardSetFaces");
 
             migrationBuilder.DropTable(
                 name: "CardTexts");
 
             migrationBuilder.DropTable(
-                name: "CardTypes");
+                name: "CardTypelines");
 
             migrationBuilder.DropTable(
                 name: "Colors");
@@ -473,7 +457,13 @@ namespace MTG.Api.Migrations
                 name: "RelatedCards");
 
             migrationBuilder.DropTable(
-                name: "CardSetFaces");
+                name: "SubtypeLanguages");
+
+            migrationBuilder.DropTable(
+                name: "SupertypeLanguages");
+
+            migrationBuilder.DropTable(
+                name: "TypeLanguages");
 
             migrationBuilder.DropTable(
                 name: "CardSets");

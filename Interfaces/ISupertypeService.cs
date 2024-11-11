@@ -1,9 +1,9 @@
-﻿using MTG.Database.Models;
+﻿using MTG.Database.Models.Typeline;
 
 namespace MTG.Api.Interfaces;
 
 public interface ISupertypeService
 {
     Task<Supertype?> AddSupertype(Supertype supertype);
-    Task<IList<Supertype>> GetSupertypesByLanguage(string language);
+    Task<IList<Supertype>> GetSupertypes();
 }

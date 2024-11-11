@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MTG.Api.DatabaseContext;
 using MTG.Api.Interfaces;
-using MTG.Database.Models;
+using MTG.Database.Models.Typeline;
 
 namespace MTG.Api.Services;
 
@@ -14,14 +14,14 @@ public class SupertypeService : ISupertypeService
         _db = db;
     }
 
-    public async Task<IList<Supertype>> GetSupertypesByLanguage(string language)
+    public async Task<IList<Supertype>> GetSupertypes()
     {
-        return await _db.Supertypes.Where(x => x.Language.Equals(language)).ToListAsync();
+        return await _db.Supertypes.ToListAsync();
     }
 
     public async Task<Supertype?> AddSupertype(Supertype supertype)
     {
-        var supertypeDb = await _db.Supertypes.FirstOrDefaultAsync(x => x.Language.Equals(supertype.Language) && x.Name.Equals(supertype.Name));
+        var supertypeDb = await _db.Supertypes.FirstOrDefaultAsync(x => x.DefaultName.Equals(supertype.DefaultName));
 
         if (supertypeDb != null)
             return supertypeDb;

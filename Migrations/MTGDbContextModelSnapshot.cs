@@ -22,21 +22,6 @@ namespace MTG.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CardSetCardSetFace", b =>
-                {
-                    b.Property<Guid>("CardSetFacesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CardSetsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("CardSetFacesId", "CardSetsId");
-
-                    b.HasIndex("CardSetsId");
-
-                    b.ToTable("CardSetCardSetFace");
-                });
-
             modelBuilder.Entity("MTG.Database.Models.Artist", b =>
                 {
                     b.Property<Guid>("Id")
@@ -261,54 +246,6 @@ namespace MTG.Api.Migrations
                     b.ToTable("CardSetFaces");
                 });
 
-            modelBuilder.Entity("MTG.Database.Models.Card.CardSubtype", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CardId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("FaceId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SubtypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubtypeId");
-
-                    b.HasIndex("CardId", "FaceId");
-
-                    b.ToTable("CardSubtypes");
-                });
-
-            modelBuilder.Entity("MTG.Database.Models.Card.CardSupertype", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CardId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("FaceId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SupertypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SupertypeId");
-
-                    b.HasIndex("CardId", "FaceId");
-
-                    b.ToTable("CardSupertypes");
-                });
-
             modelBuilder.Entity("MTG.Database.Models.Card.CardText", b =>
                 {
                     b.Property<Guid>("Id")
@@ -337,7 +274,7 @@ namespace MTG.Api.Migrations
                     b.ToTable("CardTexts");
                 });
 
-            modelBuilder.Entity("MTG.Database.Models.Card.CardType", b =>
+            modelBuilder.Entity("MTG.Database.Models.Card.CardTypeline", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -349,16 +286,21 @@ namespace MTG.Api.Migrations
                     b.Property<int>("FaceId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TypeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("CardId", "Language", "FaceId");
 
-                    b.HasIndex("CardId", "FaceId");
-
-                    b.ToTable("CardTypes");
+                    b.ToTable("CardTypelines");
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.RelatedCard", b =>
@@ -489,18 +431,13 @@ namespace MTG.Api.Migrations
                     b.ToTable("Sets");
                 });
 
-            modelBuilder.Entity("MTG.Database.Models.Subtype", b =>
+            modelBuilder.Entity("MTG.Database.Models.Typeline.Subtype", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Language")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("DefaultName")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
@@ -515,7 +452,7 @@ namespace MTG.Api.Migrations
                     b.ToTable("Subtypes");
                 });
 
-            modelBuilder.Entity("MTG.Database.Models.Supertype", b =>
+            modelBuilder.Entity("MTG.Database.Models.Typeline.SubtypeLanguage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -527,6 +464,27 @@ namespace MTG.Api.Migrations
                         .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<Guid>("SubtypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubtypeId");
+
+                    b.ToTable("SubtypeLanguages");
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Typeline.Supertype", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DefaultName")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
@@ -536,7 +494,7 @@ namespace MTG.Api.Migrations
                     b.ToTable("Supertypes");
                 });
 
-            modelBuilder.Entity("MTG.Database.Models.Type", b =>
+            modelBuilder.Entity("MTG.Database.Models.Typeline.SupertypeLanguage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -552,24 +510,142 @@ namespace MTG.Api.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<Guid>("SupertypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupertypeId");
+
+                    b.ToTable("SupertypeLanguages");
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Typeline.Type", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DefaultName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Types");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937"),
+                            DefaultName = "Card"
+                        });
                 });
 
-            modelBuilder.Entity("CardSetCardSetFace", b =>
+            modelBuilder.Entity("MTG.Database.Models.Typeline.TypeLanguage", b =>
                 {
-                    b.HasOne("MTG.Database.Models.Card.CardSetFace", null)
-                        .WithMany()
-                        .HasForeignKey("CardSetFacesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasOne("MTG.Database.Models.Card.CardSet", null)
-                        .WithMany()
-                        .HasForeignKey("CardSetsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<Guid>("TypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("TypeLanguages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e5b9d8c3-c2b8-4e94-835e-28642fb3c6ed"),
+                            Language = "en",
+                            Name = "Card",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        },
+                        new
+                        {
+                            Id = new Guid("7c7d9ab5-51d5-424e-a4ab-8ff948d864f4"),
+                            Language = "es",
+                            Name = "Carta",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        },
+                        new
+                        {
+                            Id = new Guid("947e6e87-5992-40a0-af6a-f4eb24483e91"),
+                            Language = "fr",
+                            Name = "Carte",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        },
+                        new
+                        {
+                            Id = new Guid("4bb44a1f-0ccb-4745-976c-695129b17c11"),
+                            Language = "de",
+                            Name = "Karte",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        },
+                        new
+                        {
+                            Id = new Guid("b08972a3-28fa-44c2-872b-e95a125861d2"),
+                            Language = "it",
+                            Name = "Carta",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        },
+                        new
+                        {
+                            Id = new Guid("5798dd97-dde5-404b-85e5-65a8e83bc712"),
+                            Language = "pt",
+                            Name = "Card",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        },
+                        new
+                        {
+                            Id = new Guid("d4ec3d26-ed9d-4b22-a3d2-bdcc84408171"),
+                            Language = "ja",
+                            Name = "カード",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        },
+                        new
+                        {
+                            Id = new Guid("857cd2ed-6356-4341-9b1b-5fe51cfdb3b9"),
+                            Language = "ko",
+                            Name = "카드",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        },
+                        new
+                        {
+                            Id = new Guid("3d89d1ea-9aaf-4a53-a95b-632a808e5f53"),
+                            Language = "ru",
+                            Name = "карту",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        },
+                        new
+                        {
+                            Id = new Guid("d29b77d1-7fcd-4b55-8a3e-18b94c70e607"),
+                            Language = "zhs",
+                            Name = "牌",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        },
+                        new
+                        {
+                            Id = new Guid("06a47464-b6b9-4a14-86e8-363ddfed3b40"),
+                            Language = "zht",
+                            Name = "牌",
+                            TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
+                        });
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.CardFace", b =>
@@ -607,38 +683,13 @@ namespace MTG.Api.Migrations
                     b.Navigation("Set");
                 });
 
-            modelBuilder.Entity("MTG.Database.Models.Card.CardSubtype", b =>
+            modelBuilder.Entity("MTG.Database.Models.Card.CardSetFace", b =>
                 {
-                    b.HasOne("MTG.Database.Models.Card.Card", null)
-                        .WithMany("CardSubtypes")
-                        .HasForeignKey("CardId")
+                    b.HasOne("MTG.Database.Models.Card.CardSet", null)
+                        .WithMany("CardSetFaces")
+                        .HasForeignKey("CardSetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("MTG.Database.Models.Subtype", "Subtype")
-                        .WithMany()
-                        .HasForeignKey("SubtypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subtype");
-                });
-
-            modelBuilder.Entity("MTG.Database.Models.Card.CardSupertype", b =>
-                {
-                    b.HasOne("MTG.Database.Models.Card.Card", null)
-                        .WithMany("CardSupertypes")
-                        .HasForeignKey("CardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MTG.Database.Models.Supertype", "Supertype")
-                        .WithMany()
-                        .HasForeignKey("SupertypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Supertype");
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.CardText", b =>
@@ -650,21 +701,13 @@ namespace MTG.Api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MTG.Database.Models.Card.CardType", b =>
+            modelBuilder.Entity("MTG.Database.Models.Card.CardTypeline", b =>
                 {
                     b.HasOne("MTG.Database.Models.Card.Card", null)
-                        .WithMany("CardTypes")
+                        .WithMany("CardTypelines")
                         .HasForeignKey("CardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("MTG.Database.Models.Type", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.RelatedCard", b =>
@@ -676,6 +719,39 @@ namespace MTG.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MTG.Database.Models.Typeline.SubtypeLanguage", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Typeline.Subtype", "Subtype")
+                        .WithMany()
+                        .HasForeignKey("SubtypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subtype");
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Typeline.SupertypeLanguage", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Typeline.Supertype", "Supertype")
+                        .WithMany()
+                        .HasForeignKey("SupertypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Supertype");
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Typeline.TypeLanguage", b =>
+                {
+                    b.HasOne("MTG.Database.Models.Typeline.Type", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("MTG.Database.Models.Card.Card", b =>
                 {
                     b.Navigation("CardFaces");
@@ -684,15 +760,16 @@ namespace MTG.Api.Migrations
 
                     b.Navigation("CardSets");
 
-                    b.Navigation("CardSubtypes");
-
-                    b.Navigation("CardSupertypes");
-
                     b.Navigation("CardTexts");
 
-                    b.Navigation("CardTypes");
+                    b.Navigation("CardTypelines");
 
                     b.Navigation("RelatedCards");
+                });
+
+            modelBuilder.Entity("MTG.Database.Models.Card.CardSet", b =>
+                {
+                    b.Navigation("CardSetFaces");
                 });
 #pragma warning restore 612, 618
         }

@@ -33,9 +33,7 @@ public class CardService : ICardService
                               .Include(x => x.CardTexts)
                               .Include(x => x.CardFaces)
                               .Include(x => x.CardSets)
-                              .Include(x => x.CardSubtypes)
-                              .Include(x => x.CardSupertypes)
-                              .Include(x => x.CardTypes)
+                              .Include(x => x.CardTypelines)
                               .Include(x => x.RelatedCards)
                               .FirstOrDefaultAsync(x => x.Id == id);
     }

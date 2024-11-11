@@ -1,9 +1,7 @@
-﻿using MTG.Database.Models;
-
-namespace MTG.Api.Interfaces;
+﻿namespace MTG.Api.Interfaces;
 
 public interface ITypeService
 {
-    Task<Database.Models.Type?> AddType(Database.Models.Type type);
-    Task<IList<Database.Models.Type>> GetTypesByLanguage(string language);
+    Task<Database.Models.Typeline.Type?> AddType(Database.Models.Typeline.Type type);
+    Task<IList<Database.Models.Typeline.Type>> GetTypes();
 }

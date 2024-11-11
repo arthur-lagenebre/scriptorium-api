@@ -28,14 +28,11 @@ public class CardsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Card cardObject)
     {
-        var card = await _cardService.AddCard(cardObject);
+        var cardDb = await _cardService.AddCard(cardObject);
 
-        if (card == null)
+        if (cardDb == null)
             return BadRequest();
 
-        return Ok(new
-        {
-            id = card!.Id
-        });
+        return Ok(new { id = cardDb!.Id });
     }
 }

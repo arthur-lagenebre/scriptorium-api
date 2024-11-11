@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MTG.Api.Interfaces;
-using MTG.Database.Models;
+using MTG.Database.Models.Typeline;
 
 namespace MTG.Api.Controllers;
 
@@ -14,10 +14,10 @@ public class SubtypesController : ControllerBase
         _subtypeService = subtypeService;
     }
 
-    [HttpGet("{language}")]
-    public async Task<IActionResult> Get(string language)
+    [HttpGet]
+    public async Task<IActionResult> Get()
     {
-        var subtypes = await _subtypeService.GetSubtypesByLanguage(language);
+        var subtypes = await _subtypeService.GetSubtypes();
 
         if (subtypes == null)
             return NotFound();
@@ -28,14 +28,11 @@ public class SubtypesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Subtype subtypeObject)
     {
-        var subtype = await _subtypeService.AddSubtype(subtypeObject);
+        var subtypeDb = await _subtypeService.AddSubtype(subtypeObject);
 
-        if (subtype == null)
+        if (subtypeDb == null)
             return BadRequest();
 
-        return Ok(new
-        {
-            id = subtype!.Id
-        });
+        return Ok(new { id = subtypeDb!.Id });
     }
 }

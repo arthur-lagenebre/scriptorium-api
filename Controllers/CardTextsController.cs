@@ -25,14 +25,11 @@ public class CardTextsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] CardText cardTextObject)
     {
-        var cardText = await _cardTextService.AddCardText(cardTextObject);
+        var cardTextDb = await _cardTextService.AddCardText(cardTextObject);
 
-        if (cardText == null)
+        if (cardTextDb == null)
             return BadRequest();
 
-        return Ok(new
-        {
-            cardText.Id
-        });
+        return Ok(new { cardTextDb.Id });
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MTG.Api.DatabaseContext;
 using MTG.Api.Interfaces;
-using MTG.Database.Models;
+using MTG.Database.Models.Typeline;
 
 namespace MTG.Api.Services;
 
@@ -14,17 +14,17 @@ public class SubtypeService : ISubtypeService
         _db = db;
     }
 
-    public async Task<IList<Subtype>> GetSubtypesByLanguage(string language)
+    public async Task<IList<Subtype>> GetSubtypes()
     {
-        return await _db.Subtypes.Where(x => x.Language.Equals(language)).ToListAsync();
+        return await _db.Subtypes.ToListAsync();
     }
 
     public async Task<Subtype?> AddSubtype(Subtype subtype)
     {
-        var supertypeDb = await _db.Subtypes.FirstOrDefaultAsync(x => x.Language.Equals(subtype.Language) && x.Name.Equals(subtype.Name));
+        var subtypeDb = await _db.Subtypes.FirstOrDefaultAsync(x => x.DefaultName.Equals(subtype.DefaultName));
 
-        if (supertypeDb != null)
-            return supertypeDb;
+        if (subtypeDb != null)
+            return subtypeDb;
 
         _db.Subtypes.Add(subtype);
         var result = await _db.SaveChangesAsync();

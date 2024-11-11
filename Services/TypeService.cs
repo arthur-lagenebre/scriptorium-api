@@ -13,14 +13,14 @@ public class TypeService : ITypeService
         _db = db;
     }
 
-    public async Task<IList<Database.Models.Type>> GetTypesByLanguage(string language)
+    public async Task<IList<Database.Models.Typeline.Type>> GetTypes()
     {
-        return await _db.Types.Where(x => x.Language.Equals(language)).ToListAsync();
+        return await _db.Types.ToListAsync();
     }
 
-    public async Task<Database.Models.Type?> AddType(Database.Models.Type type)
+    public async Task<Database.Models.Typeline.Type?> AddType(Database.Models.Typeline.Type type)
     {
-        var typeDb = await _db.Types.FirstOrDefaultAsync(x => x.Language.Equals(type.Language) && x.Name.Equals(type.Name));
+        var typeDb = await _db.Types.FirstOrDefaultAsync(x => x.DefaultName.Equals(type.DefaultName));
 
         if (typeDb != null)
             return typeDb;

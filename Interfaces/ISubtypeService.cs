@@ -1,9 +1,9 @@
-﻿using MTG.Database.Models;
+﻿using MTG.Database.Models.Typeline;
 
 namespace MTG.Api.Interfaces;
 
 public interface ISubtypeService
 {
     Task<Subtype?> AddSubtype(Subtype subtype);
-    Task<IList<Subtype>> GetSubtypesByLanguage(string language);
+    Task<IList<Subtype>> GetSubtypes();
 }

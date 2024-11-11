@@ -33,9 +33,6 @@ public class RelatedCardsController : ControllerBase
         if (relatedCard == null)
             return BadRequest();
 
-        return Ok(new
-        {
-            id = relatedCard!.Id
-        });
+        return Ok(new { id = relatedCard!.Id });
     }
 }
