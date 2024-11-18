@@ -19,6 +19,7 @@ public class MTGDbContext : DbContext
     public DbSet<Database.Models.Typeline.Type> Types { get; set; }
     public DbSet<TypeLanguage> TypeLanguages { get; set; }
     public DbSet<RelatedCard> RelatedCards { get; set; }
+    public DbSet<Ruling> Rulings { get; set; }
     public DbSet<Set> Sets { get; set; }
     public DbSet<Subtype> Subtypes { get; set; }
     public DbSet<SubtypeLanguage> SubtypeLanguages { get; set; }
