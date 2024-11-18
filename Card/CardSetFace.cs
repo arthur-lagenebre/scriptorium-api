@@ -12,7 +12,6 @@ public class CardSetFace
     [ForeignKey("CardSet")]
     public Guid CardSetId { get; set; }
     public int FaceId { get; set; }
-    [ForeignKey("Artist")]
     public IList<Guid>? ArtistsId { get; set; }
     public string FlavorText { get; set; }
     [MaxLength(250)]
