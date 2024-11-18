@@ -35,4 +35,5 @@ public class Card
     public ICollection<CardSet> CardSets { get; set; }
     public ICollection<CardTypeline> CardTypelines { get; set; }
     public ICollection<RelatedCard> RelatedCards { get; set; }
+    public ICollection<Ruling> Rulings { get; set; }
 }
