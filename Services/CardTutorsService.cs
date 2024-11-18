@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MTG.Api.DatabaseContext;
 using MTG.Api.Interfaces;
 using MTG.Database.Models.Card;
@@ -16,16 +15,18 @@ public class CardTutorsService : ICardTutorsService
         _db = db;
     }
 
-    public async Task<IList<CardTutor>> GetCardTutorsByCardName(string name)
+    public IList<CardTutor> GetCardTutorsByCardName(string name)
     {
         var cardTutors = new List<CardTutor>();
         var cards = _db.Cards.Include(x => x.CardNames)
                               .Include(x => x.CardTexts)
                               .Include(x => x.CardFaces)
                               .Include(x => x.CardSets).ThenInclude(x => x.Set)
+                              .Include(x => x.CardSets).ThenInclude(x => x.CardSetFaces)
                               .Include(x => x.CardTypelines)
                               .Include(x => x.RelatedCards)
-                              .Where(c => c.CardNames.Any(cn => cn.Language.Equals("en") && cn.Value.Contains(name)));
+                              .Where(c => c.CardNames.Any(cn => cn.Language.Equals("en") && cn.Value.Contains(name)))
+                              .ToList();
 
         foreach (var card in cards)
         {
@@ -35,7 +36,24 @@ public class CardTutorsService : ICardTutorsService
         return cardTutors;
     }
 
-    private static CardTutor ConvertCard(Card card)
+    public CardTutor? GetCardTutorById(Guid id)
+    {
+        var card = _db.Cards.Include(x => x.CardNames)
+                            .Include(x => x.CardTexts)
+                            .Include(x => x.CardFaces)
+                            .Include(x => x.CardSets).ThenInclude(x => x.Set)
+                            .Include(x => x.CardSets).ThenInclude(x => x.CardSetFaces)
+                            .Include(x => x.CardTypelines)
+                            .Include(x => x.RelatedCards)
+                            .FirstOrDefault(c => c.Id == id);
+
+        if (card != null)
+            return ConvertCard(card);
+
+        return null;
+    }
+
+    private CardTutor ConvertCard(Card card)
     {
         var names = card.CardFaces.Count > 0 ? [] : GetNames(card.CardNames);
         var typelines = card.CardFaces.Count > 0 ? [] : GetTypelines(card.CardTypelines);
@@ -48,7 +66,7 @@ public class CardTutorsService : ICardTutorsService
         return new CardTutor(card.Id.ToString(), names, typelines, texts, card.ManaCost, sets, languages, cardFaces, relatedCards, card.Power, card.Toughness, card.Loyalty, card.HandModifier, card.LifeModifier);
     }
 
-    private static List<LanguageTutor> GetNames(ICollection<CardName> cardNames)
+    private List<LanguageTutor> GetNames(ICollection<CardName> cardNames)
     {
         var names = new List<LanguageTutor>();
 
@@ -58,7 +76,7 @@ public class CardTutorsService : ICardTutorsService
         return names;
     }
 
-    private static List<LanguageTutor> GetTypelines(ICollection<CardTypeline> cardTypelines)
+    private List<LanguageTutor> GetTypelines(ICollection<CardTypeline> cardTypelines)
     {
         var typelines = new List<LanguageTutor>();
 
@@ -68,7 +86,7 @@ public class CardTutorsService : ICardTutorsService
         return typelines;
     }
 
-    private static List<LanguageTutor> GetTexts(ICollection<CardText> cardTexts)
+    private List<LanguageTutor> GetTexts(ICollection<CardText> cardTexts)
     {
         var names = new List<LanguageTutor>();
 
@@ -78,21 +96,49 @@ public class CardTutorsService : ICardTutorsService
         return names;
     }
 
-    private static List<SetTutor> GetSets(ICollection<CardSet> cardSets)
+    private List<SetTutor> GetSets(ICollection<CardSet> cardSets)
     {
         var sets = new List<SetTutor>();
 
         foreach (var (index, cardSet) in cardSets.OrderBy(x => x.Set.ReleasedAt).Select((item, index) => (index, item)))
-            sets.Add(new SetTutor(cardSet.Set.Name, cardSet.Set.Code, index, cardSet.CollectorNumber, cardSet.Rarity, [], []));
+        {
+            var flavors = GetFlavors(cardSet.CardSetFaces);
+
+            sets.Add(new SetTutor(cardSet.Set.Name, cardSet.Set.Code, index, cardSet.CollectorNumber, cardSet.Rarity, ["https://cards.scryfall.io/large/front/a/8/a8a64329-09fc-4e0d-b7d1-378635f2801a.jpg"], flavors));
+        }
 
         return sets;
     }
 
-    private static List<CardFaceTutor> GetCardFaceTutors(ICollection<CardFace> cardFaces, ICollection<CardName> cardNames, ICollection<CardText> cardTexts, ICollection<CardTypeline> cardTypelines)
+    private List<FlavorTutor> GetFlavors(ICollection<CardSetFace> cardSetFaces)
+    {
+        var flavors = new List<FlavorTutor>();
+
+        foreach (var cardSetFace in cardSetFaces)
+        {
+            var artists = GetArtists(cardSetFace.ArtistsId);
+            flavors.Add(new FlavorTutor(cardSetFace.FaceId, string.Join(" & ", artists), cardSetFace.FlavorText, cardSetFace.FlavorName));
+        }
+
+        return flavors;
+    }
+
+    private List<string> GetArtists(IList<Guid>? artistsId)
+    {
+        var artists = new List<string>();
+
+        if (artistsId != null)
+            foreach (var artistId in artistsId)
+                artists.Add(_db.Artists.First(x => x.Id == artistId).Name);
+
+        return artists;
+    }
+
+    private List<CardFaceTutor> GetCardFaceTutors(ICollection<CardFace> cardFaces, ICollection<CardName> cardNames, ICollection<CardText> cardTexts, ICollection<CardTypeline> cardTypelines)
     {
         var cardFaceTutors = new List<CardFaceTutor>();
 
-        foreach(var face in cardFaces)
+        foreach (var face in cardFaces)
         {
             var names = GetNames(cardNames.Where(x => x.FaceId == face.FaceId).ToList());
             var texts = GetTexts(cardTexts.Where(x => x.FaceId == face.FaceId).ToList());
@@ -104,7 +150,7 @@ public class CardTutorsService : ICardTutorsService
         return cardFaceTutors;
     }
 
-    private static List<RelatedCardTutor> GetRelatedCards(ICollection<RelatedCard> relatedCards)
+    private List<RelatedCardTutor> GetRelatedCards(ICollection<RelatedCard> relatedCards)
     {
         var relatedCardTutors = new List<RelatedCardTutor>();
 

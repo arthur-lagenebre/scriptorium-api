@@ -3,7 +3,18 @@ using MTG.Api.DatabaseContext;
 using MTG.Api.Interfaces;
 using MTG.Api.Services;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      builder =>
+                      {
+                          builder.WithOrigins("http://localhost:4200");
+                      });
+});
 
 // Add services to the container.
 builder.Services.AddTransient<IArtistService, ArtistService>();
@@ -26,7 +37,10 @@ builder.Services.AddTransient<ITypeService, TypeService>();
 builder.Services.AddTransient<ITypeLanguageService, TypeLanguageService>();
 builder.Services.AddDbContext<MTGDbContext>(db => db.UseSqlServer(builder.Configuration.GetConnectionString("MTGConnectionString")), ServiceLifetime.Singleton);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -39,6 +53,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 

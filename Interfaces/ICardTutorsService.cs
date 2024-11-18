@@ -4,5 +4,6 @@ namespace MTG.Api.Interfaces;
 
 public interface ICardTutorsService
 {
-    Task<IList<CardTutor>> GetCardTutorsByCardName(string name);
+    CardTutor? GetCardTutorById(Guid id);
+    IList<CardTutor> GetCardTutorsByCardName(string name);
 }

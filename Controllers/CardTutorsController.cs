@@ -13,10 +13,18 @@ public class CardTutorsController : ControllerBase
         _cardTutorsService = cardTutorsService;
     }
 
-    [HttpGet("{cardName}")]
-    public async Task<IActionResult> Get(string cardName)
+    [HttpGet("search/{cardName}")]
+    public IActionResult Get(string cardName)
     {
-        var cardTexts = await _cardTutorsService.GetCardTutorsByCardName(cardName);
+        var cardTexts = _cardTutorsService.GetCardTutorsByCardName(cardName);
+
+        return Ok(cardTexts);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult Get(Guid id)
+    {
+        var cardTexts = _cardTutorsService.GetCardTutorById(id);
 
         return Ok(cardTexts);
     }
