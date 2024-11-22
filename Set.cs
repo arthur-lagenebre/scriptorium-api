@@ -6,16 +6,18 @@ namespace MTG.Database.Models;
 [PrimaryKey("Id")]
 public class Set
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [Required, MaxLength(6)]
-    public string Code { get; set; }
+    public required string Code { get; init; }
     [Required, MaxLength(150)]
-    public string Name { get; set; }
+    public required string Name { get; init; }
     [Required, MaxLength(50)]
-    public string Type { get; set; }
-    public DateTime ReleasedAt { get; set; }
-    public string BlockCode { get; set; }
-    public string Block { get; set; }
+    public required string Type { get; init; }
+    public DateTime ReleasedAt { get; init; }
     [MaxLength(6)]
-    public string ParentSetCode { get; set; }
+    public string? BlockCode { get; init; }
+    [MaxLength(150)]
+    public string? Block { get; init; }
+    [MaxLength(6)]
+    public string? ParentSetCode { get; init; }
 }

@@ -7,13 +7,11 @@ namespace MTG.Database.Models.Typeline;
 [PrimaryKey("Id")]
 public class TypeLanguage
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [ForeignKey("Type")]
-    public Guid TypeId { get; set; }
+    public Guid TypeId { get; init; }
     [Required, MaxLength(3)]
-    public string Language { get; set; }
+    public required string Language { get; init; }
     [Required, MaxLength(150)]
-    public string Name { get; set; }
-
-    public Type Type { get; set; }
+    public required string Name { get; init; }
 }

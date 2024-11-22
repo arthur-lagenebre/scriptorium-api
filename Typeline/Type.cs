@@ -6,7 +6,7 @@ namespace MTG.Database.Models.Typeline;
 [PrimaryKey("Id")]
 public class Type
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [Required, MaxLength(150)]
-    public string DefaultName { get; set; }
+    public required string DefaultName { get; init; }
 }

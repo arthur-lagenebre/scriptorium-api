@@ -7,16 +7,16 @@ namespace MTG.Database.Models.Card;
 [PrimaryKey("Id")]
 public class CardSet
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [ForeignKey("Card")]
-    public Guid CardId { get; set; }
+    public Guid CardId { get; init; }
     [ForeignKey("Set")]
-    public Guid SetId { get; set; }
+    public Guid SetId { get; init; }
     [Required, MaxLength(50)]
-    public string CollectorNumber { get; set; }
+    public required string CollectorNumber { get; init; }
     [Required, MaxLength(25)]
-    public string Rarity { get; set; }
+    public required string Rarity { get; init; }
 
-    public Set Set { get; set; }
-    public ICollection<CardSetFace> CardSetFaces { get; set; }
+    public Set Set { get; init; }
+    public ICollection<CardSetFace> CardSetFaces { get; init; }
 }

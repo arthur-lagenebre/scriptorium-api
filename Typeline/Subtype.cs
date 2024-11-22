@@ -6,9 +6,9 @@ namespace MTG.Database.Models.Typeline;
 [PrimaryKey("Id")]
 public class Subtype
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [Required, StringLength(50)]
-    public string TypeCard { get; set; }
+    public required string TypeCard { get; init; }
     [Required, MaxLength(150)]
-    public string DefaultName { get; set; }
+    public required string DefaultName { get; init; }
 }

@@ -8,13 +8,13 @@ namespace MTG.Database.Models.Card;
 [Index(nameof(CardId), nameof(Language), nameof(FaceId))]
 public class CardName
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [ForeignKey("Card")]
-    public Guid CardId { get; set; }
+    public Guid CardId { get; init; }
     [Required]
-    public int FaceId { get; set; }
+    public int FaceId { get; init; }
     [Required, MaxLength(3)]
-    public string Language { get; set; }
+    public required string Language { get; init; }
     [Required, MaxLength(250)]
-    public string Value { get; set; }
+    public required string Value { get; init; }
 }

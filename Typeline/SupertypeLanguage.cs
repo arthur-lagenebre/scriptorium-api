@@ -7,13 +7,11 @@ namespace MTG.Database.Models.Typeline;
 [PrimaryKey("Id")]
 public class SupertypeLanguage
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [ForeignKey("Supertype")]
-    public Guid SupertypeId { get; set; }
+    public Guid SupertypeId { get; init; }
     [Required, MaxLength(3)]
-    public string Language { get; set; }
+    public required string Language { get; init; }
     [Required, MaxLength(150)]
-    public string Name { get; set; }
-
-    public Supertype Supertype { get; set; }
+    public required string Name { get; init; }
 }

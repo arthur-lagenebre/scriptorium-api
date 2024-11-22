@@ -8,12 +8,13 @@ namespace MTG.Database.Models.Card;
 [Index(nameof(CardSetId), nameof(FaceId))]
 public class CardSetFace
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [ForeignKey("CardSet")]
-    public Guid CardSetId { get; set; }
-    public int FaceId { get; set; }
-    public IList<Guid>? ArtistsId { get; set; }
-    public string FlavorText { get; set; }
+    public Guid CardSetId { get; init; }
+    public int FaceId { get; init; }
+    public IList<Guid>? ArtistsId { get; init; }
+    [MaxLength(500)]
+    public string? FlavorText { get; init; }
     [MaxLength(250)]
-    public string FlavorName { get; set; }
+    public string? FlavorName { get; init; }
 }

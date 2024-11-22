@@ -6,13 +6,13 @@ namespace MTG.Database.Models.Typeline;
 [PrimaryKey("Id")]
 public class Typeline
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [Required, MaxLength(3)]
-    public string Language { get; set; }
+    public required string Language { get; init; }
     [Required, MaxLength(10)]
-    public string SeparatorTypeSubtype { get; set; }
+    public required string SeparatorTypeSubtype { get; init; }
     [Required, MaxLength(10)]
-    public string SeparatorSubtype { get; set; }
+    public required string SeparatorSubtype { get; init; }
     [Required, MaxLength(10)]
-    public string SeparatorType { get; set; }
+    public required string SeparatorType { get; init; }
 }

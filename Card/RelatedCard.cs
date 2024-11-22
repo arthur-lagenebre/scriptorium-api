@@ -8,10 +8,11 @@ namespace MTG.Database.Models.Card;
 [Index(nameof(CardId))]
 public class RelatedCard
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [ForeignKey("Card")]
-    public Guid CardId { get; set; }
+    public Guid CardId { get; init; }
     [Required, MaxLength(250)]
-    public string Name { get; set; }
-    public string Component { get; set; }
+    public required string Name { get; init; }
+    [Required, MaxLength(50)]
+    public required string Component { get; init; }
 }

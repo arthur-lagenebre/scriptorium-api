@@ -8,20 +8,20 @@ namespace MTG.Database.Models.Card;
 [Index(nameof(CardId), nameof(FaceId))]
 public class CardFace
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     [ForeignKey("Card")]
-    public Guid CardId { get; set; }
-    public int FaceId { get; set; }
+    public Guid CardId { get; init; }
+    public int FaceId { get; init; }
     [Required, MaxLength(250)]
-    public string ManaCost { get; set; }
-    public double ManaValue { get; set; }
-    public int Colors { get; set; }
-    public int ColorsIndicator { get; set; }
+    public required string ManaCost { get; init; }
+    public double ManaValue { get; init; }
+    public int Colors { get; init; }
+    public int ColorsIndicator { get; init; }
     [Required, MaxLength(10)]
-    public string Power { get; set; }
+    public required string Power { get; init; }
     [Required, MaxLength(10)]
-    public string Toughness { get; set; }
+    public required string Toughness { get; init; }
     [Required, MaxLength(10)]
-    public string Loyalty { get; set; }
-    public int? Defense { get; set; }
+    public required string Loyalty { get; init; }
+    public int? Defense { get; init; }
 }
