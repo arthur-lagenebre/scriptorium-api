@@ -5,22 +5,12 @@ using MTG.Database.Models;
 namespace MTG.Api.Controllers;
 
 [Route("api/[controller]")]
-public class RulingsController : ControllerBase
+public class RulingsController(IRulingService rulingService) : ControllerBase
 {
-    private readonly IRulingService _rulingService;
-
-    public RulingsController(IRulingService rulingService)
-    {
-        _rulingService = rulingService;
-    }
-
     [HttpGet("{cardId}")]
     public async Task<IActionResult> Get(Guid cardId)
     {
-        var rulings = await _rulingService.GetRulingsByCardId(cardId);
-
-        if (rulings == null)
-            return NotFound();
+        var rulings = await rulingService.GetRulingsByCardId(cardId);
 
         return Ok(rulings);
     }
@@ -28,11 +18,11 @@ public class RulingsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Ruling rulingObject)
     {
-        var ruling = await _rulingService.AddRuling(rulingObject);
+        var ruling = await rulingService.AddRuling(rulingObject);
 
         if (ruling == null)
             return BadRequest();
 
-        return Ok(new { id = ruling!.Id });
+        return Ok(new { id = ruling.Id });
     }
 }

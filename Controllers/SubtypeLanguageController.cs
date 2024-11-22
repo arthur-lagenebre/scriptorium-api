@@ -5,22 +5,12 @@ using MTG.Database.Models.Typeline;
 namespace MTG.Api.Controllers;
 
 [Route("api/[controller]")]
-public class SubtypeLanguageController : ControllerBase
+public class SubtypeLanguageController(ISubtypeLanguageService subtypeLanguageService) : ControllerBase
 {
-    private readonly ISubtypeLanguageService _subtypeLanguageService;
-
-    public SubtypeLanguageController(ISubtypeLanguageService subtypeLanguageService)
-    {
-        _subtypeLanguageService = subtypeLanguageService;
-    }
-
     [HttpGet("language")]
     public async Task<IActionResult> Get(string language)
     {
-        var subtypeLanguages = await _subtypeLanguageService.GetSubtypeLanguagesByLanguage(language);
-
-        if (subtypeLanguages == null)
-            return NotFound();
+        var subtypeLanguages = await subtypeLanguageService.GetSubtypeLanguagesByLanguage(language);
 
         return Ok(subtypeLanguages);
     }
@@ -28,11 +18,11 @@ public class SubtypeLanguageController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] SubtypeLanguage subtypeLanguageObject)
     {
-        var subtypeLanguageDb = await _subtypeLanguageService.AddSubtypeLanguage(subtypeLanguageObject);
+        var subtypeLanguageDb = await subtypeLanguageService.AddSubtypeLanguage(subtypeLanguageObject);
 
         if (subtypeLanguageDb == null)
             return BadRequest();
 
-        return Ok(new { id = subtypeLanguageDb!.Id });
+        return Ok(new { id = subtypeLanguageDb.Id });
     }
 }

@@ -5,22 +5,12 @@ using MTG.Database.Models;
 namespace MTG.Api.Controllers;
 
 [Route("api/[controller]")]
-public class SetsController : ControllerBase
+public class SetsController(ISetService setService) : ControllerBase
 {
-    private readonly ISetService _setService;
-
-    public SetsController(ISetService setService)
-    {
-        _setService = setService;
-    }
-
     [HttpGet()]
     public async Task<IActionResult> Get()
     {
-        var sets = await _setService.GetSets();
-
-        if (sets == null)
-            return NotFound();
+        var sets = await setService.GetSets();
 
         return Ok(sets);
     }
@@ -28,7 +18,7 @@ public class SetsController : ControllerBase
     [HttpGet("{code}")]
     public async Task<IActionResult> Get(string code)
     {
-        var set = await _setService.GetSetByCode(code);
+        var set = await setService.GetSetByCode(code);
 
         if (set == null)
             return NotFound();
@@ -39,11 +29,11 @@ public class SetsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Set setObject)
     {
-        var set = await _setService.AddSet(setObject);
+        var set = await setService.AddSet(setObject);
 
         if (set == null)
             return BadRequest();
 
-        return Ok(new { id = set!.Id });
+        return Ok(new { id = set.Id });
     }
 }

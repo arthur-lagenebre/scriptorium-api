@@ -5,34 +5,24 @@ using MTG.Database.Models.Card;
 namespace MTG.Api.Controllers;
 
 [Route("api/[controller]")]
-public class CardSetController : ControllerBase
+public class CardSetController(ICardSetService cardSetService) : ControllerBase
 {
-    private readonly ICardSetService _cardSetService;
-
-    public CardSetController(ICardSetService cardSetService)
-    {
-        _cardSetService = cardSetService;
-    }
-
-    [HttpGet("{cardId}")]
+    [HttpGet("{cardId:guid}")]
     public async Task<IActionResult> Get(Guid cardId)
     {
-        var cardSetFaces = await _cardSetService.GetCardSetsByCardId(cardId);
-
-        if (cardSetFaces == null)
-            return NotFound();
+        var cardSetFaces = await cardSetService.GetCardSetsByCardId(cardId);
 
         return Ok(cardSetFaces);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CardSet CardSetObject)
+    public async Task<IActionResult> Post([FromBody] CardSet cardSetObject)
     {
-        var cardSetFaceDb = await _cardSetService.AddCardSet(CardSetObject);
+        var cardSetFaceDb = await cardSetService.AddCardSet(cardSetObject);
 
         if (cardSetFaceDb == null)
             return BadRequest();
 
-        return Ok(new { id = cardSetFaceDb!.Id });
+        return Ok(new { id = cardSetFaceDb.Id });
     }
 }

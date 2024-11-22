@@ -4,22 +4,12 @@ using MTG.Api.Interfaces;
 namespace MTG.Api.Controllers;
 
 [Route("api/[controller]")]
-public class ColorsController : ControllerBase
+public class ColorsController(IColorService colorService) : ControllerBase
 {
-    private readonly IColorService _colorService;
-
-    public ColorsController(IColorService colorService)
-    {
-        _colorService = colorService;
-    }
-
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id)
     {
-        var colors = await _colorService.GetColorsById(id);
-
-        if (colors == null)
-            return NotFound();
+        var colors = await colorService.GetColorsById(id);
 
         return Ok(colors);
     }
@@ -27,7 +17,7 @@ public class ColorsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var colors = await _colorService.GetColors();
+        var colors = await colorService.GetColors();
 
         return Ok(colors);
     }

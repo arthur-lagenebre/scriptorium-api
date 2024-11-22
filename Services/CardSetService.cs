@@ -5,30 +5,23 @@ using MTG.Database.Models.Card;
 
 namespace MTG.Api.Services;
 
-public class CardSetService : ICardSetService
+public class CardSetService(MtgDbContext db) : ICardSetService
 {
-    private readonly MTGDbContext _db;
-
-    public CardSetService(MTGDbContext db)
-    {
-        _db = db;
-    }
-
     public async Task<CardSet?> AddCardSet(CardSet cardSet)
     {
-        var cardSetDb = await _db.CardSets.FirstOrDefaultAsync(x => x.CardId.Equals(cardSet.CardId) && x.SetId.Equals(cardSet.SetId) && x.CollectorNumber.Equals(cardSet.CollectorNumber));
+        var cardSetDb = await db.CardSets.FirstOrDefaultAsync(x => x.CardId.Equals(cardSet.CardId) && x.SetId.Equals(cardSet.SetId) && x.CollectorNumber.Equals(cardSet.CollectorNumber));
 
         if (cardSetDb != null)
             return cardSetDb;
 
-        _db.CardSets.Add(cardSet);
-        var result = await _db.SaveChangesAsync();
+        db.CardSets.Add(cardSet);
+        var result = await db.SaveChangesAsync();
 
         return result >= 0 ? cardSet : null;
     }
 
     public async Task<IList<CardSet>> GetCardSetsByCardId(Guid cardId)
     {
-        return await _db.CardSets.Where(x => x.CardId.Equals(cardId)).ToListAsync();
+        return await db.CardSets.Where(x => x.CardId.Equals(cardId)).ToListAsync();
     }
 }

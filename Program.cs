@@ -3,16 +3,16 @@ using MTG.Api.DatabaseContext;
 using MTG.Api.Interfaces;
 using MTG.Api.Services;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      builder =>
+    options.AddPolicy(name: myAllowSpecificOrigins,
+                      corsPolicyBuilder =>
                       {
-                          builder.WithOrigins("http://localhost:4200");
+                          corsPolicyBuilder.WithOrigins("http://localhost:4200");
                       });
 });
 
@@ -36,7 +36,7 @@ builder.Services.AddTransient<ISubtypeService, SubtypeService>();
 builder.Services.AddTransient<ISubtypeLanguageService, SubtypeLanguageService>();
 builder.Services.AddTransient<ITypeService, TypeService>();
 builder.Services.AddTransient<ITypeLanguageService, TypeLanguageService>();
-builder.Services.AddDbContext<MTGDbContext>(db => db.UseSqlServer(builder.Configuration.GetConnectionString("MTGConnectionString")), ServiceLifetime.Singleton);
+builder.Services.AddDbContext<MtgDbContext>(db => db.UseSqlServer(builder.Configuration.GetConnectionString("MTGConnectionString")), ServiceLifetime.Singleton);
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -55,7 +55,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors(myAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 

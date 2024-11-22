@@ -7,9 +7,9 @@ namespace MTG.Api.Services;
 
 public class ArtistService : IArtistService
 {
-    private readonly MTGDbContext _db;
+    private readonly MtgDbContext _db;
 
-    public ArtistService(MTGDbContext db)
+    public ArtistService(MtgDbContext db)
     {
         _db = db;
     }

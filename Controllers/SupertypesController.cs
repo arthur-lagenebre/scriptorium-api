@@ -5,22 +5,12 @@ using MTG.Database.Models.Typeline;
 namespace MTG.Api.Controllers;
 
 [Route("api/[controller]")]
-public class SupertypesController : ControllerBase
+public class SupertypesController(ISupertypeService supertypeService) : ControllerBase
 {
-    private readonly ISupertypeService _supertypeService;
-
-    public SupertypesController(ISupertypeService supertypeService)
-    {
-        _supertypeService = supertypeService;
-    }
-
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var supertypes = await _supertypeService.GetSupertypes();
-
-        if (supertypes == null)
-            return NotFound();
+        var supertypes = await supertypeService.GetSupertypes();
 
         return Ok(supertypes);
     }
@@ -28,11 +18,11 @@ public class SupertypesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Supertype supertypeObject)
     {
-        var supertypeDb = await _supertypeService.AddSupertype(supertypeObject);
+        var supertypeDb = await supertypeService.AddSupertype(supertypeObject);
 
         if (supertypeDb == null)
             return BadRequest();
 
-        return Ok(new { id = supertypeDb!.Id });
+        return Ok(new { id = supertypeDb.Id });
     }
 }

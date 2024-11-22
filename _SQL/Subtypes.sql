@@ -427,593 +427,593 @@ INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (N
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Automaton'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Automaton')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Automaton')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Soltari'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Soltari')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Soltari')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Curse'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Curse')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Malédiction')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Detective'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Detective')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Détective')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Merfolk'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Merfolk')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Ondin')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Fractal'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Fractal')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Fractale')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Mordenkainen'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Mordenkainen')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Mordenkainen')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Astartes'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Astartes')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Astartes')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Kor'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Kor')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Kor')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Inzerva'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Inzerva')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Inzerva')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Nymph'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Nymph')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Nymphe')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Survivor'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Survivor')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Survivant')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Avatar'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Avatar')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Avatar')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Drake'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Drake')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Drakôn')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Possum'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Possum')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Opossum')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Room'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Room')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Pièce')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Zubera'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Zubera')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Zubera')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Karn'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Karn')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Karn')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Homunculus'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Homunculus')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Homoncule')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Squid'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Squid')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Calamar')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Dog'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Dog')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Chien')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Vampire'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Vampire')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Vampire')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Juggernaut'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Juggernaut')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Djaggernaut')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Coward'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Coward')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Couard')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Tetravite'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Tetravite')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Tétravite')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Mouse'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Mouse')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Souris')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Barbarian'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Barbarian')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Barbare')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Mount'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Mount')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Monture')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Berserker'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Berserker')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Berserker')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Reflection'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Reflection')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Reflet')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Ugin'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Ugin')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Ugin')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Metathran'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Metathran')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Métathran')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Chorus'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Chorus')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Refrain')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Coyote'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Coyote')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Coyote')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Blood'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Blood')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Sang')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Elk'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Elk')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Élan')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Teddy'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Teddy')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Peluche')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Aurochs'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Aurochs')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Aurochs')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Employee'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Employee')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Employé')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Gorgon'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Gorgon')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Gorgonoïde')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Halfling'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Halfling')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Halfelin')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Tower'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Tower')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Tour')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Thalakos'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Thalakos')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Thalakos')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Leech'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Leech')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Sangsue')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Surrakar'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Surrakar')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Surrakar')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Wurm'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Wurm')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Guivre')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Insect'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Insect')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Insecte')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Chandra'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Chandra')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Chandra')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Orc'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Orc')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Orque')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Carrier'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Carrier')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Propagateur')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Mutant'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Mutant')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Mutant')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Demigod'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Demigod')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Demi-dieu')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Davriel'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Davriel')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Davriel')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Drone'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Drone')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Drone')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Slug'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Slug')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Limace')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Liliana'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Liliana')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Liliana')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Elspeth'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Elspeth')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Elspeth')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Eye'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Eye')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Œil')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Serf'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Serf')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Serf')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Yanling'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Yanling')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Yanling')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Porcupine'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Porcupine')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Porc-épic')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Role'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Role')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Rôle')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Jeska'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Jeska')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Jeska')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Contraption'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Contraption')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Appareil')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Kobold'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Kobold')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Kobold')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Servo'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Servo')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Servo')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Bolas'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Bolas')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Bolas')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Wrenn'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Wrenn')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Wrenn')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Necron'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Necron')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Nécron')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Dack'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Dack')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Dack')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Fish'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Fish')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Poisson')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Fungus'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Fungus')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Fongus')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Fox'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Fox')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Renard')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Scout'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Scout')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Éclaireur')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Lammasu'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Lammasu')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Lamassu')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Werewolf'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Werewolf')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Loup-garou')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Balloon'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Balloon')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Ballon')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Scorpion'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Scorpion')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Scorpion')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Cleric'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Cleric')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Clerc')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Monk'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Monk')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Moine')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Ox'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Ox')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Bovidé')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Gith'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Gith')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Gith')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Time Lord'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Time Lord')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Time Lord')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Arlinn'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Arlinn')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Arlinn')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Snake'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Snake')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Serpent')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Sarkhan'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Sarkhan')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Sarkhan')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Chimera'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Chimera')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Chimère')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Custodes'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Custodes')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Custodes')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Tasha'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Tasha')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Tasha')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Saproling'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Saproling')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Saprobionte')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Aminatou'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Aminatou')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Aminatou')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Case'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Case')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Affaire')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Gnome'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Gnome')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Gnome')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Artificer'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Artificer')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Artificier')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Calix'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Calix')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Calix')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Dovin'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Dovin')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Dovin')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Lesson'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Lesson')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Leçon')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Master'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Master')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Master')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Nahiri'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Nahiri')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Nahiri')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Faerie'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Faerie')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Peuple fée')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Oyster'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Oyster')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Huître')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Estrid'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Estrid')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Estrid')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Daretti'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Daretti')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Daretti')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Kasmina'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Kasmina')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Kasmina')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Eldrazi'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Eldrazi')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Eldrazi')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Mine'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Mine')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Mine')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Volver'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Volver')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Évolien')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'B.O.B.'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'B.O.B.')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'B.O.B.')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Pest'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Pest')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Parasite')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Sponge'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Sponge')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Éponge')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Ogre'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Ogre')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Ogre')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Tiefling'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Tiefling')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Tieffelin')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Blinkmoth'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Blinkmoth')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Scintimite')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Horse'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Horse')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Cheval')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Fortification'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Fortification')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Fortification')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Windgrace'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Windgrace')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Windgrace')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Toy'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Toy')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Jouet')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Hornet'
 
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', '')
-INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', '')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'en', 'Hornet')
+INSERT INTO [SubtypeLanguages] ([Id], [SubtypeId], [Language], [Name]) VALUES (NEWID(), @SubtypeId, 'fr', 'Frelon')
 
 SELECT @SubtypeId = Id FROM [Subtypes] WHERE DefaultName = 'Lair'
 

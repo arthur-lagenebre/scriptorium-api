@@ -5,22 +5,15 @@ using MTG.Database.Models;
 
 namespace MTG.Api.Services;
 
-public class ColorService : IColorService
+public class ColorService(MtgDbContext db) : IColorService
 {
-    private readonly MTGDbContext _db;
-
-    public ColorService(MTGDbContext db)
-    {
-        _db = db;
-    }
-
     public async Task<IList<Color>> GetColors()
     {
-        return await _db.Colors.ToListAsync();
+        return await db.Colors.ToListAsync();
     }
 
     public async Task<IList<Color>> GetColorsById(int id)
     {
-        return await _db.Colors.Where(x => x.Id.Equals(id)).ToListAsync();
+        return await db.Colors.Where(x => x.Id.Equals(id)).ToListAsync();
     }
 }

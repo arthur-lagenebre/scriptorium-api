@@ -5,29 +5,22 @@ using MTG.Database.Models.Typeline;
 
 namespace MTG.Api.Services;
 
-public class SupertypeService : ISupertypeService
+public class SupertypeService(MtgDbContext db) : ISupertypeService
 {
-    private readonly MTGDbContext _db;
-
-    public SupertypeService(MTGDbContext db)
-    {
-        _db = db;
-    }
-
     public async Task<IList<Supertype>> GetSupertypes()
     {
-        return await _db.Supertypes.ToListAsync();
+        return await db.Supertypes.ToListAsync();
     }
 
     public async Task<Supertype?> AddSupertype(Supertype supertype)
     {
-        var supertypeDb = await _db.Supertypes.FirstOrDefaultAsync(x => x.DefaultName.Equals(supertype.DefaultName));
+        var supertypeDb = await db.Supertypes.FirstOrDefaultAsync(x => x.DefaultName.Equals(supertype.DefaultName));
 
         if (supertypeDb != null)
             return supertypeDb;
 
-        _db.Supertypes.Add(supertype);
-        var result = await _db.SaveChangesAsync();
+        db.Supertypes.Add(supertype);
+        var result = await db.SaveChangesAsync();
 
         return result >= 0 ? supertype : null;
     }

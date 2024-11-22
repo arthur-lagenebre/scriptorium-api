@@ -5,30 +5,23 @@ using MTG.Database.Models.Card;
 
 namespace MTG.Api.Services;
 
-public class CardNameService : ICardNameService
+public class CardNameService(MtgDbContext db) : ICardNameService
 {
-    private readonly MTGDbContext _db;
-
-    public CardNameService(MTGDbContext db)
-    {
-        _db = db;
-    }
-
     public async Task<CardName?> AddCardName(CardName cardName)
     {
-        var cardNameDb = await _db.CardNames.FirstOrDefaultAsync(x => x.CardId.Equals(cardName.CardId) && x.FaceId.Equals(cardName.FaceId) && x.Language.Equals(cardName.Language));
+        var cardNameDb = await db.CardNames.FirstOrDefaultAsync(x => x.CardId.Equals(cardName.CardId) && x.FaceId.Equals(cardName.FaceId) && x.Language.Equals(cardName.Language));
 
         if (cardNameDb != null)
             return cardNameDb;
 
-        _db.CardNames.Add(cardName);
-        var result = await _db.SaveChangesAsync();
+        db.CardNames.Add(cardName);
+        var result = await db.SaveChangesAsync();
 
         return result >= 0 ? cardName : null;
     }
 
     public async Task<IList<CardName>> GetCardNamesByCardId(Guid id)
     {
-        return await _db.CardNames.Where(x => x.CardId.Equals(id)).ToListAsync();
+        return await db.CardNames.Where(x => x.CardId.Equals(id)).ToListAsync();
     }
 }

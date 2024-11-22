@@ -1,56 +1,43 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MTG.Api.DatabaseContext;
 using MTG.Api.Interfaces;
+using MTG.Database.Models;
 using MTG.Database.Models.Card;
 using MTG.Database.Models.Tutor;
 
 namespace MTG.Api.Services;
 
-public class CardTutorsService : ICardTutorsService
+public class CardTutorsService(MtgDbContext db) : ICardTutorsService
 {
-    private readonly MTGDbContext _db;
-
-    public CardTutorsService(MTGDbContext db)
-    {
-        _db = db;
-    }
-
     public IList<CardTutor> GetCardTutorsByCardName(string name)
     {
-        var cardTutors = new List<CardTutor>();
-        var cards = _db.Cards.Include(x => x.CardNames)
+        var cards = db.Cards.Include(x => x.CardNames)
                               .Include(x => x.CardTexts)
                               .Include(x => x.CardFaces)
                               .Include(x => x.CardSets).ThenInclude(x => x.Set)
                               .Include(x => x.CardSets).ThenInclude(x => x.CardSetFaces)
                               .Include(x => x.CardTypelines)
                               .Include(x => x.RelatedCards)
+                              .Include(x => x.Rulings)
                               .Where(c => c.CardNames.Any(cn => cn.Language.Equals("en") && cn.Value.Contains(name)))
                               .ToList();
 
-        foreach (var card in cards)
-        {
-            cardTutors.Add(ConvertCard(card));
-        }
-
-        return cardTutors;
+        return cards.Select(ConvertCard).ToList();
     }
 
     public CardTutor? GetCardTutorById(Guid id)
     {
-        var card = _db.Cards.Include(x => x.CardNames)
+        var card = db.Cards.Include(x => x.CardNames)
                             .Include(x => x.CardTexts)
                             .Include(x => x.CardFaces)
                             .Include(x => x.CardSets).ThenInclude(x => x.Set)
                             .Include(x => x.CardSets).ThenInclude(x => x.CardSetFaces)
                             .Include(x => x.CardTypelines)
                             .Include(x => x.RelatedCards)
+                            .Include(x => x.Rulings)
                             .FirstOrDefault(c => c.Id == id);
 
-        if (card != null)
-            return ConvertCard(card);
-
-        return null;
+        return card != null ? ConvertCard(card) : null;
     }
 
     private CardTutor ConvertCard(Card card)
@@ -59,41 +46,32 @@ public class CardTutorsService : ICardTutorsService
         var typelines = card.CardFaces.Count > 0 ? [] : GetTypelines(card.CardTypelines);
         var texts = card.CardFaces.Count > 0 ? [] : GetTexts(card.CardTexts);
         var sets = GetSets(card.CardSets);
-        var languages = card.CardNames.Select(x => x.Language).ToList();
+        var languages = card.CardNames.Select(x => x.Language).OrderBy(x => x).ToList();
         var cardFaces = GetCardFaceTutors(card.CardFaces, card.CardNames, card.CardTexts, card.CardTypelines);
         var relatedCards = GetRelatedCards(card.RelatedCards);
+        var rulings = GetRulings(card.Rulings);
 
-        return new CardTutor(card.Id.ToString(), names, typelines, texts, card.ManaCost, sets, languages, cardFaces, relatedCards, card.Power, card.Toughness, card.Loyalty, card.HandModifier, card.LifeModifier);
+        return new CardTutor(card.Id.ToString(), names, typelines, texts, rulings, card.ManaCost, sets, languages, cardFaces, relatedCards, card.Power, card.Toughness, card.Loyalty, card.HandModifier, card.LifeModifier);
     }
 
-    private List<LanguageTutor> GetNames(ICollection<CardName> cardNames)
+    private static List<RulingTutor> GetRulings(ICollection<Ruling> cardRulings)
     {
-        var names = new List<LanguageTutor>();
-
-        foreach (var cardName in cardNames)
-            names.Add(new LanguageTutor(cardName.Language, cardName.Value));
-
-        return names;
+        return cardRulings.Select(cardRuling => new RulingTutor(cardRuling.Language, cardRuling.Rule, cardRuling.PublishedAt)).ToList();
     }
 
-    private List<LanguageTutor> GetTypelines(ICollection<CardTypeline> cardTypelines)
+    private static List<LanguageTutor> GetNames(ICollection<CardName> cardNames)
     {
-        var typelines = new List<LanguageTutor>();
-
-        foreach (var cardTypeline in cardTypelines)
-            typelines.Add(new LanguageTutor(cardTypeline.Language, cardTypeline.Value));
-
-        return typelines;
+        return cardNames.Select(cardName => new LanguageTutor(cardName.Language, cardName.Value)).ToList();
     }
 
-    private List<LanguageTutor> GetTexts(ICollection<CardText> cardTexts)
+    private static List<LanguageTutor> GetTypelines(ICollection<CardTypeline> cardTypelines)
     {
-        var names = new List<LanguageTutor>();
+        return cardTypelines.Select(cardTypeline => new LanguageTutor(cardTypeline.Language, cardTypeline.Value)).ToList();
+    }
 
-        foreach (var cardText in cardTexts)
-            names.Add(new LanguageTutor(cardText.Language, cardText.Value));
-
-        return names;
+    private static List<LanguageTutor> GetTexts(ICollection<CardText> cardTexts)
+    {
+        return cardTexts.Select(cardText => new LanguageTutor(cardText.Language, cardText.Value)).ToList();
     }
 
     private List<SetTutor> GetSets(ICollection<CardSet> cardSets)
@@ -112,26 +90,12 @@ public class CardTutorsService : ICardTutorsService
 
     private List<FlavorTutor> GetFlavors(ICollection<CardSetFace> cardSetFaces)
     {
-        var flavors = new List<FlavorTutor>();
-
-        foreach (var cardSetFace in cardSetFaces)
-        {
-            var artists = GetArtists(cardSetFace.ArtistsId);
-            flavors.Add(new FlavorTutor(cardSetFace.FaceId, string.Join(" & ", artists), cardSetFace.FlavorText, cardSetFace.FlavorName));
-        }
-
-        return flavors;
+        return (from cardSetFace in cardSetFaces let artists = GetArtists(cardSetFace.ArtistsId) select new FlavorTutor(cardSetFace.FaceId, string.Join(" & ", artists), cardSetFace.FlavorText ?? string.Empty, cardSetFace.FlavorName ?? string.Empty)).ToList();
     }
 
     private List<string> GetArtists(IList<Guid>? artistsId)
     {
-        var artists = new List<string>();
-
-        if (artistsId != null)
-            foreach (var artistId in artistsId)
-                artists.Add(_db.Artists.First(x => x.Id == artistId).Name);
-
-        return artists;
+        return artistsId == null ? [] : artistsId.Select(artistId => db.Artists.First(x => x.Id == artistId).Name).ToList();
     }
 
     private List<CardFaceTutor> GetCardFaceTutors(ICollection<CardFace> cardFaces, ICollection<CardName> cardNames, ICollection<CardText> cardTexts, ICollection<CardTypeline> cardTypelines)
@@ -152,13 +116,6 @@ public class CardTutorsService : ICardTutorsService
 
     private List<RelatedCardTutor> GetRelatedCards(ICollection<RelatedCard> relatedCards)
     {
-        var relatedCardTutors = new List<RelatedCardTutor>();
-
-        foreach (var relatedCard in relatedCards)
-        {
-            relatedCardTutors.Add(new RelatedCardTutor(relatedCard.Name, string.Empty, relatedCard.Component));
-        }
-
-        return relatedCardTutors;
+        return relatedCards.Select(relatedCard => new RelatedCardTutor(relatedCard.Name, string.Empty, relatedCard.Component)).ToList();
     }
 }

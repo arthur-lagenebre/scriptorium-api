@@ -5,30 +5,26 @@ using MTG.Database.Models.Typeline;
 
 namespace MTG.Api.DatabaseContext;
 
-public class MTGDbContext : DbContext
+public class MtgDbContext(DbContextOptions<MtgDbContext> options) : DbContext(options)
 {
-    public DbSet<Artist> Artists { get; set; }
-    public DbSet<Card> Cards { get; set; }
-    public DbSet<CardFace> CardFaces { get; set; }
-    public DbSet<CardName> CardNames { get; set; }
-    public DbSet<CardSet> CardSets { get; set; }
-    public DbSet<CardSetFace> CardSetFaces { get; set; }
-    public DbSet<CardTypeline> CardTypelines { get; set; }
-    public DbSet<CardText> CardTexts { get; set; }
-    public DbSet<Color> Colors { get; set; }
-    public DbSet<Database.Models.Typeline.Type> Types { get; set; }
-    public DbSet<TypeLanguage> TypeLanguages { get; set; }
-    public DbSet<RelatedCard> RelatedCards { get; set; }
-    public DbSet<Ruling> Rulings { get; set; }
-    public DbSet<Set> Sets { get; set; }
-    public DbSet<Subtype> Subtypes { get; set; }
-    public DbSet<SubtypeLanguage> SubtypeLanguages { get; set; }
-    public DbSet<Supertype> Supertypes { get; set; }
-    public DbSet<SupertypeLanguage> SupertypeLanguages { get; set; }
-
-    public MTGDbContext(DbContextOptions<MTGDbContext> options) : base(options)
-    {
-    }
+    public DbSet<Artist> Artists { get; init; }
+    public DbSet<Card> Cards { get; init; }
+    public DbSet<CardFace> CardFaces { get; init; }
+    public DbSet<CardName> CardNames { get; init; }
+    public DbSet<CardSet> CardSets { get; init; }
+    public DbSet<CardSetFace> CardSetFaces { get; init; }
+    public DbSet<CardTypeline> CardTypelines { get; init; }
+    public DbSet<CardText> CardTexts { get; init; }
+    public DbSet<Color> Colors { get; init; }
+    public DbSet<Database.Models.Typeline.Type> Types { get; init; }
+    public DbSet<TypeLanguage> TypeLanguages { get; init; }
+    public DbSet<RelatedCard> RelatedCards { get; init; }
+    public DbSet<Ruling> Rulings { get; init; }
+    public DbSet<Set> Sets { get; init; }
+    public DbSet<Subtype> Subtypes { get; init; }
+    public DbSet<SubtypeLanguage> SubtypeLanguages { get; init; }
+    public DbSet<Supertype> Supertypes { get; init; }
+    public DbSet<SupertypeLanguage> SupertypeLanguages { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

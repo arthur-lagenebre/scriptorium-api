@@ -5,19 +5,12 @@ using MTG.Database.Models.Card;
 namespace MTG.Api.Controllers;
 
 [Route("api/[controller]")]
-public class CardTextsController : ControllerBase
+public class CardTextsController(ICardTextService cardTextService) : ControllerBase
 {
-    private readonly ICardTextService _cardTextService;
-
-    public CardTextsController(ICardTextService cardTextService)
-    {
-        _cardTextService = cardTextService;
-    }
-
-    [HttpGet("{cardId}")]
+    [HttpGet("{cardId:guid}")]
     public async Task<IActionResult> Get(Guid cardId)
     {
-        var cardTexts = await _cardTextService.GetCardTextsByCardId(cardId);
+        var cardTexts = await cardTextService.GetCardTextsByCardId(cardId);
 
         return Ok(cardTexts);
     }
@@ -25,7 +18,7 @@ public class CardTextsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] CardText cardTextObject)
     {
-        var cardTextDb = await _cardTextService.AddCardText(cardTextObject);
+        var cardTextDb = await cardTextService.AddCardText(cardTextObject);
 
         if (cardTextDb == null)
             return BadRequest();

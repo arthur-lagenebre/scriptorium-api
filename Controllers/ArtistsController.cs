@@ -5,19 +5,12 @@ using MTG.Database.Models;
 namespace MTG.Api.Controllers;
 
 [Route("api/[controller]")]
-public class ArtistsController : ControllerBase
+public class ArtistsController(IArtistService artistService) : ControllerBase
 {
-    private readonly IArtistService _artistService;
-
-    public ArtistsController(IArtistService artistService)
-    {
-        _artistService = artistService;
-    }
-
     [HttpGet("{name}")]
     public async Task<IActionResult> Get(string name)
     {
-        var artist = await _artistService.GetArtistByName(name);
+        var artist = await artistService.GetArtistByName(name);
 
         if (artist == null)
             return NotFound();
@@ -28,10 +21,7 @@ public class ArtistsController : ControllerBase
     [HttpGet()]
     public async Task<IActionResult> Get()
     {
-        var artist = await _artistService.GetArtists();
-
-        if (artist == null)
-            return NotFound();
+        var artist = await artistService.GetArtists();
 
         return Ok(artist);
     }
@@ -39,11 +29,11 @@ public class ArtistsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Artist artistObject)
     {
-        var artistDb = await _artistService.AddArtist(artistObject);
+        var artistDb = await artistService.AddArtist(artistObject);
 
         if (artistDb == null)
             return BadRequest();
 
-        return Ok(new { id = artistDb!.Id });
+        return Ok(new { id = artistDb.Id });
     }
 }

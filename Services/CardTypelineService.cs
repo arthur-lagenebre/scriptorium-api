@@ -7,9 +7,9 @@ namespace MTG.Api.Services;
 
 public class CardTypelineService : ICardTypelineService
 {
-    private readonly MTGDbContext _db;
+    private readonly MtgDbContext _db;
 
-    public CardTypelineService(MTGDbContext db)
+    public CardTypelineService(MtgDbContext db)
     {
         _db = db;
     }
