@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 namespace MTG.Database.Models.Card;
 
 [PrimaryKey("Id")]
-[Index(nameof(CardId))]
 public class RelatedCard
 {
     public Guid Id { get; init; }

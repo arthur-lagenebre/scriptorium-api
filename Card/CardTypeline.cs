@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 namespace MTG.Database.Models.Card;
 
 [PrimaryKey("Id")]
-[Index(nameof(CardId), nameof(Language), nameof(FaceId))]
 public class CardTypeline
 {
     public Guid Id { get; init; }

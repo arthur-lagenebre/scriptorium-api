@@ -1,3 +1,3 @@
 ﻿namespace MTG.Database.Models.Tutor;
 
-public record FlavorTutor(int FaceId, string Artist, string FlavorText, string FlavorName);
+public record FlavorTutor(string Language, string FlavorText, string FlavorName);
