@@ -15,7 +15,7 @@ public class CardTutorsService(MtgDbContext db) : ICardTutorsService
                               .Include(x => x.CardTexts)
                               .Include(x => x.CardFaces)
                               .Include(x => x.CardSets).ThenInclude(x => x.Set)
-                              .Include(x => x.CardSets).ThenInclude(x => x.CardSetFaces)
+                              .Include(x => x.CardSets).ThenInclude(x => x.CardSetFaces).ThenInclude(x => x.Flavors)
                               .Include(x => x.CardTypelines)
                               .Include(x => x.RelatedCards)
                               .Include(x => x.Rulings)
@@ -31,7 +31,7 @@ public class CardTutorsService(MtgDbContext db) : ICardTutorsService
                             .Include(x => x.CardTexts)
                             .Include(x => x.CardFaces)
                             .Include(x => x.CardSets).ThenInclude(x => x.Set)
-                            .Include(x => x.CardSets).ThenInclude(x => x.CardSetFaces)
+                            .Include(x => x.CardSets).ThenInclude(x => x.CardSetFaces).ThenInclude(x => x.Flavors)
                             .Include(x => x.CardTypelines)
                             .Include(x => x.RelatedCards)
                             .Include(x => x.Rulings)
@@ -46,7 +46,7 @@ public class CardTutorsService(MtgDbContext db) : ICardTutorsService
         var typelines = card.CardFaces.Count > 0 ? [] : GetTypelines(card.CardTypelines);
         var texts = card.CardFaces.Count > 0 ? [] : GetTexts(card.CardTexts);
         var sets = GetSets(card.CardSets);
-        var languages = card.CardNames.Select(x => x.Language).OrderBy(x => x).ToList();
+        var languages = card.CardNames.Select(x => x.Language).Distinct().OrderBy(x => x).ToList();
         var cardFaces = GetCardFaceTutors(card.CardFaces, card.CardNames, card.CardTexts, card.CardTypelines);
         var relatedCards = GetRelatedCards(card.RelatedCards);
         var rulings = GetRulings(card.Rulings);
@@ -80,17 +80,32 @@ public class CardTutorsService(MtgDbContext db) : ICardTutorsService
 
         foreach (var (index, cardSet) in cardSets.OrderBy(x => x.Set.ReleasedAt).Select((item, index) => (index, item)))
         {
-            var flavors = GetFlavors(cardSet.CardSetFaces);
+            var cardSetTutors = GetCardSetTutors(cardSet.CardSetFaces);
 
-            sets.Add(new SetTutor(cardSet.Set.Name, cardSet.Set.Code, index, cardSet.CollectorNumber, cardSet.Rarity, ["https://cards.scryfall.io/large/front/a/8/a8a64329-09fc-4e0d-b7d1-378635f2801a.jpg"], flavors));
+            sets.Add(new SetTutor(cardSet.Set.Name, cardSet.Set.Code, index, cardSet.CollectorNumber, cardSet.Rarity, ["https://cards.scryfall.io/large/front/a/8/a8a64329-09fc-4e0d-b7d1-378635f2801a.jpg"], cardSetTutors));
         }
 
         return sets;
     }
 
-    private List<FlavorTutor> GetFlavors(ICollection<CardSetFace> cardSetFaces)
+    private List<CardSetTutor> GetCardSetTutors(ICollection<CardSetFace> cardSetFaces)
     {
-        return (from cardSetFace in cardSetFaces let artists = GetArtists(cardSetFace.ArtistsId) select new FlavorTutor(cardSetFace.FaceId, string.Join(" & ", artists), cardSetFace.FlavorText ?? string.Empty, cardSetFace.FlavorName ?? string.Empty)).ToList();
+        var cardSets = new List<CardSetTutor>();
+
+        foreach (var cardSetFace in cardSetFaces)
+        {
+            var flavors = GetFlavors(cardSetFace.Flavors);
+            var artists = GetArtists(cardSetFace.ArtistsId);
+
+            cardSets.Add(new CardSetTutor(cardSetFace.FaceId, string.Join(" & ", artists), flavors));
+        }
+
+        return cardSets;
+    }
+
+    private static List<FlavorTutor> GetFlavors(ICollection<CardSetFaceFlavor> cardSetFaceFlavors)
+    {
+        return (from cardSetFaceFlavor in cardSetFaceFlavors select new FlavorTutor(cardSetFaceFlavor.Language, cardSetFaceFlavor.FlavorText ?? string.Empty, cardSetFaceFlavor.FlavorName ?? string.Empty)).ToList();
     }
 
     private List<string> GetArtists(IList<Guid>? artistsId)
@@ -98,7 +113,7 @@ public class CardTutorsService(MtgDbContext db) : ICardTutorsService
         return artistsId == null ? [] : artistsId.Select(artistId => db.Artists.First(x => x.Id == artistId).Name).ToList();
     }
 
-    private List<CardFaceTutor> GetCardFaceTutors(ICollection<CardFace> cardFaces, ICollection<CardName> cardNames, ICollection<CardText> cardTexts, ICollection<CardTypeline> cardTypelines)
+    private static List<CardFaceTutor> GetCardFaceTutors(ICollection<CardFace> cardFaces, ICollection<CardName> cardNames, ICollection<CardText> cardTexts, ICollection<CardTypeline> cardTypelines)
     {
         var cardFaceTutors = new List<CardFaceTutor>();
 
@@ -114,7 +129,7 @@ public class CardTutorsService(MtgDbContext db) : ICardTutorsService
         return cardFaceTutors;
     }
 
-    private List<RelatedCardTutor> GetRelatedCards(ICollection<RelatedCard> relatedCards)
+    private static List<RelatedCardTutor> GetRelatedCards(ICollection<RelatedCard> relatedCards)
     {
         return relatedCards.Select(relatedCard => new RelatedCardTutor(relatedCard.Name, string.Empty, relatedCard.Component)).ToList();
     }
