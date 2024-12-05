@@ -82,7 +82,7 @@ public class CardTutorsService(MtgDbContext db) : ICardTutorsService
         {
             var cardSetTutors = GetCardSetTutors(cardSet.CardSetFaces);
 
-            sets.Add(new SetTutor(cardSet.Set.Name, cardSet.Set.Code, index, cardSet.CollectorNumber, cardSet.Rarity, ["https://cards.scryfall.io/large/front/a/8/a8a64329-09fc-4e0d-b7d1-378635f2801a.jpg"], cardSetTutors));
+            sets.Add(new SetTutor(cardSet.Set.Name, cardSet.Set.Code, index, cardSet.CollectorNumber, cardSet.Rarity, cardSet.NormalImagesUrl, cardSetTutors));
         }
 
         return sets;

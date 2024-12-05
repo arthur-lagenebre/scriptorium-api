@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MTG.Api.Migrations
 {
     [DbContext(typeof(MtgDbContext))]
-    [Migration("20241125195449_initial")]
-    partial class initial
+    [Migration("20241205105052_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -202,6 +202,10 @@ namespace MTG.Api.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("NormalImagesUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Rarity")
                         .IsRequired()
                         .HasMaxLength(25)
@@ -209,6 +213,10 @@ namespace MTG.Api.Migrations
 
                     b.Property<Guid>("SetId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SmallImagesUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -619,77 +627,77 @@ namespace MTG.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("272c1d99-f114-4cf1-94ba-5e16fd8b8c9a"),
+                            Id = new Guid("669367c3-ba1f-4b27-abe8-b0ca40b13d5a"),
                             Language = "en",
                             Name = "Card",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
                         },
                         new
                         {
-                            Id = new Guid("44893044-8aa9-4292-8e6e-cb0ddd83a9df"),
+                            Id = new Guid("bad689b4-49a5-4464-8257-eac72029b0dd"),
                             Language = "es",
                             Name = "Carta",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
                         },
                         new
                         {
-                            Id = new Guid("d41918b1-f330-4110-8dc3-d9fdbc58c5e3"),
+                            Id = new Guid("f5a5239c-8d67-4e85-9419-e640a666acbc"),
                             Language = "fr",
                             Name = "Carte",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
                         },
                         new
                         {
-                            Id = new Guid("f655ecff-6d35-440a-b4d0-4b874172eb2f"),
+                            Id = new Guid("5346476c-2b05-4360-9705-54aa0376ab58"),
                             Language = "de",
                             Name = "Karte",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
                         },
                         new
                         {
-                            Id = new Guid("a57f1fc2-37c4-46b1-86fb-60b1f96a781c"),
+                            Id = new Guid("8b2ec9e8-e20e-455b-8b17-a1b03b259290"),
                             Language = "it",
                             Name = "Carta",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
                         },
                         new
                         {
-                            Id = new Guid("caf94bfa-5a3b-4a3e-bf06-9e9d0d9379a3"),
+                            Id = new Guid("c070e592-089a-4e4e-b1a8-93ab4c09d984"),
                             Language = "pt",
                             Name = "Card",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
                         },
                         new
                         {
-                            Id = new Guid("05aa7d5c-9d3e-4a34-a864-61b8aca1d6db"),
+                            Id = new Guid("66dd5abf-cf59-41f0-ae3f-5d52190469ab"),
                             Language = "ja",
                             Name = "カード",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
                         },
                         new
                         {
-                            Id = new Guid("a2f9f429-b828-47e4-af5a-06cb51b33bd1"),
+                            Id = new Guid("5eeb72fe-2186-4954-add5-e610d6dc5ce2"),
                             Language = "ko",
                             Name = "카드",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
                         },
                         new
                         {
-                            Id = new Guid("4c89c29f-729d-49fb-8161-6a855d1cd9be"),
+                            Id = new Guid("c53a1ccd-5452-4c78-8029-746aa7f44635"),
                             Language = "ru",
                             Name = "карту",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
                         },
                         new
                         {
-                            Id = new Guid("55816bc7-d400-4e6c-a874-9cf1fd1368c6"),
+                            Id = new Guid("a6999ee9-7fa1-4d05-87fe-020859e07fb7"),
                             Language = "zhs",
                             Name = "牌",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
                         },
                         new
                         {
-                            Id = new Guid("7b34864b-c011-492f-8eeb-4cafe448ffc9"),
+                            Id = new Guid("4284fd77-bfa0-44c1-9941-5cfd4f2c0b74"),
                             Language = "zht",
                             Name = "牌",
                             TypeId = new Guid("18943286-deb5-4d81-b089-6cc4bc2b6937")
