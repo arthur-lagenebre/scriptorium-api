@@ -7,6 +7,14 @@ namespace MTG.Api.Controllers;
 [Route("api/[controller]")]
 public class RulingsController(IRulingService rulingService) : ControllerBase
 {
+    [HttpGet("{cardId}")]
+    public async Task<IActionResult> Get(Guid cardId)
+    {
+        var rulings = await rulingService.GetRulingsByCardId(cardId);
+
+        return Ok(rulings);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Ruling rulingObject)
     {

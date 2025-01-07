@@ -7,6 +7,14 @@ namespace MTG.Api.Controllers;
 [Route("api/[controller]")]
 public class CardFacesController(ICardFaceService cardFaceService) : ControllerBase
 {
+    [HttpGet("{cardId}")]
+    public async Task<IActionResult> Get(Guid cardId)
+    {
+        var cardFaces = await cardFaceService.GetCardFacesByCardId(cardId);
+
+        return Ok(cardFaces);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] CardFace cardFaceObject)
     {

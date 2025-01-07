@@ -7,6 +7,14 @@ namespace MTG.Api.Controllers;
 [Route("api/[controller]")]
 public class RelatedCardsController(IRelatedCardService relatedCardService) : ControllerBase
 {
+    [HttpGet("{cardId}")]
+    public async Task<IActionResult> Get(Guid cardId)
+    {
+        var relatedCards = await relatedCardService.GetRelatedCardsByCardId(cardId);
+
+        return Ok(relatedCards);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] RelatedCard relatedCardObject)
     {

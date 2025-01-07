@@ -7,6 +7,14 @@ namespace MTG.Api.Controllers;
 [Route("api/[controller]")]
 public class CardTextsController(ICardTextService cardTextService) : ControllerBase
 {
+    [HttpGet("{cardId:guid}")]
+    public async Task<IActionResult> Get(Guid cardId)
+    {
+        var cardTexts = await cardTextService.GetCardTextsByCardId(cardId);
+
+        return Ok(cardTexts);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] CardText cardTextObject)
     {
