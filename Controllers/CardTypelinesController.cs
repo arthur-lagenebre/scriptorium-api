@@ -7,14 +7,6 @@ namespace MTG.Api.Controllers;
 [Route("api/[controller]")]
 public class CardTypelinesController(ICardTypelineService cardTypelineService) : ControllerBase
 {
-    [HttpGet("{cardId:guid}")]
-    public async Task<IActionResult> Get(Guid cardId)
-    {
-        var cardNames = await cardTypelineService.GetCardTypelinesByCardId(cardId);
-
-        return Ok(cardNames);
-    }
-
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] CardTypeline cardTypeline)
     {

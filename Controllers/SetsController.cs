@@ -7,25 +7,6 @@ namespace MTG.Api.Controllers;
 [Route("api/[controller]")]
 public class SetsController(ISetService setService) : ControllerBase
 {
-    [HttpGet()]
-    public async Task<IActionResult> Get()
-    {
-        var sets = await setService.GetSets();
-
-        return Ok(sets);
-    }
-
-    [HttpGet("{code}")]
-    public async Task<IActionResult> Get(string code)
-    {
-        var set = await setService.GetSetByCode(code);
-
-        if (set == null)
-            return NotFound();
-
-        return Ok(set);
-    }
-
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Set setObject)
     {
