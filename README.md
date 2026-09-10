@@ -63,7 +63,7 @@ Full interactive documentation is available at `/swagger` when running in Develo
 
 - .NET 8 SDK
 - SQL Server (LocalDB, Express or full)
-- [MTG.Database.Models](https://github.com/Swarmotte/MTG.Database.Models) cloned as a sibling directory
+- [MTG.Database.Models](https://github.com/arthur-lagenebre/MTG.Database.Models) cloned as a sibling directory
 
 ```
 your-workspace/
@@ -74,7 +74,7 @@ your-workspace/
 **Setup**
 
 ```bash
-git clone https://github.com/Swarmotte/MTG.API.git
+git clone https://github.com/arthur-lagenebre/MTG.API.git
 cd MTG.API
 dotnet restore
 ```
@@ -99,7 +99,7 @@ dotnet run
 
 Swagger UI is then available at `https://localhost:7276/swagger`.
 
-**Populate the database** by running the [MTG-Importer](https://github.com/Swarmotte/MTG-Importer) against this API.
+**Populate the database** by running the [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) against this API.
 
 > ⚠️ **Known limitations:** the CORS policy is pinned to `http://localhost:4200`, and a development connection string is committed in `appsettings.json`. Both are addressed in the roadmap.
 
@@ -132,10 +132,10 @@ Seed data (colours, the base `Card` type and its translations) lives in `MtgDbCo
 
 | Repository | Role |
 |---|---|
-| [MTG-Importer](https://github.com/Swarmotte/MTG-Importer) | Scryfall ETL feeding this API |
+| [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) | Scryfall ETL feeding this API |
 | **MTG.API** | This repository — REST API |
-| [MTG.Database.Models](https://github.com/Swarmotte/MTG.Database.Models) | Shared EF Core model |
-| [card-tutor](https://github.com/Swarmotte/card-tutor) | Angular front end |
+| [MTG.Database.Models](https://github.com/arthur-lagenebre/MTG.Database.Models) | Shared EF Core model |
+| [card-tutor](https://github.com/arthur-lagenebre/card-tutor) | Angular front end |
 
 ---
 
@@ -189,7 +189,7 @@ La documentation interactive complète est disponible sur `/swagger` en environn
 
 - SDK .NET 8
 - SQL Server (LocalDB, Express ou complet)
-- [MTG.Database.Models](https://github.com/Swarmotte/MTG.Database.Models) cloné dans un répertoire frère
+- [MTG.Database.Models](https://github.com/arthur-lagenebre/MTG.Database.Models) cloné dans un répertoire frère
 
 ```
 votre-workspace/
@@ -200,7 +200,7 @@ votre-workspace/
 **Installation**
 
 ```bash
-git clone https://github.com/Swarmotte/MTG.API.git
+git clone https://github.com/arthur-lagenebre/MTG.API.git
 cd MTG.API
 dotnet restore
 ```
@@ -225,7 +225,7 @@ dotnet run
 
 L'interface Swagger est alors disponible sur `https://localhost:7276/swagger`.
 
-**Peupler la base** en exécutant l'[MTG-Importer](https://github.com/Swarmotte/MTG-Importer) contre cette API.
+**Peupler la base** en exécutant l'[MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) contre cette API.
 
 > ⚠️ **Limitations connues :** la politique CORS est figée sur `http://localhost:4200`, et une chaîne de connexion de développement est committée dans `appsettings.json`. Les deux points sont traités dans la feuille de route.
 
@@ -258,10 +258,10 @@ Les données de seed (couleurs, type `Card` de base et ses traductions) se trouv
 
 | Dépôt | Rôle |
 |---|---|
-| [MTG-Importer](https://github.com/Swarmotte/MTG-Importer) | ETL Scryfall alimentant cette API |
+| [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) | ETL Scryfall alimentant cette API |
 | **MTG.API** | Ce dépôt — API REST |
-| [MTG.Database.Models](https://github.com/Swarmotte/MTG.Database.Models) | Modèle EF Core partagé |
-| [card-tutor](https://github.com/Swarmotte/card-tutor) | Front Angular |
+| [MTG.Database.Models](https://github.com/arthur-lagenebre/MTG.Database.Models) | Modèle EF Core partagé |
+| [card-tutor](https://github.com/arthur-lagenebre/card-tutor) | Front Angular |
 
 ---
 
