@@ -18,7 +18,7 @@
 
 This repository holds the Entity Framework Core entities shared by every component of the project. It contains no business logic and no database provider configuration — only the shape of the data and the relationships between tables.
 
-It is referenced by [MTG.API](https://github.com/Swarmotte/MTG.API) (which owns the `DbContext` and the migrations) and mirrors the target schema the [MTG-Importer](https://github.com/Swarmotte/MTG-Importer) writes into.
+It is referenced by [MTG.API](https://github.com/arthur-lagenebre/MTG.API) (which owns the `DbContext` and the migrations) and mirrors the target schema the [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) writes into.
 
 ### Why it matters
 
@@ -76,7 +76,7 @@ The `Tutor/*` records (`CardTutor`, `LanguageTutor`, `SetTutor`…) are not data
 This project is a class library. It is not meant to run on its own.
 
 ```bash
-git clone https://github.com/Swarmotte/MTG.Database.Models.git
+git clone https://github.com/arthur-lagenebre/MTG.Database.Models.git
 cd MTG.Database.Models
 dotnet build
 ```
@@ -102,10 +102,10 @@ your-workspace/
 
 | Repository | Role |
 |---|---|
-| [MTG-Importer](https://github.com/Swarmotte/MTG-Importer) | Imports Scryfall bulk data into the database via the API |
-| [MTG.API](https://github.com/Swarmotte/MTG.API) | REST API, owns the `DbContext` and migrations |
+| [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) | Imports Scryfall bulk data into the database via the API |
+| [MTG.API](https://github.com/arthur-lagenebre/MTG.API) | REST API, owns the `DbContext` and migrations |
 | **MTG.Database.Models** | This repository — shared EF Core model |
-| [card-tutor](https://github.com/Swarmotte/card-tutor) | Angular front end |
+| [card-tutor](https://github.com/arthur-lagenebre/card-tutor) | Angular front end |
 
 ---
 
@@ -115,7 +115,7 @@ your-workspace/
 
 Ce dépôt contient les entités Entity Framework Core partagées par tous les composants du projet. Il ne contient aucune logique métier ni configuration de fournisseur de base de données — uniquement la forme des données et les relations entre les tables.
 
-Il est référencé par [MTG.API](https://github.com/Swarmotte/MTG.API) (qui porte le `DbContext` et les migrations) et décrit le schéma cible dans lequel écrit l'[MTG-Importer](https://github.com/Swarmotte/MTG-Importer).
+Il est référencé par [MTG.API](https://github.com/arthur-lagenebre/MTG.API) (qui porte le `DbContext` et les migrations) et décrit le schéma cible dans lequel écrit l'[MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer).
 
 ### Pourquoi c'est le cœur du projet
 
@@ -158,7 +158,7 @@ Les records `Tutor/*` (`CardTutor`, `LanguageTutor`, `SetTutor`…) ne sont pas 
 Ce projet est une bibliothèque de classes. Il n'est pas destiné à s'exécuter seul.
 
 ```bash
-git clone https://github.com/Swarmotte/MTG.Database.Models.git
+git clone https://github.com/arthur-lagenebre/MTG.Database.Models.git
 cd MTG.Database.Models
 dotnet build
 ```
@@ -184,10 +184,10 @@ votre-workspace/
 
 | Dépôt | Rôle |
 |---|---|
-| [MTG-Importer](https://github.com/Swarmotte/MTG-Importer) | Importe les données Scryfall dans la base via l'API |
-| [MTG.API](https://github.com/Swarmotte/MTG.API) | API REST, porte le `DbContext` et les migrations |
+| [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) | Importe les données Scryfall dans la base via l'API |
+| [MTG.API](https://github.com/arthur-lagenebre/MTG.API) | API REST, porte le `DbContext` et les migrations |
 | **MTG.Database.Models** | Ce dépôt — modèle EF Core partagé |
-| [card-tutor](https://github.com/Swarmotte/card-tutor) | Front Angular |
+| [card-tutor](https://github.com/arthur-lagenebre/card-tutor) | Front Angular |
 
 ---
 
