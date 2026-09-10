@@ -36,7 +36,7 @@ builder.Services.AddTransient<ISubtypeService, SubtypeService>();
 builder.Services.AddTransient<ISubtypeLanguageService, SubtypeLanguageService>();
 builder.Services.AddTransient<ITypeService, TypeService>();
 builder.Services.AddTransient<ITypeLanguageService, TypeLanguageService>();
-builder.Services.AddDbContext<MtgDbContext>(db => db.UseSqlServer(builder.Configuration.GetConnectionString("MTGConnectionString")), ServiceLifetime.Singleton);
+builder.Services.AddDbContext<MtgDbContext>(db => db.UseSqlServer(builder.Configuration.GetConnectionString("MTGConnectionString")));
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
