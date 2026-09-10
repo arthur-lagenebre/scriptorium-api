@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTG.Api", "MTG.Api.csproj", "{51EC8A79-DC7A-4871-AC42-642B8BBF7DCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTG.Database.Models", "..\MTG.Database.Models\MTG.Database.Models.csproj", "{BDD0B714-890E-4411-B4A0-DA5C3D9FFF5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTG.Database.Models", "MTG.Database.Models\MTG.Database.Models.csproj", "{BDD0B714-890E-4411-B4A0-DA5C3D9FFF5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
