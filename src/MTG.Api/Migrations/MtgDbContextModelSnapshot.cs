@@ -35,7 +35,7 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Artists");
+                    b.ToTable("Artists", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.Card", b =>
@@ -58,7 +58,7 @@ namespace MTG.Api.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.PrimitiveCollection<string>("Keyword")
+                    b.Property<string>("Keyword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -90,7 +90,7 @@ namespace MTG.Api.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.PrimitiveCollection<string>("ProducedMana")
+                    b.Property<string>("ProducedMana")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -102,7 +102,7 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cards");
+                    b.ToTable("Cards", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.CardFace", b =>
@@ -153,7 +153,7 @@ namespace MTG.Api.Migrations
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("CardFaces");
+                    b.ToTable("CardFaces", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.CardName", b =>
@@ -182,7 +182,7 @@ namespace MTG.Api.Migrations
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("CardNames");
+                    b.ToTable("CardNames", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.CardSet", b =>
@@ -199,7 +199,7 @@ namespace MTG.Api.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.PrimitiveCollection<string>("NormalImagesUrl")
+                    b.Property<string>("NormalImagesUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -211,7 +211,7 @@ namespace MTG.Api.Migrations
                     b.Property<Guid>("SetId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.PrimitiveCollection<string>("SmallImagesUrl")
+                    b.Property<string>("SmallImagesUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -221,7 +221,7 @@ namespace MTG.Api.Migrations
 
                     b.HasIndex("SetId");
 
-                    b.ToTable("CardSets");
+                    b.ToTable("CardSets", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.CardSetFace", b =>
@@ -230,7 +230,7 @@ namespace MTG.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.PrimitiveCollection<string>("ArtistsId")
+                    b.Property<string>("ArtistsId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("CardSetId")
@@ -243,7 +243,7 @@ namespace MTG.Api.Migrations
 
                     b.HasIndex("CardSetId");
 
-                    b.ToTable("CardSetFaces");
+                    b.ToTable("CardSetFaces", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.CardSetFaceFlavor", b =>
@@ -272,7 +272,7 @@ namespace MTG.Api.Migrations
 
                     b.HasIndex("CardSetFaceId");
 
-                    b.ToTable("CardSetFaceFlavor");
+                    b.ToTable("CardSetFaceFlavor", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.CardText", b =>
@@ -301,7 +301,7 @@ namespace MTG.Api.Migrations
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("CardTexts");
+                    b.ToTable("CardTexts", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.CardTypeline", b =>
@@ -330,7 +330,7 @@ namespace MTG.Api.Migrations
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("CardTypelines");
+                    b.ToTable("CardTypelines", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Card.RelatedCard", b =>
@@ -356,7 +356,7 @@ namespace MTG.Api.Migrations
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("RelatedCards");
+                    b.ToTable("RelatedCards", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Color", b =>
@@ -379,7 +379,7 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colors");
+                    b.ToTable("Colors", (string)null);
 
                     b.HasData(
                         new
@@ -446,7 +446,7 @@ namespace MTG.Api.Migrations
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("Rulings");
+                    b.ToTable("Rulings", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Set", b =>
@@ -487,7 +487,7 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sets");
+                    b.ToTable("Sets", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Typeline.Subtype", b =>
@@ -508,7 +508,7 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subtypes");
+                    b.ToTable("Subtypes", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Typeline.SubtypeLanguage", b =>
@@ -532,7 +532,7 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubtypeLanguages");
+                    b.ToTable("SubtypeLanguages", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Typeline.Supertype", b =>
@@ -548,7 +548,7 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Supertypes");
+                    b.ToTable("Supertypes", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Typeline.SupertypeLanguage", b =>
@@ -572,7 +572,7 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SupertypeLanguages");
+                    b.ToTable("SupertypeLanguages", (string)null);
                 });
 
             modelBuilder.Entity("MTG.Database.Models.Typeline.Type", b =>
@@ -588,7 +588,7 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Types");
+                    b.ToTable("Types", (string)null);
 
                     b.HasData(
                         new
@@ -619,7 +619,7 @@ namespace MTG.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TypeLanguages");
+                    b.ToTable("TypeLanguages", (string)null);
 
                     b.HasData(
                         new
