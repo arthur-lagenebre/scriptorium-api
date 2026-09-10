@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="MTG.Database.Models\MTG.Database.Models.csproj" />
+    <ProjectReference Include="..\MTG.Database.Models\MTG.Database.Models.csproj" />
   </ItemGroup>
 
 </Project>
