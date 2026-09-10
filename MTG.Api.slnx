@@ -1,6 +1,0 @@
-<Solution>
-  <Folder Name="/src/">
-    <Project Path="src/MTG.Api/MTG.Api.csproj" />
-    <Project Path="src/MTG.Database.Models/MTG.Database.Models.csproj" />
-  </Folder>
-</Solution>
