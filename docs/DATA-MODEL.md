@@ -1,205 +1,226 @@
-# MTG.Database.Models
+# Data model · Modèle de données
 
-[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)](https://dotnet.microsoft.com/)
-[![EF Core](https://img.shields.io/badge/EF%20Core-8.0-512BD4)](https://learn.microsoft.com/ef/core/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-work%20in%20progress-orange)]()
-
-> Shared Entity Framework Core data model for a multilingual Magic: The Gathering card platform.
-> Modèle de données Entity Framework Core partagé pour une plateforme multilingue de cartes Magic: The Gathering.
+> How the Scriptorium schema treats localisation as a first-class axis.
+> Comment le schéma Scriptorium traite la localisation comme un axe de première classe.
 
 **🇬🇧 [English](#english) · 🇫🇷 [Français](#français)**
+
+Entities live in `src/Scriptorium.Mtg.Models/`. The `DbContext` and migrations live in `src/Scriptorium.Mtg.Api/`.
 
 ---
 
 ## English
 
-### What this is
+### The constraint that shapes everything
 
-This repository holds the Entity Framework Core entities shared by every component of the project. It contains no business logic and no database provider configuration — only the shape of the data and the relationships between tables.
+Wizards of the Coast prints Magic cards in a limited set of languages and only keeps the English text current. A database designed around English, with translations bolted on, inherits that limitation. Three decisions push against it.
 
-It is referenced by [MTG.API](https://github.com/arthur-lagenebre/MTG.API) (which owns the `DbContext` and the migrations) and mirrors the target schema the [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) writes into.
+#### 1. Translations are rows, not columns
 
-### Why it matters
+`CardName`, `CardText` and `CardTypeline` are separate tables, each keyed by `(CardId, FaceId, Language, Value)`.
 
-Wizards of the Coast only translates Magic cards into a handful of languages, and only keeps the English text up to date. This project aims to let a community maintain translations in any language. That goal is only reachable if **localisation is a first-class axis of the schema**, not an afterthought bolted onto an English-first design.
-
-Three decisions carry that idea:
-
-**1. Translations are rows, not columns.** `CardName`, `CardText` and `CardTypeline` are separate tables keyed by `(CardId, FaceId, Language, Value)`. Adding a new language means inserting rows — no schema migration, no column explosion, no nullable-column sprawl.
-
-**2. Oracle and printing are separated.** `Card` holds what is true of a card in the abstract (mana cost, colours, layout, power/toughness). `CardSet` holds what is true of one printing (set, collector number, rarity, images), and `CardSetFace` holds what varies per printing *and* per face (flavour text, artists). A card reprinted twenty times has one oracle row and twenty printing rows.
-
-**3. Type lines are composed, not stored as strings.** `Type`, `Subtype` and `Supertype` each have their own translation table. A separate `Typeline` table stores **the separators for each language** (`SeparatorType`, `SeparatorSubtype`, `SeparatorTypeSubtype`).
-
-That last point is the one most MTG databases get wrong. English uses `Creature — Human Wizard`; Japanese and Chinese do not use spaces or em dashes the same way. Storing the separators per language lets the type line be recomposed correctly for any locale instead of hardcoding an English convention.
-
-### Schema overview
-
-```mermaid
-erDiagram
-    Card ||--o{ CardName : "translated names"
-    Card ||--o{ CardText : "translated rules text"
-    Card ||--o{ CardTypeline : "translated type lines"
-    Card ||--o{ CardFace : "faces (transform, split...)"
-    Card ||--o{ CardSet : "printings"
-    Card ||--o{ RelatedCard : "meld, token, combo"
-    Card ||--o{ Ruling : "rulings"
-    CardSet }o--|| Set : "belongs to"
-    CardSet ||--o{ CardSetFace : "per-printing faces"
-    CardSetFace ||--o{ CardSetFaceFlavor : "flavour text"
-    Type ||--o{ TypeLanguage : "translations"
-    Subtype ||--o{ SubtypeLanguage : "translations"
-    Supertype ||--o{ SupertypeLanguage : "translations"
+```
+Card (1) ──< CardName   (CardId, FaceId, Language, Value)
+         ──< CardText   (CardId, FaceId, Language, Value)
+         ──< CardTypeline (CardId, FaceId, Language, Value)
 ```
 
-| Entity | Role |
+Adding Welsh, Catalan or Esperanto means inserting rows. No schema migration, no column per language, no nullable sprawl, and no ceiling on how many languages the platform can hold. Querying a card in one language is a filter on `Language`; querying the languages a card exists in is a `DISTINCT` on the same column.
+
+`Language` is `varchar(3)`, matching Scryfall's codes — `en`, `fr`, `ja`, `zhs`, `zht`.
+
+`FaceId` is an integer rather than a foreign key. Face 0 is the front, face 1 the back, and so on. A single-faced card has one row per language with `FaceId = 0`; a transform card has two.
+
+#### 2. Oracle data is separated from printing data
+
+A card has two kinds of truth. What is true of the card itself — its mana cost, colours, power and toughness — and what is true of one particular printing — which set, which collector number, which rarity, which artwork.
+
+| Table | Holds | Example |
+|---|---|---|
+| `Card` | Oracle truth | Mana cost, colours, layout, P/T, loyalty, keywords |
+| `CardFace` | Oracle truth, per face | Mana cost and P/T of one face of a multi-face card |
+| `CardSet` | One printing | Set, collector number, rarity, image URLs |
+| `CardSetFace` | One printing, one face | Artists |
+| `CardSetFaceFlavor` | One printing, one face, one language | Flavour text, flavour name |
+
+A card reprinted twenty times has one `Card` row and twenty `CardSet` rows. Its oracle text is stored once per language, not once per printing — which is exactly the deduplication a translation platform needs, since translators should edit the card, not each of its twenty appearances.
+
+Flavour text sits at the deepest level because it genuinely varies along all three axes: a reprint can change the flavour text, a double-faced card has one per face, and each language has its own.
+
+#### 3. Type lines are composed, not stored
+
+This is the part most Magic databases get wrong.
+
+English writes `Legendary Creature — Human Wizard`: supertypes, then types, separated by spaces, then an em dash, then subtypes separated by spaces. That convention is not universal. Japanese and Chinese do not space and punctuate the same way, and hardcoding `" — "` produces type lines that look wrong to a native reader.
+
+So the taxonomy is stored in pieces, each with its own translation table:
+
+```
+Type      ──< TypeLanguage      (TypeId, Language, Name)
+Subtype   ──< SubtypeLanguage   (SubtypeId, Language, Name)
+Supertype ──< SupertypeLanguage (SupertypeId, Language, Name)
+```
+
+And a `Typeline` table stores **the punctuation of each language**:
+
+| Column | Role |
 |---|---|
-| `Card` | Oracle-level card: mana cost, mana value, colours, layout, keywords, P/T, loyalty |
-| `CardName` / `CardText` / `CardTypeline` | One row per (card, face, language) — the translation tables |
-| `CardFace` | Per-face oracle data for multi-face layouts |
-| `CardSet` | One printing of a card in one set |
-| `CardSetFace` / `CardSetFaceFlavor` | Artists and flavour text, which vary by printing and face |
-| `Set` | A Magic set (name, code, release date) |
-| `Type` / `Subtype` / `Supertype` + `*Language` | Type taxonomy and its translations |
-| `Typeline` | Per-language separators used to recompose a type line |
-| `Color` | Colour reference table, stored as a bitmask (W=2, U=4, B=8, R=16, G=32) |
-| `Artist`, `Ruling`, `RelatedCard` | Supporting entities |
-| `Tutor/*` | Read-model records aggregating a full card for the front end |
+| `Language` | The language these separators apply to |
+| `SeparatorType` | Between two types |
+| `SeparatorSubtype` | Between two subtypes |
+| `SeparatorTypeSubtype` | Between the type block and the subtype block |
 
-Colours are stored as a bitmask so that a colour identity fits in a single indexed integer column and can be filtered with bitwise operations.
+Composing a localised type line is then a matter of joining the translated pieces with that language's separators, rather than assuming English punctuation and substituting words into it.
 
-The `Tutor/*` records (`CardTutor`, `LanguageTutor`, `SetTutor`…) are not database entities. They are the flattened, display-oriented projections the API returns, so the front end does not have to recompose eight tables client-side.
+`Subtype` carries an extra `TypeCard` column, because Magic's subtypes are scoped to a type: *Aura* is an enchantment subtype, *Equipment* an artifact subtype, *Human* a creature subtype. The same word can legitimately appear under two types.
 
-### Usage
+### Colours as a bitmask
 
-This project is a class library. It is not meant to run on its own.
+`Color` is a reference table seeded with six rows, and card colours are stored as an integer bitmask on `Card` and `CardFace`.
 
-```bash
-git clone https://github.com/arthur-lagenebre/MTG.Database.Models.git
-cd MTG.Database.Models
-dotnet build
-```
-
-Consumers reference it via a relative `ProjectReference`, which means the repositories must currently be cloned side by side:
-
-```
-your-workspace/
-├── MTG.Database.Models/
-├── MTG.API/
-└── MTG-Importer/
-```
-
-### Roadmap
-
-- [ ] Migrate to .NET 10 (LTS) and EF Core 10 — .NET 8 support ends 10 November 2026
-- [ ] Publish as a NuGet package on GitHub Packages, to drop the side-by-side clone requirement
-- [ ] Add auditing fields (`CreatedAt`, `UpdatedAt`, `UpdatedBy`) required by collaborative translation
-- [ ] Add a translation history / revision entity for moderation
-- [ ] Review primitive-collection mapping (`List<string>`) against EF Core 10 behaviour
-
-### Related repositories
-
-| Repository | Role |
+| Bit | Colour |
 |---|---|
-| [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) | Imports Scryfall bulk data into the database via the API |
-| [MTG.API](https://github.com/arthur-lagenebre/MTG.API) | REST API, owns the `DbContext` and migrations |
-| **MTG.Database.Models** | This repository — shared EF Core model |
-| [card-tutor](https://github.com/arthur-lagenebre/card-tutor) | Angular front end |
+| 1 | None (colourless) |
+| 2 | W — White |
+| 4 | U — Blue |
+| 8 | B — Black |
+| 16 | R — Red |
+| 32 | G — Green |
+
+A Golgari card is `8 + 32 = 40`. A five-colour card is `62`. This fits a colour identity in one indexed integer column and makes "every card that is at least blue" a bitwise test rather than a join against a colour-per-card table.
+
+`Card` carries three of them: `Colors` (the card's own colours), `ColorsIdentity` (everything relevant to Commander deck legality, including mana symbols in the rules text), and `ColorsIndicator` (the colour dot printed on cards with no mana cost).
+
+### The rest
+
+| Table | Role |
+|---|---|
+| `Set` | A Magic set: code, name, type, release date, block, parent set |
+| `Artist` | Illustrators, referenced from `CardSetFace.ArtistsId` |
+| `Ruling` | Official clarifications, per card and per language |
+| `RelatedCard` | Links to meld results, tokens and combo pieces, by name and component |
+| `Color` | Colour reference table |
+
+### Read models
+
+The `Tutor/` folder holds records — `CardTutor`, `CardSetTutor`, `LanguageTutor`, `FlavorTutor`, `RulingTutor`, `RelatedCardTutor`, `CardFaceTutor` — that are **not database tables**. They are the flattened projections the API returns, assembled by `CardTutorsService`.
+
+The split matters: the write model is normalised so that a translation is edited in exactly one place, while the read model is denormalised so that displaying a card costs one request instead of eight.
+
+### Known gaps
+
+- **No auditing.** Nothing records who changed a translation, or when. Collaborative editing needs `CreatedAt`, `UpdatedAt` and `UpdatedBy` on the translation tables.
+- **No revision history.** A wiki without history cannot be moderated, and cannot be rolled back after vandalism.
+- **Seed identifiers must stay hardcoded.** `MtgDbContext.OnModelCreating` seeds colours and the base `Card` type with fixed GUIDs. A `Guid.NewGuid()` there makes the model change on every build, which EF Core 9+ rejects when applying migrations.
+- **Language codes are not validated.** `Language` accepts any three characters; nothing enforces the Scryfall set.
 
 ---
 
 ## Français
 
-### De quoi s'agit-il
+### La contrainte qui structure tout
 
-Ce dépôt contient les entités Entity Framework Core partagées par tous les composants du projet. Il ne contient aucune logique métier ni configuration de fournisseur de base de données — uniquement la forme des données et les relations entre les tables.
+Wizards of the Coast imprime les cartes Magic dans un nombre limité de langues et ne maintient à jour que le texte anglais. Une base conçue autour de l'anglais, avec des traductions greffées ensuite, hérite de cette limitation. Trois décisions s'y opposent.
 
-Il est référencé par [MTG.API](https://github.com/arthur-lagenebre/MTG.API) (qui porte le `DbContext` et les migrations) et décrit le schéma cible dans lequel écrit l'[MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer).
+#### 1. Les traductions sont des lignes, pas des colonnes
 
-### Pourquoi c'est le cœur du projet
+`CardName`, `CardText` et `CardTypeline` sont des tables séparées, portant chacune `(CardId, FaceId, Language, Value)`.
 
-Wizards of the Coast ne traduit les cartes Magic que dans quelques langues, et ne met à jour que la version anglaise. L'objectif du projet est de permettre à une communauté de maintenir des traductions dans n'importe quelle langue. Ce n'est atteignable que si **la localisation est un axe de première classe du schéma**, et non un correctif greffé sur une conception pensée en anglais.
+```
+Card (1) ──< CardName     (CardId, FaceId, Language, Value)
+         ──< CardText     (CardId, FaceId, Language, Value)
+         ──< CardTypeline (CardId, FaceId, Language, Value)
+```
 
-Trois décisions portent cette idée :
+Ajouter le gallois, le catalan ou l'espéranto revient à insérer des lignes. Aucune migration de schéma, aucune colonne par langue, aucune prolifération de colonnes nullables, et aucun plafond au nombre de langues que la plateforme peut accueillir. Interroger une carte dans une langue est un filtre sur `Language` ; connaître les langues disponibles pour une carte est un `DISTINCT` sur la même colonne.
 
-**1. Les traductions sont des lignes, pas des colonnes.** `CardName`, `CardText` et `CardTypeline` sont des tables séparées portant `(CardId, FaceId, Language, Value)`. Ajouter une langue revient à insérer des lignes — aucune migration de schéma, aucune explosion du nombre de colonnes, aucune prolifération de colonnes nullables.
+`Language` est un `varchar(3)`, aligné sur les codes de Scryfall — `en`, `fr`, `ja`, `zhs`, `zht`.
 
-**2. L'oracle et l'impression sont séparés.** `Card` porte ce qui est vrai d'une carte dans l'absolu (coût de mana, couleurs, layout, force/endurance). `CardSet` porte ce qui est vrai d'une impression donnée (édition, numéro de collection, rareté, images), et `CardSetFace` ce qui varie par impression *et* par face (texte d'ambiance, artistes). Une carte rééditée vingt fois a une ligne d'oracle et vingt lignes d'impression.
+`FaceId` est un entier plutôt qu'une clé étrangère. La face 0 est le recto, la face 1 le verso, et ainsi de suite. Une carte à face unique a une ligne par langue avec `FaceId = 0` ; une carte transform en a deux.
 
-**3. Les lignes de type sont composées, pas stockées en chaîne.** `Type`, `Subtype` et `Supertype` ont chacun leur table de traductions. Une table `Typeline` distincte stocke **les séparateurs propres à chaque langue** (`SeparatorType`, `SeparatorSubtype`, `SeparatorTypeSubtype`).
+#### 2. Les données oracle sont séparées des données d'impression
 
-C'est ce dernier point que la plupart des bases MTG ratent. L'anglais écrit `Creature — Human Wizard` ; le japonais et le chinois n'utilisent ni les espaces ni le tiret cadratin de la même façon. Stocker les séparateurs par langue permet de recomposer correctement la ligne de type dans n'importe quelle locale, au lieu de figer une convention anglaise.
+Une carte porte deux sortes de vérités. Ce qui est vrai de la carte elle-même — coût de mana, couleurs, force et endurance — et ce qui est vrai d'une impression donnée — quelle édition, quel numéro de collection, quelle rareté, quelle illustration.
 
-### Aperçu du schéma
+| Table | Contient | Exemple |
+|---|---|---|
+| `Card` | Vérité oracle | Coût de mana, couleurs, layout, F/E, loyauté, mots-clés |
+| `CardFace` | Vérité oracle, par face | Coût de mana et F/E d'une face d'une carte multi-faces |
+| `CardSet` | Une impression | Édition, numéro de collection, rareté, URL des images |
+| `CardSetFace` | Une impression, une face | Artistes |
+| `CardSetFaceFlavor` | Une impression, une face, une langue | Texte d'ambiance, nom d'ambiance |
 
-Voir le diagramme dans la section anglaise ci-dessus.
+Une carte rééditée vingt fois a une ligne `Card` et vingt lignes `CardSet`. Son texte oracle est stocké une fois par langue, et non une fois par impression — soit exactement la déduplication qu'exige une plateforme de traduction, puisque les traducteurs doivent éditer la carte, pas chacune de ses vingt apparitions.
 
-| Entité | Rôle |
+Le texte d'ambiance se situe au niveau le plus profond parce qu'il varie réellement selon les trois axes : une réédition peut le modifier, une carte double face en a un par face, et chaque langue a le sien.
+
+#### 3. Les lignes de type sont composées, pas stockées
+
+C'est le point que la plupart des bases Magic ratent.
+
+L'anglais écrit `Legendary Creature — Human Wizard` : les supertypes, puis les types séparés par des espaces, puis un tiret cadratin, puis les sous-types séparés par des espaces. Cette convention n'est pas universelle. Le japonais et le chinois n'espacent ni ne ponctuent de la même façon, et figer `" — "` produit des lignes de type qui sonnent faux pour un lecteur natif.
+
+La taxonomie est donc stockée en morceaux, chacun avec sa table de traductions :
+
+```
+Type      ──< TypeLanguage      (TypeId, Language, Name)
+Subtype   ──< SubtypeLanguage   (SubtypeId, Language, Name)
+Supertype ──< SupertypeLanguage (SupertypeId, Language, Name)
+```
+
+Et une table `Typeline` stocke **la ponctuation propre à chaque langue** :
+
+| Colonne | Rôle |
 |---|---|
-| `Card` | Carte au niveau oracle : coût de mana, valeur de mana, couleurs, layout, mots-clés, F/E, loyauté |
-| `CardName` / `CardText` / `CardTypeline` | Une ligne par (carte, face, langue) — les tables de traduction |
-| `CardFace` | Données oracle par face pour les layouts multi-faces |
-| `CardSet` | Une impression d'une carte dans une édition |
-| `CardSetFace` / `CardSetFaceFlavor` | Artistes et texte d'ambiance, qui varient par impression et par face |
-| `Set` | Une édition Magic (nom, code, date de sortie) |
-| `Type` / `Subtype` / `Supertype` + `*Language` | Taxonomie des types et ses traductions |
-| `Typeline` | Séparateurs par langue permettant de recomposer une ligne de type |
-| `Color` | Table de référence des couleurs, stockées en masque de bits (W=2, U=4, B=8, R=16, G=32) |
-| `Artist`, `Ruling`, `RelatedCard` | Entités support |
-| `Tutor/*` | Modèles de lecture agrégeant une carte complète pour le front |
+| `Language` | La langue à laquelle ces séparateurs s'appliquent |
+| `SeparatorType` | Entre deux types |
+| `SeparatorSubtype` | Entre deux sous-types |
+| `SeparatorTypeSubtype` | Entre le bloc des types et celui des sous-types |
 
-Les couleurs sont stockées en masque de bits afin qu'une identité colorielle tienne dans une seule colonne entière indexable et se filtre par opérations bit à bit.
+Composer une ligne de type localisée revient alors à assembler les morceaux traduits avec les séparateurs de la langue, au lieu de supposer une ponctuation anglaise dans laquelle on substituerait des mots.
 
-Les records `Tutor/*` (`CardTutor`, `LanguageTutor`, `SetTutor`…) ne sont pas des entités de base de données. Ce sont les projections aplaties et orientées affichage que renvoie l'API, pour éviter au front de recomposer huit tables côté client.
+`Subtype` porte une colonne supplémentaire `TypeCard`, parce que les sous-types Magic sont rattachés à un type : *Aura* est un sous-type d'enchantement, *Équipement* un sous-type d'artefact, *Humain* un sous-type de créature. Un même mot peut légitimement apparaître sous deux types.
 
-### Utilisation
+### Les couleurs en masque de bits
 
-Ce projet est une bibliothèque de classes. Il n'est pas destiné à s'exécuter seul.
+`Color` est une table de référence alimentée de six lignes, et les couleurs des cartes sont stockées en masque de bits entier sur `Card` et `CardFace`.
 
-```bash
-git clone https://github.com/arthur-lagenebre/MTG.Database.Models.git
-cd MTG.Database.Models
-dotnet build
-```
-
-Les consommateurs le référencent via un `ProjectReference` relatif, ce qui impose pour l'instant de cloner les dépôts côte à côte :
-
-```
-votre-workspace/
-├── MTG.Database.Models/
-├── MTG.API/
-└── MTG-Importer/
-```
-
-### Feuille de route
-
-- [ ] Migrer vers .NET 10 (LTS) et EF Core 10 — le support de .NET 8 s'arrête le 10 novembre 2026
-- [ ] Publier en package NuGet sur GitHub Packages, pour supprimer la contrainte de clonage côte à côte
-- [ ] Ajouter les champs d'audit (`CreatedAt`, `UpdatedAt`, `UpdatedBy`) qu'exige la traduction collaborative
-- [ ] Ajouter une entité d'historique des révisions pour la modération
-- [ ] Vérifier le mapping des collections primitives (`List<string>`) face au comportement d'EF Core 10
-
-### Dépôts liés
-
-| Dépôt | Rôle |
+| Bit | Couleur |
 |---|---|
-| [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) | Importe les données Scryfall dans la base via l'API |
-| [MTG.API](https://github.com/arthur-lagenebre/MTG.API) | API REST, porte le `DbContext` et les migrations |
-| **MTG.Database.Models** | Ce dépôt — modèle EF Core partagé |
-| [card-tutor](https://github.com/arthur-lagenebre/card-tutor) | Front Angular |
+| 1 | Aucune (incolore) |
+| 2 | W — Blanc |
+| 4 | U — Bleu |
+| 8 | B — Noir |
+| 16 | R — Rouge |
+| 32 | G — Vert |
+
+Une carte Golgari vaut `8 + 32 = 40`. Une carte des cinq couleurs vaut `62`. Cela fait tenir une identité colorielle dans une seule colonne entière indexable, et transforme « toutes les cartes au moins bleues » en un test bit à bit plutôt qu'en une jointure sur une table couleur-par-carte.
+
+`Card` en porte trois : `Colors` (les couleurs propres de la carte), `ColorsIdentity` (tout ce qui compte pour la légalité d'un deck Commander, symboles de mana du texte de règles compris) et `ColorsIndicator` (la pastille de couleur imprimée sur les cartes sans coût de mana).
+
+### Le reste
+
+| Table | Rôle |
+|---|---|
+| `Set` | Une édition Magic : code, nom, type, date de sortie, bloc, édition parente |
+| `Artist` | Les illustrateurs, référencés depuis `CardSetFace.ArtistsId` |
+| `Ruling` | Les clarifications officielles, par carte et par langue |
+| `RelatedCard` | Liens vers les résultats de meld, les jetons et les pièces de combo, par nom et composant |
+| `Color` | Table de référence des couleurs |
+
+### Modèles de lecture
+
+Le dossier `Tutor/` contient des records — `CardTutor`, `CardSetTutor`, `LanguageTutor`, `FlavorTutor`, `RulingTutor`, `RelatedCardTutor`, `CardFaceTutor` — qui ne sont **pas des tables**. Ce sont les projections aplaties que renvoie l'API, assemblées par `CardTutorsService`.
+
+La séparation a un sens : le modèle d'écriture est normalisé pour qu'une traduction ne s'édite qu'à un seul endroit, tandis que le modèle de lecture est dénormalisé pour qu'afficher une carte coûte une requête au lieu de huit.
+
+### Manques connus
+
+- **Aucun audit.** Rien n'enregistre qui a modifié une traduction, ni quand. L'édition collaborative exige `CreatedAt`, `UpdatedAt` et `UpdatedBy` sur les tables de traduction.
+- **Aucun historique de révisions.** Un wiki sans historique ne peut être ni modéré, ni restauré après un acte de vandalisme.
+- **Les identifiants de seed doivent rester codés en dur.** `MtgDbContext.OnModelCreating` alimente les couleurs et le type `Card` de base avec des GUID fixes. Un `Guid.NewGuid()` à cet endroit rend le modèle différent à chaque compilation, ce qu'EF Core 9+ refuse au moment d'appliquer une migration.
+- **Les codes de langue ne sont pas validés.** `Language` accepte n'importe quels trois caractères ; rien n'impose le jeu de codes Scryfall.
 
 ---
 
-## License / Licence
-
-Code released under the [MIT License](LICENSE).
-Code publié sous [licence MIT](LICENSE).
-
-### Fan content disclaimer
-
-This project is unofficial Fan Content permitted under the Wizards of the Coast Fan Content Policy. Not approved or endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. © Wizards of the Coast LLC.
-
-Card data originates from [Scryfall](https://scryfall.com/). Any information obtained from the Scryfall API that is not © Wizards of the Coast LLC is © Scryfall LLC. The MIT licence above covers **this repository's source code only** — it does not extend to card data, card names, rules text, artwork or Magic: The Gathering trademarks.
-
-*Ce projet est un contenu de fan non officiel, autorisé au titre de la Fan Content Policy de Wizards of the Coast. Non approuvé ni soutenu par Wizards. La licence MIT ci-dessus couvre uniquement le code source de ce dépôt : elle ne s'étend ni aux données des cartes, ni aux noms, textes de règles, illustrations ou marques Magic: The Gathering.*
+← [Back to the README](../README.md) · [Retour au README](../README.md)
