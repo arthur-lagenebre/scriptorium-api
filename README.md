@@ -5,6 +5,7 @@
 [![Swagger](https://img.shields.io/badge/docs-OpenAPI-85EA2D)](https://swagger.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-work%20in%20progress-orange)]()
+[![build](https://github.com/arthur-lagenebre/scriptorium-api/actions/workflows/build.yml/badge.svg)](https://github.com/arthur-lagenebre/scriptorium-api/actions/workflows/build.yml)
 
 > REST API and data model for community translation of trading card games — starting with Magic: The Gathering.
 > API REST et modèle de données pour la traduction communautaire de jeux de cartes à collectionner — en commençant par Magic: The Gathering.
