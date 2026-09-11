@@ -1,4 +1,4 @@
-# MTG.API
+# Scriptorium — API
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
 [![EF Core](https://img.shields.io/badge/EF%20Core-10.0-512BD4)](https://learn.microsoft.com/ef/core/)
@@ -6,8 +6,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-work%20in%20progress-orange)]()
 
-> REST API and data model for a multilingual Magic: The Gathering card database.
-> API REST et modèle de données d'une base de cartes Magic: The Gathering multilingue.
+> REST API and data model for community translation of trading card games — starting with Magic: The Gathering.
+> API REST et modèle de données pour la traduction communautaire de jeux de cartes à collectionner — en commençant par Magic: The Gathering.
 
 **🇬🇧 [English](#english) · 🇫🇷 [Français](#français)**
 
@@ -15,33 +15,37 @@
 
 ## English
 
-### What this is
+### The problem
+
+Wizards of the Coast translates Magic cards into a handful of languages, and only keeps the English text up to date. Players in every other language are left with outdated cards, or with none at all.
+
+**Scriptorium** is a platform that lets a community maintain those translations itself. The name comes from the monastic workshops where manuscripts were copied and translated by hand — which is fairly close to what this is.
+
+### What this repository is
 
 An ASP.NET Core 10 Web API sitting between the SQL Server database and the two clients of the project:
 
 ```
-  MTG-Importer  ──POST──▶  ┌──────────┐  ──EF Core──▶  SQL Server
-                           │ MTG.API  │
-  card-tutor    ──GET───▶  └──────────┘
+  scriptorium-importer  ──POST──▶  ┌──────────────────┐  ──EF Core──▶  SQL Server
+                                   │  scriptorium-api │
+  scriptorium-web       ──GET───▶  └──────────────────┘
 ```
 
 It is the single write path into the database — the importer never touches SQL directly — and the single read path for the front end.
 
-The project exists because Wizards of the Coast only translates Magic cards into a handful of languages, and only keeps the English text up to date. The goal is to let a community maintain translations in any language.
-
 ### Repository layout
 
 ```
-MTG.API/
-├── MTG.Api.slnx
+scriptorium-api/
+├── Scriptorium.Mtg.slnx
 ├── docs/
-│   └── DATA-MODEL.md          ← how the schema handles localisation
+│   └── DATA-MODEL.md              ← how the schema handles localisation
 └── src/
-    ├── MTG.Api/               ← the web API
-    └── MTG.Database.Models/   ← EF Core entities
+    ├── Scriptorium.Mtg.Api/       ← the web API
+    └── Scriptorium.Mtg.Models/    ← EF Core entities
 ```
 
-`MTG.Database.Models` used to live in its own repository; it was merged here with its history, since the API is its only consumer.
+The game sits in the namespace on purpose. Magic's data model — mana costs, colour identity, power/toughness, 22 card layouts — is specific to Magic, and a Pokémon or Lorcana model would look nothing like it. What is reusable across games is the *localisation pattern*, not the schema. Keeping `Scriptorium.Mtg.*` leaves room for a `Scriptorium.Pokemon.*` alongside it, without pretending a single generic schema could serve both.
 
 ### Architecture
 
@@ -53,13 +57,13 @@ Controller  →  IService  →  Service  →  MtgDbContext  →  SQL Server
 
 19 controllers, each with a matching interface and service. Services own all EF Core querying; controllers only translate HTTP to service calls. Dependencies are injected through primary constructors.
 
-The interesting endpoint is `CardTutorsController`. Rather than making the front end fetch and recompose eight tables, it returns a `CardTutor` — a flattened read model aggregating a card, all its translations, its printings, faces, related cards and rulings in a single response.
+The interesting endpoint is `CardTutorsController`. Rather than making the front end fetch and recompose eight tables, it returns a `CardTutor` — a flattened read model aggregating a card, all its translations, its printings, faces, related cards and rulings in a single response. *(A "tutor" is the Magic term for a card that searches your library for another one.)*
 
-**The data model is where the real design work is.** Translations are rows rather than columns, oracle data is separated from printing data, and type lines are recomposed per language — including their separators, so Japanese and Chinese type lines do not inherit an English convention. See [docs/DATA-MODEL.md](docs/DATA-MODEL.md).
+**The data model is where the real design work is.** Translations are rows rather than columns, so adding a language needs no schema migration. Oracle data is separated from printing data. Type lines are recomposed per language — including their separators, so Japanese and Chinese type lines do not inherit an English convention. See [docs/DATA-MODEL.md](docs/DATA-MODEL.md).
 
 ### Endpoints
 
-Full interactive documentation is available at `/swagger` when running in Development.
+Full interactive documentation is at `/swagger` when running in Development.
 
 | Route | Verbs | Purpose |
 |---|---|---|
@@ -82,46 +86,44 @@ Full interactive documentation is available at `/swagger` when running in Develo
 - .NET 10 SDK
 - SQL Server (LocalDB, Express or full)
 
-**Setup**
-
 ```bash
-git clone https://github.com/arthur-lagenebre/MTG.API.git
-cd MTG.API
+git clone https://github.com/arthur-lagenebre/scriptorium-api.git
+cd scriptorium-api
 dotnet restore
 ```
 
-Set the connection string. Prefer user secrets over editing `appsettings.json`:
+Set the connection string — prefer user secrets over editing `appsettings.json`:
 
 ```bash
-dotnet user-secrets set "ConnectionStrings:MTGConnectionString" "Server=localhost;Database=MagicTheGathering;Trusted_Connection=True;Encrypt=False;" --project src/MTG.Api
+dotnet user-secrets set "ConnectionStrings:MTGConnectionString" "Server=localhost;Database=MagicTheGathering;Trusted_Connection=True;Encrypt=False;" --project src/Scriptorium.Mtg.Api
 ```
 
 Create the database and run:
 
 ```bash
-dotnet ef database update --project src/MTG.Api
-dotnet run --project src/MTG.Api
+dotnet ef database update --project src/Scriptorium.Mtg.Api
+dotnet run --project src/Scriptorium.Mtg.Api
 ```
 
 The listening URL is printed at startup (`http://localhost:5141` by default); Swagger UI is at `/swagger`.
 
-**Populate the database** by running the [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) against this API.
+**Populate the database** by running [scriptorium-importer](https://github.com/arthur-lagenebre/scriptorium-importer) against this API.
 
-> ⚠️ **Known limitations:** the CORS policy is pinned to `http://localhost:4200`, and a development connection string is committed in `appsettings.json`. Both are addressed in the roadmap.
+> ⚠️ **Known limitations:** the CORS policy is pinned to `http://localhost:4200`, and a development connection string is committed in `appsettings.json`. Both are on the roadmap.
 
 ### Solution format
 
-The solution uses the SLNX format, which is the default since .NET 10. Visual Studio only opens `.slnx` files once *Tools → Options → Environment → Preview Features → Use Solution File Persistence Model* is enabled. Rider and VS Code work with it out of the box, as does `dotnet build`.
+The solution uses the SLNX format, the default since .NET 10. Visual Studio only opens `.slnx` files once *Tools → Options → Environment → Preview Features → Use Solution File Persistence Model* is enabled. Rider, VS Code and `dotnet build` handle it out of the box.
 
 ### Migrations
 
 ```bash
-dotnet ef migrations add MigrationName --project src/MTG.Api
-dotnet ef migrations has-pending-model-changes --project src/MTG.Api
-dotnet ef database update --project src/MTG.Api
+dotnet ef migrations add MigrationName --project src/Scriptorium.Mtg.Api
+dotnet ef migrations has-pending-model-changes --project src/Scriptorium.Mtg.Api
+dotnet ef database update --project src/Scriptorium.Mtg.Api
 ```
 
-Seed data (colours, the base `Card` type and its translations) lives in `MtgDbContext.OnModelCreating`.
+Seed data (colours, the base `Card` type and its translations) lives in `MtgDbContext.OnModelCreating`. **Seed identifiers must stay hardcoded** — a `Guid.NewGuid()` there makes the model non-deterministic, which EF Core 9+ rejects outright when applying migrations.
 
 ### Roadmap
 
@@ -139,41 +141,45 @@ Seed data (colours, the base `Card` type and its translations) lives in `MtgDbCo
 
 | Repository | Role |
 |---|---|
-| [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) | Scryfall ETL feeding this API |
-| **MTG.API** | This repository — REST API and data model |
-| [card-tutor](https://github.com/arthur-lagenebre/card-tutor) | Angular front end |
+| **scriptorium-api** | This repository — REST API and data model |
+| [scriptorium-importer](https://github.com/arthur-lagenebre/scriptorium-importer) | Scryfall ETL feeding this API |
+| [scriptorium-web](https://github.com/arthur-lagenebre/scriptorium-web) | Angular front end |
 
 ---
 
 ## Français
 
-### De quoi s'agit-il
+### Le problème
+
+Wizards of the Coast ne traduit les cartes Magic que dans quelques langues, et ne met à jour que la version anglaise. Les joueurs de toutes les autres langues se retrouvent avec des cartes obsolètes, ou sans traduction du tout.
+
+**Scriptorium** est une plateforme permettant à une communauté de maintenir elle-même ces traductions. Le nom vient des ateliers monastiques où les manuscrits étaient copiés et traduits à la main — ce qui n'est pas très loin de ce dont il s'agit ici.
+
+### Ce que contient ce dépôt
 
 Une Web API ASP.NET Core 10 placée entre la base SQL Server et les deux clients du projet :
 
 ```
-  MTG-Importer  ──POST──▶  ┌──────────┐  ──EF Core──▶  SQL Server
-                           │ MTG.API  │
-  card-tutor    ──GET───▶  └──────────┘
+  scriptorium-importer  ──POST──▶  ┌──────────────────┐  ──EF Core──▶  SQL Server
+                                   │  scriptorium-api │
+  scriptorium-web       ──GET───▶  └──────────────────┘
 ```
 
 C'est l'unique chemin d'écriture vers la base — l'importer ne touche jamais SQL directement — et l'unique chemin de lecture pour le front.
 
-Le projet existe parce que Wizards of the Coast ne traduit les cartes Magic que dans quelques langues, et ne met à jour que la version anglaise. L'objectif est de permettre à une communauté de maintenir des traductions dans n'importe quelle langue.
-
 ### Organisation du dépôt
 
 ```
-MTG.API/
-├── MTG.Api.slnx
+scriptorium-api/
+├── Scriptorium.Mtg.slnx
 ├── docs/
-│   └── DATA-MODEL.md          ← comment le schéma gère la localisation
+│   └── DATA-MODEL.md              ← comment le schéma gère la localisation
 └── src/
-    ├── MTG.Api/               ← l'API web
-    └── MTG.Database.Models/   ← les entités EF Core
+    ├── Scriptorium.Mtg.Api/       ← l'API web
+    └── Scriptorium.Mtg.Models/    ← les entités EF Core
 ```
 
-`MTG.Database.Models` avait son propre dépôt ; il a été fusionné ici avec son historique, l'API en étant le seul consommateur.
+Le jeu figure volontairement dans l'espace de noms. Le modèle de données de Magic — coûts de mana, identité colorielle, force/endurance, 22 layouts de cartes — lui est propre, et un modèle Pokémon ou Lorcana ne lui ressemblerait en rien. Ce qui se réutilise d'un jeu à l'autre, c'est le *motif de localisation*, pas le schéma. Conserver `Scriptorium.Mtg.*` laisse la place à un `Scriptorium.Pokemon.*` à côté, sans prétendre qu'un schéma générique unique pourrait servir aux deux.
 
 ### Architecture
 
@@ -185,13 +191,13 @@ Controller  →  IService  →  Service  →  MtgDbContext  →  SQL Server
 
 19 contrôleurs, chacun avec son interface et son service. Les services portent toutes les requêtes EF Core ; les contrôleurs se contentent de traduire le HTTP en appels de service. Les dépendances sont injectées via les constructeurs primaires.
 
-L'endpoint le plus intéressant est `CardTutorsController`. Plutôt que d'obliger le front à récupérer et recomposer huit tables, il renvoie un `CardTutor` — un modèle de lecture aplati agrégeant une carte, toutes ses traductions, ses impressions, ses faces, ses cartes liées et ses rulings en une seule réponse.
+L'endpoint le plus intéressant est `CardTutorsController`. Plutôt que d'obliger le front à récupérer et recomposer huit tables, il renvoie un `CardTutor` — un modèle de lecture aplati agrégeant une carte, toutes ses traductions, ses impressions, ses faces, ses cartes liées et ses rulings en une seule réponse. *(En Magic, un « tutor » désigne une carte qui va en chercher une autre dans la bibliothèque.)*
 
-**C'est dans le modèle de données que se trouve le vrai travail de conception.** Les traductions sont des lignes et non des colonnes, les données oracle sont séparées des données d'impression, et les lignes de type sont recomposées par langue — séparateurs compris, pour que le japonais et le chinois n'héritent pas d'une convention anglaise. Voir [docs/DATA-MODEL.md](docs/DATA-MODEL.md).
+**C'est dans le modèle de données que se trouve le vrai travail de conception.** Les traductions sont des lignes et non des colonnes, si bien qu'ajouter une langue ne demande aucune migration de schéma. Les données oracle sont séparées des données d'impression. Les lignes de type sont recomposées par langue — séparateurs compris, pour que le japonais et le chinois n'héritent pas d'une convention anglaise. Voir [docs/DATA-MODEL.md](docs/DATA-MODEL.md).
 
 ### Endpoints
 
-La documentation interactive complète est disponible sur `/swagger` en environnement Development.
+La documentation interactive complète est sur `/swagger` en environnement Development.
 
 | Route | Verbes | Rôle |
 |---|---|---|
@@ -214,46 +220,44 @@ La documentation interactive complète est disponible sur `/swagger` en environn
 - SDK .NET 10
 - SQL Server (LocalDB, Express ou complet)
 
-**Installation**
-
 ```bash
-git clone https://github.com/arthur-lagenebre/MTG.API.git
-cd MTG.API
+git clone https://github.com/arthur-lagenebre/scriptorium-api.git
+cd scriptorium-api
 dotnet restore
 ```
 
-Définir la chaîne de connexion. Préférez les user secrets à la modification d'`appsettings.json` :
+Définir la chaîne de connexion — préférez les user secrets à la modification d'`appsettings.json` :
 
 ```bash
-dotnet user-secrets set "ConnectionStrings:MTGConnectionString" "Server=localhost;Database=MagicTheGathering;Trusted_Connection=True;Encrypt=False;" --project src/MTG.Api
+dotnet user-secrets set "ConnectionStrings:MTGConnectionString" "Server=localhost;Database=MagicTheGathering;Trusted_Connection=True;Encrypt=False;" --project src/Scriptorium.Mtg.Api
 ```
 
 Créer la base puis lancer :
 
 ```bash
-dotnet ef database update --project src/MTG.Api
-dotnet run --project src/MTG.Api
+dotnet ef database update --project src/Scriptorium.Mtg.Api
+dotnet run --project src/Scriptorium.Mtg.Api
 ```
 
 L'URL d'écoute est affichée au démarrage (`http://localhost:5141` par défaut) ; l'interface Swagger est sur `/swagger`.
 
-**Peupler la base** en exécutant l'[MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) contre cette API.
+**Peupler la base** en exécutant [scriptorium-importer](https://github.com/arthur-lagenebre/scriptorium-importer) contre cette API.
 
-> ⚠️ **Limitations connues :** la politique CORS est figée sur `http://localhost:4200`, et une chaîne de connexion de développement est committée dans `appsettings.json`. Les deux points sont traités dans la feuille de route.
+> ⚠️ **Limitations connues :** la politique CORS est figée sur `http://localhost:4200`, et une chaîne de connexion de développement est committée dans `appsettings.json`. Les deux points sont dans la feuille de route.
 
 ### Format de solution
 
-La solution utilise le format SLNX, celui par défaut depuis .NET 10. Visual Studio n'ouvre les fichiers `.slnx` qu'une fois l'option *Outils → Options → Environnement → Preview Features → Use Solution File Persistence Model* activée. Rider et VS Code les prennent en charge nativement, tout comme `dotnet build`.
+La solution utilise le format SLNX, celui par défaut depuis .NET 10. Visual Studio n'ouvre les fichiers `.slnx` qu'une fois l'option *Outils → Options → Environnement → Preview Features → Use Solution File Persistence Model* activée. Rider, VS Code et `dotnet build` les prennent en charge nativement.
 
 ### Migrations
 
 ```bash
-dotnet ef migrations add NomDeLaMigration --project src/MTG.Api
-dotnet ef migrations has-pending-model-changes --project src/MTG.Api
-dotnet ef database update --project src/MTG.Api
+dotnet ef migrations add NomDeLaMigration --project src/Scriptorium.Mtg.Api
+dotnet ef migrations has-pending-model-changes --project src/Scriptorium.Mtg.Api
+dotnet ef database update --project src/Scriptorium.Mtg.Api
 ```
 
-Les données de seed (couleurs, type `Card` de base et ses traductions) se trouvent dans `MtgDbContext.OnModelCreating`.
+Les données de seed (couleurs, type `Card` de base et ses traductions) se trouvent dans `MtgDbContext.OnModelCreating`. **Les identifiants de seed doivent rester codés en dur** : un `Guid.NewGuid()` à cet endroit rend le modèle non déterministe, ce qu'EF Core 9+ refuse catégoriquement au moment d'appliquer une migration.
 
 ### Feuille de route
 
@@ -271,9 +275,9 @@ Les données de seed (couleurs, type `Card` de base et ses traductions) se trouv
 
 | Dépôt | Rôle |
 |---|---|
-| [MTG-Importer](https://github.com/arthur-lagenebre/MTG-Importer) | ETL Scryfall alimentant cette API |
-| **MTG.API** | Ce dépôt — API REST et modèle de données |
-| [card-tutor](https://github.com/arthur-lagenebre/card-tutor) | Front Angular |
+| **scriptorium-api** | Ce dépôt — API REST et modèle de données |
+| [scriptorium-importer](https://github.com/arthur-lagenebre/scriptorium-importer) | ETL Scryfall alimentant cette API |
+| [scriptorium-web](https://github.com/arthur-lagenebre/scriptorium-web) | Front Angular |
 
 ---
 
