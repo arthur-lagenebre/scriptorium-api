@@ -15,5 +15,7 @@ public class CardName
     [Required, MaxLength(3)]
     public required string Language { get; init; }
     [Required, MaxLength(250)]
-    public required string Value { get; init; }
+    public required string Value { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public Guid? UpdatedByUserId { get; set; }
 }

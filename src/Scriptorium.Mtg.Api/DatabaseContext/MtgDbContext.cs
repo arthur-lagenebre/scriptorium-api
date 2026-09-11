@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Scriptorium.Mtg.Models;
 using Scriptorium.Mtg.Models.Card;
+using Scriptorium.Mtg.Models.Contribution;
 using Scriptorium.Mtg.Models.Typeline;
 
 namespace Scriptorium.Mtg.Api.DatabaseContext;
@@ -16,7 +17,7 @@ public class MtgDbContext(DbContextOptions<MtgDbContext> options) : DbContext(op
     public DbSet<CardTypeline> CardTypelines { get; init; }
     public DbSet<CardText> CardTexts { get; init; }
     public DbSet<Color> Colors { get; init; }
-    public DbSet<Scriptorium.Mtg.Models.Typeline.Type> Types { get; init; }
+    public DbSet<Models.Typeline.Type> Types { get; init; }
     public DbSet<TypeLanguage> TypeLanguages { get; init; }
     public DbSet<RelatedCard> RelatedCards { get; init; }
     public DbSet<Ruling> Rulings { get; init; }
@@ -25,6 +26,9 @@ public class MtgDbContext(DbContextOptions<MtgDbContext> options) : DbContext(op
     public DbSet<SubtypeLanguage> SubtypeLanguages { get; init; }
     public DbSet<Supertype> Supertypes { get; init; }
     public DbSet<SupertypeLanguage> SupertypeLanguages { get; init; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<TranslationRevision> TranslationRevisions { get; set; }
+    public DbSet<UserRole> UserRoles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,9 +41,7 @@ public class MtgDbContext(DbContextOptions<MtgDbContext> options) : DbContext(op
             new Color { Id = 32, Name = "G", Description = "Green" }
         );
 
-        modelBuilder.Entity<Scriptorium.Mtg.Models.Typeline.Type>().HasData(
-            new Scriptorium.Mtg.Models.Typeline.Type { Id = Guid.Parse("18943286-deb5-4d81-b089-6cc4bc2b6937"), DefaultName = "Card" }
-        );
+        modelBuilder.Entity<Models.Typeline.Type>().HasData(new Models.Typeline.Type { Id = Guid.Parse("18943286-deb5-4d81-b089-6cc4bc2b6937"), DefaultName = "Card" });
 
 		modelBuilder.Entity<TypeLanguage>().HasData(
 			new TypeLanguage { Id = Guid.Parse("669367c3-ba1f-4b27-abe8-b0ca40b13d5a"), TypeId = Guid.Parse("18943286-deb5-4d81-b089-6cc4bc2b6937"), Language = "en",  Name = "Card" },
@@ -54,5 +56,15 @@ public class MtgDbContext(DbContextOptions<MtgDbContext> options) : DbContext(op
 			new TypeLanguage { Id = Guid.Parse("a6999ee9-7fa1-4d05-87fe-020859e07fb7"), TypeId = Guid.Parse("18943286-deb5-4d81-b089-6cc4bc2b6937"), Language = "zhs", Name = "牌" },
 			new TypeLanguage { Id = Guid.Parse("4284fd77-bfa0-44c1-9941-5cfd4f2c0b74"), TypeId = Guid.Parse("18943286-deb5-4d81-b089-6cc4bc2b6937"), Language = "zht", Name = "牌" }
 		);
+
+        modelBuilder.Entity<TranslationRevision>()
+                    .Property(x => x.TargetType)
+                    .HasConversion<string>()
+                    .HasMaxLength(30);
+
+        modelBuilder.Entity<TranslationRevision>()
+                    .Property(x => x.Status)
+                    .HasConversion<string>()
+                    .HasMaxLength(20);
     }
 }

@@ -13,7 +13,7 @@ public class CardSetFaceFlavor
     [Required, MaxLength(3)]
     public required string Language { get; init; }
     [MaxLength(500)]
-    public string? FlavorText { get; init; }
+    public string? FlavorText { get; set; }
     [MaxLength(250)]
-    public string? FlavorName { get; init; }
+    public string? FlavorName { get; set; }
 }

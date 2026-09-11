@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scriptorium.Mtg.Api.DatabaseContext;
 
@@ -11,9 +12,11 @@ using Scriptorium.Mtg.Api.DatabaseContext;
 namespace Scriptorium.Mtg.Api.Migrations
 {
     [DbContext(typeof(MtgDbContext))]
-    partial class MtgDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260911131525_ContributionSchema")]
+    partial class ContributionSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -447,9 +450,6 @@ namespace Scriptorium.Mtg.Api.Migrations
                     b.Property<Guid>("CardId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CardSetFaceId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Comment")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -484,6 +484,9 @@ namespace Scriptorium.Mtg.Api.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<Guid?>("TargetId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TargetType")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -498,7 +501,7 @@ namespace Scriptorium.Mtg.Api.Migrations
 
                     b.HasIndex("CardId", "Language", "CreatedAt");
 
-                    b.HasIndex("TargetType", "CardId", "FaceId", "Language", "CreatedAt");
+                    b.HasIndex("TargetType", "TargetId", "CreatedAt");
 
                     b.ToTable("TranslationRevisions");
                 });
@@ -552,39 +555,6 @@ namespace Scriptorium.Mtg.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Scriptorium.Mtg.Models.Contribution.UserRole", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("GrantedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("GrantedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Language")
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId", "Role", "Language")
-                        .IsUnique()
-                        .HasFilter("[Language] IS NOT NULL");
-
-                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Scriptorium.Mtg.Models.Ruling", b =>
@@ -949,17 +919,6 @@ namespace Scriptorium.Mtg.Api.Migrations
                 });
 
             modelBuilder.Entity("Scriptorium.Mtg.Models.Contribution.TranslationRevision", b =>
-                {
-                    b.HasOne("Scriptorium.Mtg.Models.Contribution.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Scriptorium.Mtg.Models.Contribution.UserRole", b =>
                 {
                     b.HasOne("Scriptorium.Mtg.Models.Contribution.User", "User")
                         .WithMany()
