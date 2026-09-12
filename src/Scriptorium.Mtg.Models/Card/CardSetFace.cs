@@ -11,6 +11,5 @@ public class CardSetFace
     public Guid CardSetId { get; init; }
     public int FaceId { get; init; }
     public IList<Guid>? ArtistsId { get; init; }
-
     public List<CardSetFaceFlavor> Flavors { get; set; } = [];
 }

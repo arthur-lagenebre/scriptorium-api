@@ -18,7 +18,6 @@ public class CardSet
     public required string Rarity { get; init; }
     public List<string> NormalImagesUrl { get; set; } = [];
     public List<string> SmallImagesUrl { get; set; } = [];
-    public Set? Set { get; set; }
+    public Set Set { get; set; } = null!;
     public List<CardSetFace> CardSetFaces { get; set; } = [];
-    public List<CardSetFaceFlavor> Flavors { get; set; } = [];
 }
