@@ -66,5 +66,9 @@ public class MtgDbContext(DbContextOptions<MtgDbContext> options) : DbContext(op
                     .Property(x => x.Status)
                     .HasConversion<string>()
                     .HasMaxLength(20);
+        modelBuilder.Entity<UserRole>()
+                    .HasIndex(r => new { r.UserId, r.Role, r.Language })
+                    .IsUnique()
+                    .HasFilter(null);
     }
 }

@@ -1,11 +1,10 @@
 # Scriptorium — API
 
+[![build](https://github.com/arthur-lagenebre/scriptorium-api/actions/workflows/build.yml/badge.svg)](https://github.com/arthur-lagenebre/scriptorium-api/actions/workflows/build.yml)
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
 [![EF Core](https://img.shields.io/badge/EF%20Core-10.0-512BD4)](https://learn.microsoft.com/ef/core/)
 [![Swagger](https://img.shields.io/badge/docs-OpenAPI-85EA2D)](https://swagger.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-work%20in%20progress-orange)]()
-[![build](https://github.com/arthur-lagenebre/scriptorium-api/actions/workflows/build.yml/badge.svg)](https://github.com/arthur-lagenebre/scriptorium-api/actions/workflows/build.yml)
 
 > REST API and data model for community translation of trading card games — starting with Magic: The Gathering.
 > API REST et modèle de données pour la traduction communautaire de jeux de cartes à collectionner — en commençant par Magic: The Gathering.
@@ -30,9 +29,10 @@ An ASP.NET Core 10 Web API sitting between the SQL Server database and the two c
   scriptorium-importer  ──POST──▶  ┌──────────────────┐  ──EF Core──▶  SQL Server
                                    │  scriptorium-api │
   scriptorium-web       ──GET───▶  └──────────────────┘
+                        ──PUT───▶
 ```
 
-It is the single write path into the database — the importer never touches SQL directly — and the single read path for the front end.
+It is the single write path into the database and the single read path for the front end.
 
 ### Repository layout
 
@@ -46,39 +46,63 @@ scriptorium-api/
     └── Scriptorium.Mtg.Models/    ← EF Core entities
 ```
 
-The game sits in the namespace on purpose. Magic's data model — mana costs, colour identity, power/toughness, 22 card layouts — is specific to Magic, and a Pokémon or Lorcana model would look nothing like it. What is reusable across games is the *localisation pattern*, not the schema. Keeping `Scriptorium.Mtg.*` leaves room for a `Scriptorium.Pokemon.*` alongside it, without pretending a single generic schema could serve both.
+The game sits in the namespace on purpose. Magic's data model — mana costs, colour identity, power/toughness, 22 card layouts — is specific to Magic, and a Pokémon or Lorcana model would look nothing like it. What is reusable across games is the *localisation pattern*, not the schema. Keeping `Scriptorium.Mtg.*` leaves room for a `Scriptorium.Pokemon.*` alongside it.
 
 ### Architecture
 
-A straightforward layered design, one vertical slice per aggregate:
+One vertical slice per aggregate:
 
 ```
 Controller  →  IService  →  Service  →  MtgDbContext  →  SQL Server
 ```
 
-19 controllers, each with a matching interface and service. Services own all EF Core querying; controllers only translate HTTP to service calls. Dependencies are injected through primary constructors.
+Services own all EF Core querying; controllers only translate HTTP to service calls. Dependencies are injected through primary constructors.
 
-The interesting endpoint is `CardTutorsController`. Rather than making the front end fetch and recompose eight tables, it returns a `CardTutor` — a flattened read model aggregating a card, all its translations, its printings, faces, related cards and rulings in a single response. *(A "tutor" is the Magic term for a card that searches your library for another one.)*
+`CardTutorsController` returns a `CardTutor` — a flattened read model aggregating a card, all its translations, its printings, faces, related cards and rulings in a single response, so the front end does not recompose eight tables. *(A "tutor" is the Magic term for a card that searches your library for another one.)*
 
-**The data model is where the real design work is.** Translations are rows rather than columns, so adding a language needs no schema migration. Oracle data is separated from printing data. Type lines are recomposed per language — including their separators, so Japanese and Chinese type lines do not inherit an English convention. See [docs/DATA-MODEL.md](docs/DATA-MODEL.md).
+**The data model is where the real design work is.** Translations are rows rather than columns, oracle data is separated from printing data, and type lines are recomposed per language — separators included, so Japanese and Chinese do not inherit English punctuation. See [docs/DATA-MODEL.md](docs/DATA-MODEL.md).
+
+### Authentication
+
+Reading is anonymous, always. Only writes require an account — Scryfall forbids placing card data behind any kind of wall.
+
+**The API is the OAuth client.** The front end redirects to `/api/auth/login/{provider}`, the API exchanges the authorisation code, resolves a local account and issues **its own JWT**. This is not the only possible design, but it is the one that works for both providers: GitHub does not implement OIDC and issues no signed `id_token`, so validating provider tokens directly would have worked for Google only.
+
+Three schemes coexist. A short-lived `External` cookie carries the result of the OAuth handshake and is dropped as soon as the local user is resolved; Google and GitHub write into it; JWT Bearer is the default scheme and the only one that authenticates API calls.
+
+The token comes back to the front end in the **URL fragment** rather than the query string: fragments never reach the server and never land in access logs.
+
+### The contribution model
+
+Direct editing, wiki-style. Any signed-in contributor can edit a translation, the change is live immediately, and the full history is public.
+
+Every change writes a `TranslationRevision` — author, timestamp, previous value, new value, optional comment. Revisions are **immutable**: correcting a translation creates a new one, and reverting writes another rather than deleting anything.
+
+Two rules worth knowing:
+
+- **English is read-only.** It is Wizards' official text, rewritten on every import; community corrections there would be silently overwritten.
+- **A null field changes nothing.** Submitting only a card name leaves its rules text untouched, so a partially filled form never erases someone else's work.
+
+`TranslationRevision.Status` already carries `Pending` and `Rejected`, unused today. They exist so a review step can be introduced later without touching the schema.
 
 ### Endpoints
 
-Full interactive documentation is at `/swagger` when running in Development.
+Full interactive documentation is at `/swagger` in Development, with a **Authorize** button for pasting a token.
 
-| Route | Verbs | Purpose |
-|---|---|---|
-| `/api/CardTutors/{id}` | GET | Full aggregated card, all languages |
-| `/api/CardTutors/search/{cardName}` | GET | Search cards by English name |
-| `/api/Cards` | GET, POST | Oracle-level card data |
-| `/api/CardNames`, `/api/CardTexts`, `/api/CardTypelines` | GET, POST | Translation rows |
-| `/api/CardFaces`, `/api/CardSet`, `/api/CardSetFaces` | GET, POST | Faces and printings |
-| `/api/Sets`, `/api/Artists`, `/api/Colors`, `/api/Rulings` | GET, POST | Reference data |
-| `/api/Types`, `/api/Subtypes`, `/api/Supertypes` | GET, POST | Type taxonomy |
-| `/api/TypeLanguages`, `/api/SubtypeLanguage`, `/api/SupertypeLanguages` | GET, POST | Type translations |
-| `/api/RelatedCards` | GET, POST | Meld, token and combo relationships |
+| Route | Verbs | Auth | Purpose |
+|---|---|---|---|
+| `/api/auth/login/{provider}` | GET | — | Starts the OAuth flow (`google` or `github`) |
+| `/api/auth/callback` | GET | — | Provider return; issues the JWT |
+| `/api/auth/me` | GET | ✔ | Current profile and roles |
+| `/api/cards/{cardId}/translations/{language}` | GET | — | A card's translation in one language |
+| `/api/cards/{cardId}/translations/{language}` | PUT | ✔ | Creates or updates that translation |
+| `/api/cards/{cardId}/history` | GET | — | Revision history, optionally filtered by language |
+| `/api/cards/{cardId}/revert/{revisionId}` | POST | ✔ | Restores the value preceding a revision |
+| `/api/CardTutors/{id}` | GET | — | Full aggregated card, all languages |
+| `/api/CardTutors/search/{cardName}` | GET | — | Search cards by English name |
+| `/api/Cards`, `/api/CardNames`, `/api/CardSet`, … | GET, POST | — | Ingestion and reference data (19 controllers) |
 
-> The `POST` verbs currently exist to serve the importer's ingestion. **Translation editing endpoints (`PUT`/`PATCH`) are not implemented yet** — see the roadmap.
+The older `POST` endpoints exist to serve the importer's ingestion; they predate the contribution API and are not the path a human editor should take.
 
 ### Getting started
 
@@ -86,6 +110,7 @@ Full interactive documentation is at `/swagger` when running in Development.
 
 - .NET 10 SDK
 - SQL Server (LocalDB, Express or full)
+- An OAuth application on Google and/or GitHub, with the callback set to `http://localhost:5141/signin-google` and `http://localhost:5141/signin-github`
 
 ```bash
 git clone https://github.com/arthur-lagenebre/scriptorium-api.git
@@ -93,10 +118,17 @@ cd scriptorium-api
 dotnet restore
 ```
 
-Set the connection string — prefer user secrets over editing `appsettings.json`:
+Secrets never go in `appsettings.json`:
 
 ```bash
-dotnet user-secrets set "ConnectionStrings:MTGConnectionString" "Server=localhost;Database=MagicTheGathering;Trusted_Connection=True;Encrypt=False;" --project src/Scriptorium.Mtg.Api
+cd src/Scriptorium.Mtg.Api
+dotnet user-secrets init
+dotnet user-secrets set "ConnectionStrings:MTGConnectionString" "Server=localhost;Database=MagicTheGathering;Trusted_Connection=True;Encrypt=False;"
+dotnet user-secrets set "Jwt:Key" "<64 random bytes, base64>"
+dotnet user-secrets set "Authentication:Google:ClientId" "…"
+dotnet user-secrets set "Authentication:Google:ClientSecret" "…"
+dotnet user-secrets set "Authentication:GitHub:ClientId" "…"
+dotnet user-secrets set "Authentication:GitHub:ClientSecret" "…"
 ```
 
 Create the database and run:
@@ -106,15 +138,13 @@ dotnet ef database update --project src/Scriptorium.Mtg.Api
 dotnet run --project src/Scriptorium.Mtg.Api
 ```
 
-The listening URL is printed at startup (`http://localhost:5141` by default); Swagger UI is at `/swagger`.
+The listening URL is printed at startup (`http://localhost:5141` by default). **Populate the database** by running [scriptorium-importer](https://github.com/arthur-lagenebre/scriptorium-importer) against this API.
 
-**Populate the database** by running [scriptorium-importer](https://github.com/arthur-lagenebre/scriptorium-importer) against this API.
-
-> ⚠️ **Known limitations:** the CORS policy is pinned to `http://localhost:4200`, and a development connection string is committed in `appsettings.json`. Both are on the roadmap.
+> ⚠️ **Known limitation:** the CORS policy is pinned to `http://localhost:4200`. Making origins configurable is on the roadmap.
 
 ### Solution format
 
-The solution uses the SLNX format, the default since .NET 10. Visual Studio only opens `.slnx` files once *Tools → Options → Environment → Preview Features → Use Solution File Persistence Model* is enabled. Rider, VS Code and `dotnet build` handle it out of the box.
+The solution uses SLNX, the default since .NET 10. Visual Studio only opens `.slnx` files once *Tools → Options → Environment → Preview Features → Use Solution File Persistence Model* is enabled. Rider, VS Code and `dotnet build` handle it out of the box.
 
 ### Migrations
 
@@ -124,19 +154,21 @@ dotnet ef migrations has-pending-model-changes --project src/Scriptorium.Mtg.Api
 dotnet ef database update --project src/Scriptorium.Mtg.Api
 ```
 
-Seed data (colours, the base `Card` type and its translations) lives in `MtgDbContext.OnModelCreating`. **Seed identifiers must stay hardcoded** — a `Guid.NewGuid()` there makes the model non-deterministic, which EF Core 9+ rejects outright when applying migrations.
+Seed data lives in `MtgDbContext.OnModelCreating`. **Seed identifiers must stay hardcoded** — a `Guid.NewGuid()` there makes the model change on every build, which EF Core 9+ rejects when applying migrations. CI runs `has-pending-model-changes`, so a model edited without its migration fails the build.
 
 ### Roadmap
 
-- [ ] Move the connection string to user secrets / environment variables, make CORS origins configurable
-- [ ] **Authentication and authorisation** (`UseAuthorization` is currently called with no scheme configured, so it does nothing). Reading must stay open to anonymous users; only writes require an account.
-- [ ] **`PUT`/`PATCH` endpoints for translation editing** — the core feature of the project
-- [ ] Request DTOs with validation, instead of binding EF entities directly from the request body
-- [ ] Auditing fields (`CreatedAt`, `UpdatedAt`, `UpdatedBy`) and a revision history for moderation
+- [ ] Concurrency control on translation writes — two simultaneous edits currently resolve last-write-wins, silently
+- [ ] Batch identifier on revisions, so one contribution can be reverted in a single action rather than field by field
+- [ ] Moderation: blocking a contributor works, but nothing surfaces suspicious edits
+- [ ] Account anonymisation, to honour deletion requests without tearing holes in the history
+- [ ] Linking a Google and a GitHub login to one person — today they are two accounts
+- [ ] Rate limiting on write endpoints
+- [ ] Make CORS origins configurable
 - [ ] Pagination on collection endpoints
 - [ ] Full-text index on card names to replace the current `Contains` search
 - [ ] Integration tests
-- [ ] GitHub Actions CI + Docker Compose (API + SQL Server)
+- [ ] Docker Compose (API + SQL Server)
 
 ### Related repositories
 
@@ -152,7 +184,7 @@ Seed data (colours, the base `Card` type and its translations) lives in `MtgDbCo
 
 ### Le problème
 
-Wizards of the Coast ne traduit les cartes Magic que dans quelques langues, et ne met à jour que la version anglaise. Les joueurs de toutes les autres langues se retrouvent avec des cartes obsolètes, ou sans traduction du tout.
+Wizards of the Coast ne traduit les cartes Magic que dans quelques langues, et ne met à jour que le texte anglais. Les joueurs de toutes les autres langues se retrouvent avec des cartes obsolètes, ou sans traduction du tout.
 
 **Scriptorium** est une plateforme permettant à une communauté de maintenir elle-même ces traductions. Le nom vient des ateliers monastiques où les manuscrits étaient copiés et traduits à la main — ce qui n'est pas très loin de ce dont il s'agit ici.
 
@@ -164,9 +196,10 @@ Une Web API ASP.NET Core 10 placée entre la base SQL Server et les deux clients
   scriptorium-importer  ──POST──▶  ┌──────────────────┐  ──EF Core──▶  SQL Server
                                    │  scriptorium-api │
   scriptorium-web       ──GET───▶  └──────────────────┘
+                        ──PUT───▶
 ```
 
-C'est l'unique chemin d'écriture vers la base — l'importer ne touche jamais SQL directement — et l'unique chemin de lecture pour le front.
+C'est l'unique chemin d'écriture vers la base et l'unique chemin de lecture pour le front.
 
 ### Organisation du dépôt
 
@@ -180,39 +213,63 @@ scriptorium-api/
     └── Scriptorium.Mtg.Models/    ← les entités EF Core
 ```
 
-Le jeu figure volontairement dans l'espace de noms. Le modèle de données de Magic — coûts de mana, identité colorielle, force/endurance, 22 layouts de cartes — lui est propre, et un modèle Pokémon ou Lorcana ne lui ressemblerait en rien. Ce qui se réutilise d'un jeu à l'autre, c'est le *motif de localisation*, pas le schéma. Conserver `Scriptorium.Mtg.*` laisse la place à un `Scriptorium.Pokemon.*` à côté, sans prétendre qu'un schéma générique unique pourrait servir aux deux.
+Le jeu figure volontairement dans l'espace de noms. Le modèle de données de Magic — coûts de mana, identité colorielle, force/endurance, 22 layouts — lui est propre, et un modèle Pokémon ou Lorcana ne lui ressemblerait en rien. Ce qui se réutilise d'un jeu à l'autre, c'est le *motif de localisation*, pas le schéma. Conserver `Scriptorium.Mtg.*` laisse la place à un `Scriptorium.Pokemon.*` à côté.
 
 ### Architecture
 
-Une conception en couches simple, une tranche verticale par agrégat :
+Une tranche verticale par agrégat :
 
 ```
 Controller  →  IService  →  Service  →  MtgDbContext  →  SQL Server
 ```
 
-19 contrôleurs, chacun avec son interface et son service. Les services portent toutes les requêtes EF Core ; les contrôleurs se contentent de traduire le HTTP en appels de service. Les dépendances sont injectées via les constructeurs primaires.
+Les services portent toutes les requêtes EF Core ; les contrôleurs se contentent de traduire le HTTP en appels de service. Les dépendances sont injectées via les constructeurs primaires.
 
-L'endpoint le plus intéressant est `CardTutorsController`. Plutôt que d'obliger le front à récupérer et recomposer huit tables, il renvoie un `CardTutor` — un modèle de lecture aplati agrégeant une carte, toutes ses traductions, ses impressions, ses faces, ses cartes liées et ses rulings en une seule réponse. *(En Magic, un « tutor » désigne une carte qui va en chercher une autre dans la bibliothèque.)*
+`CardTutorsController` renvoie un `CardTutor` — un modèle de lecture aplati agrégeant une carte, toutes ses traductions, ses impressions, ses faces, ses cartes liées et ses rulings en une seule réponse, évitant au front de recomposer huit tables. *(En Magic, un « tutor » désigne une carte qui va en chercher une autre dans la bibliothèque.)*
 
-**C'est dans le modèle de données que se trouve le vrai travail de conception.** Les traductions sont des lignes et non des colonnes, si bien qu'ajouter une langue ne demande aucune migration de schéma. Les données oracle sont séparées des données d'impression. Les lignes de type sont recomposées par langue — séparateurs compris, pour que le japonais et le chinois n'héritent pas d'une convention anglaise. Voir [docs/DATA-MODEL.md](docs/DATA-MODEL.md).
+**C'est dans le modèle de données que se trouve le vrai travail de conception.** Les traductions sont des lignes et non des colonnes, les données oracle sont séparées des données d'impression, et les lignes de type sont recomposées par langue — séparateurs compris, pour que le japonais et le chinois n'héritent pas de la ponctuation anglaise. Voir [docs/DATA-MODEL.md](docs/DATA-MODEL.md).
+
+### Authentification
+
+La lecture est anonyme, toujours. Seule l'écriture exige un compte — Scryfall interdit de placer les données des cartes derrière quelque mur que ce soit.
+
+**C'est l'API qui est le client OAuth.** Le front redirige vers `/api/auth/login/{provider}`, l'API échange le code d'autorisation, résout un compte local et émet **son propre JWT**. Ce n'est pas la seule conception possible, mais c'est celle qui fonctionne pour les deux fournisseurs : GitHub n'implémente pas OIDC et ne délivre aucun `id_token` signé, si bien que valider directement les jetons du fournisseur n'aurait marché que pour Google.
+
+Trois schémas cohabitent. Un cookie éphémère `External` transporte le résultat de la poignée de main OAuth et disparaît dès que l'utilisateur local est résolu ; Google et GitHub y écrivent ; JWT Bearer est le schéma par défaut et le seul qui authentifie les appels d'API.
+
+Le jeton revient au front dans le **fragment d'URL** plutôt que dans la chaîne de requête : un fragment n'atteint jamais le serveur et ne se retrouve dans aucun journal d'accès.
+
+### Le modèle de contribution
+
+Édition directe, façon wiki. Tout contributeur connecté peut modifier une traduction, le changement est visible immédiatement, et l'historique complet est public.
+
+Chaque modification écrit une `TranslationRevision` — auteur, horodatage, valeur précédente, nouvelle valeur, commentaire facultatif. Les révisions sont **immuables** : corriger une traduction en crée une nouvelle, et annuler en écrit une de plus plutôt que d'effacer quoi que ce soit.
+
+Deux règles à connaître :
+
+- **L'anglais est en lecture seule.** C'est le texte officiel de Wizards, réécrit à chaque import ; une correction communautaire y serait silencieusement écrasée.
+- **Un champ nul ne change rien.** Ne soumettre qu'un nom de carte laisse son texte de règles intact : un formulaire partiellement rempli n'efface jamais le travail d'un autre.
+
+`TranslationRevision.Status` porte déjà `Pending` et `Rejected`, aujourd'hui inutilisés. Ils existent pour qu'une étape de relecture puisse être introduite plus tard sans toucher au schéma.
 
 ### Endpoints
 
-La documentation interactive complète est sur `/swagger` en environnement Development.
+La documentation interactive complète est sur `/swagger` en Development, avec un bouton **Authorize** pour y coller un jeton.
 
-| Route | Verbes | Rôle |
-|---|---|---|
-| `/api/CardTutors/{id}` | GET | Carte agrégée complète, toutes langues |
-| `/api/CardTutors/search/{cardName}` | GET | Recherche de cartes par nom anglais |
-| `/api/Cards` | GET, POST | Données de carte au niveau oracle |
-| `/api/CardNames`, `/api/CardTexts`, `/api/CardTypelines` | GET, POST | Lignes de traduction |
-| `/api/CardFaces`, `/api/CardSet`, `/api/CardSetFaces` | GET, POST | Faces et impressions |
-| `/api/Sets`, `/api/Artists`, `/api/Colors`, `/api/Rulings` | GET, POST | Données de référence |
-| `/api/Types`, `/api/Subtypes`, `/api/Supertypes` | GET, POST | Taxonomie des types |
-| `/api/TypeLanguages`, `/api/SubtypeLanguage`, `/api/SupertypeLanguages` | GET, POST | Traductions des types |
-| `/api/RelatedCards` | GET, POST | Relations meld, token et combo |
+| Route | Verbes | Auth | Rôle |
+|---|---|---|---|
+| `/api/auth/login/{provider}` | GET | — | Démarre la connexion (`google` ou `github`) |
+| `/api/auth/callback` | GET | — | Retour du fournisseur ; émet le JWT |
+| `/api/auth/me` | GET | ✔ | Profil courant et rôles |
+| `/api/cards/{cardId}/translations/{language}` | GET | — | Traduction d'une carte dans une langue |
+| `/api/cards/{cardId}/translations/{language}` | PUT | ✔ | Crée ou met à jour cette traduction |
+| `/api/cards/{cardId}/history` | GET | — | Historique des révisions, filtrable par langue |
+| `/api/cards/{cardId}/revert/{revisionId}` | POST | ✔ | Rétablit la valeur antérieure à une révision |
+| `/api/CardTutors/{id}` | GET | — | Carte agrégée complète, toutes langues |
+| `/api/CardTutors/search/{cardName}` | GET | — | Recherche de cartes par nom anglais |
+| `/api/Cards`, `/api/CardNames`, `/api/CardSet`, … | GET, POST | — | Ingestion et données de référence (19 contrôleurs) |
 
-> Les verbes `POST` servent aujourd'hui uniquement l'ingestion par l'importer. **Les endpoints d'édition des traductions (`PUT`/`PATCH`) ne sont pas encore implémentés** — voir la feuille de route.
+Les anciens `POST` servent l'ingestion par l'importer ; ils sont antérieurs à l'API de contribution et ne sont pas le chemin qu'un traducteur humain doit emprunter.
 
 ### Démarrage
 
@@ -220,6 +277,7 @@ La documentation interactive complète est sur `/swagger` en environnement Devel
 
 - SDK .NET 10
 - SQL Server (LocalDB, Express ou complet)
+- Une application OAuth chez Google et/ou GitHub, avec pour rappel `http://localhost:5141/signin-google` et `http://localhost:5141/signin-github`
 
 ```bash
 git clone https://github.com/arthur-lagenebre/scriptorium-api.git
@@ -227,10 +285,17 @@ cd scriptorium-api
 dotnet restore
 ```
 
-Définir la chaîne de connexion — préférez les user secrets à la modification d'`appsettings.json` :
+Les secrets ne vont jamais dans `appsettings.json` :
 
 ```bash
-dotnet user-secrets set "ConnectionStrings:MTGConnectionString" "Server=localhost;Database=MagicTheGathering;Trusted_Connection=True;Encrypt=False;" --project src/Scriptorium.Mtg.Api
+cd src/Scriptorium.Mtg.Api
+dotnet user-secrets init
+dotnet user-secrets set "ConnectionStrings:MTGConnectionString" "Server=localhost;Database=MagicTheGathering;Trusted_Connection=True;Encrypt=False;"
+dotnet user-secrets set "Jwt:Key" "<64 octets aléatoires, en base64>"
+dotnet user-secrets set "Authentication:Google:ClientId" "…"
+dotnet user-secrets set "Authentication:Google:ClientSecret" "…"
+dotnet user-secrets set "Authentication:GitHub:ClientId" "…"
+dotnet user-secrets set "Authentication:GitHub:ClientSecret" "…"
 ```
 
 Créer la base puis lancer :
@@ -240,15 +305,13 @@ dotnet ef database update --project src/Scriptorium.Mtg.Api
 dotnet run --project src/Scriptorium.Mtg.Api
 ```
 
-L'URL d'écoute est affichée au démarrage (`http://localhost:5141` par défaut) ; l'interface Swagger est sur `/swagger`.
+L'URL d'écoute est affichée au démarrage (`http://localhost:5141` par défaut). **Peupler la base** en exécutant [scriptorium-importer](https://github.com/arthur-lagenebre/scriptorium-importer) contre cette API.
 
-**Peupler la base** en exécutant [scriptorium-importer](https://github.com/arthur-lagenebre/scriptorium-importer) contre cette API.
-
-> ⚠️ **Limitations connues :** la politique CORS est figée sur `http://localhost:4200`, et une chaîne de connexion de développement est committée dans `appsettings.json`. Les deux points sont dans la feuille de route.
+> ⚠️ **Limitation connue :** la politique CORS est figée sur `http://localhost:4200`. Rendre les origines configurables figure dans la feuille de route.
 
 ### Format de solution
 
-La solution utilise le format SLNX, celui par défaut depuis .NET 10. Visual Studio n'ouvre les fichiers `.slnx` qu'une fois l'option *Outils → Options → Environnement → Preview Features → Use Solution File Persistence Model* activée. Rider, VS Code et `dotnet build` les prennent en charge nativement.
+La solution utilise SLNX, le format par défaut depuis .NET 10. Visual Studio n'ouvre les fichiers `.slnx` qu'une fois l'option *Outils → Options → Environnement → Preview Features → Use Solution File Persistence Model* activée. Rider, VS Code et `dotnet build` les gèrent nativement.
 
 ### Migrations
 
@@ -258,19 +321,21 @@ dotnet ef migrations has-pending-model-changes --project src/Scriptorium.Mtg.Api
 dotnet ef database update --project src/Scriptorium.Mtg.Api
 ```
 
-Les données de seed (couleurs, type `Card` de base et ses traductions) se trouvent dans `MtgDbContext.OnModelCreating`. **Les identifiants de seed doivent rester codés en dur** : un `Guid.NewGuid()` à cet endroit rend le modèle non déterministe, ce qu'EF Core 9+ refuse catégoriquement au moment d'appliquer une migration.
+Les données de seed se trouvent dans `MtgDbContext.OnModelCreating`. **Les identifiants de seed doivent rester codés en dur** : un `Guid.NewGuid()` à cet endroit rend le modèle différent à chaque compilation, ce qu'EF Core 9+ refuse au moment d'appliquer une migration. La CI exécute `has-pending-model-changes`, si bien qu'un modèle modifié sans sa migration fait échouer le build.
 
 ### Feuille de route
 
-- [ ] Déplacer la chaîne de connexion vers les user secrets / variables d'environnement, rendre les origines CORS configurables
-- [ ] **Authentification et autorisation** (`UseAuthorization` est actuellement appelé sans schéma configuré, donc sans effet). La lecture doit rester ouverte aux utilisateurs anonymes ; seule l'écriture exige un compte.
-- [ ] **Endpoints `PUT`/`PATCH` d'édition des traductions** — la fonctionnalité centrale du projet
-- [ ] DTO d'entrée avec validation, au lieu de lier directement les entités EF depuis le corps de la requête
-- [ ] Champs d'audit (`CreatedAt`, `UpdatedAt`, `UpdatedBy`) et historique des révisions pour la modération
+- [ ] Contrôle de concurrence sur les écritures — deux éditions simultanées se résolvent aujourd'hui au dernier arrivé, silencieusement
+- [ ] Identifiant de lot sur les révisions, pour annuler une contribution d'un seul geste plutôt que champ par champ
+- [ ] Modération : bloquer un contributeur fonctionne, mais rien ne fait remonter les modifications suspectes
+- [ ] Anonymisation des comptes, pour honorer une demande de suppression sans trouer l'historique
+- [ ] Rattacher une connexion Google et une connexion GitHub à une même personne — ce sont aujourd'hui deux comptes
+- [ ] Limitation de débit sur les endpoints d'écriture
+- [ ] Rendre les origines CORS configurables
 - [ ] Pagination sur les endpoints de collection
-- [ ] Index full-text sur les noms de cartes, en remplacement de la recherche `Contains` actuelle
+- [ ] Index full-text sur les noms de cartes, en remplacement de la recherche `Contains`
 - [ ] Tests d'intégration
-- [ ] CI GitHub Actions + Docker Compose (API + SQL Server)
+- [ ] Docker Compose (API + SQL Server)
 
 ### Dépôts liés
 

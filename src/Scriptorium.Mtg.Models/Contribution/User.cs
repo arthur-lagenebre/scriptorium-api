@@ -31,10 +31,6 @@ public class User
     [MaxLength(500)]
     public string? AvatarUrl { get; set; }
 
-    /// <summary>"contributor", "moderator" ou "admin".</summary>
-    [Required, MaxLength(20)]
-    public required string Role { get; set; }
-
     /// <summary>Bloque toute écriture sans supprimer les contributions passées.</summary>
     public bool IsBlocked { get; set; }
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Scriptorium.Mtg.Models.Card;
 
 [PrimaryKey("Id")]
-public class CardName
+public class CardName : ITranslatedValue
 {
     public Guid Id { get; init; }
     [ForeignKey("Card")]
