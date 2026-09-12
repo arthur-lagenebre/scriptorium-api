@@ -16,9 +16,9 @@ public class CardSet
     public required string CollectorNumber { get; init; }
     [Required, MaxLength(25)]
     public required string Rarity { get; init; }
-    public List<string> NormalImagesUrl { get; init; }
-    public List<string> SmallImagesUrl { get; init; }
-
-    public Set Set { get; init; }
-    public ICollection<CardSetFace> CardSetFaces { get; init; }
+    public List<string> NormalImagesUrl { get; set; } = [];
+    public List<string> SmallImagesUrl { get; set; } = [];
+    public Set? Set { get; set; }
+    public List<CardSetFace> CardSetFaces { get; set; } = [];
+    public List<CardSetFaceFlavor> Flavors { get; set; } = [];
 }
