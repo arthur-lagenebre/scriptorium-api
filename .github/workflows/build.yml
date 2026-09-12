@@ -25,7 +25,8 @@ jobs:
       - name: Build
         run: dotnet build Scriptorium.Mtg.slnx --no-restore --configuration Release
 
+      - name: Install EF tools
+        run: dotnet tool install --global dotnet-ef
+
       - name: Verify no pending model changes
-        run: |
-          dotnet tool install --global dotnet-ef
-          dotnet ef migrations has-pending-model-changes --project src/Scriptorium.Mtg.Api --no-build --configuration Release
+        run: dotnet ef migrations has-pending-model-changes --project src/Scriptorium.Mtg.Api --no-build --configuration Release
