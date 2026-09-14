@@ -19,7 +19,14 @@ public class AuthController(IUserService userService, ITokenService tokenService
     [AllowAnonymous]
     public IActionResult Login(string provider, [FromQuery] string? returnPath)
     {
-        if (!provider.Equals("Google", StringComparison.OrdinalIgnoreCase) && !provider.Equals("GitHub", StringComparison.OrdinalIgnoreCase))
+        var scheme = provider.ToLowerInvariant() switch
+        {
+            "google" => "Google",
+            "github" => "GitHub",
+            _ => null
+        };
+
+        if (scheme is null)
             return BadRequest($"Fournisseur inconnu : {provider}");
 
         // returnPath est un chemin relatif, jamais une URL absolue : cela
@@ -28,7 +35,7 @@ public class AuthController(IUserService userService, ITokenService tokenService
 
         var properties = new AuthenticationProperties { RedirectUri = Url.Action(nameof(Callback), new { returnPath = safePath }) };
 
-        return Challenge(properties, provider);
+        return Challenge(properties, scheme);
     }
 
     /// <summary>Retour du fournisseur : crée le compte si besoin, émet le jeton.</summary>
